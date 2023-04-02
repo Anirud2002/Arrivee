@@ -1,20 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonRouterOutlet, IonicModule, ModalController } from '@ionic/angular';
+import { LocationsListComponent } from './locations-list/locations-list.component';
+import { AddLocationModalComponent } from './add-location-modal/add-location-modal.component';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [SharedModule, LocationsListComponent, AddLocationModalComponent],
 })
 export class HomePage implements OnInit {
+  constructor(
+    private modalController: ModalController,
+    private outlet: IonRouterOutlet) {}
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit(): void {
+      
   }
 
+  async showAddLocationModal(){
+    const modal = await this.modalController.create({
+      component: AddLocationModalComponent,
+      presentingElement: this.outlet.nativeEl,
+      canDismiss: true
+    });
+    await modal.present();
+  } 
 }

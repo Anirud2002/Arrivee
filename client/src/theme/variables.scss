@@ -20,8 +20,8 @@
   --ion-color-secondary-tint: #50c8ff;
 
   /** tertiary **/
-  --ion-color-tertiary: #5260ff;
-  --ion-color-tertiary-rgb: 82, 96, 255;
+  --ion-color-tertiary: #408e91;
+  --ion-color-tertiary-rgb: rgb(64, 142, 145);
   --ion-color-tertiary-contrast: #F4F5F8;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
   --ion-color-tertiary-shade: #4854e0;
@@ -75,7 +75,7 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  ion-content, ion-toolbar{
+  ion-content, ion-toolbar, ion-modal{
     --background: var(--ion-color-secondary)
   }
 }
@@ -188,11 +188,11 @@
     --ion-card-background: #1c1c1d;
   }
 
-  .ios ion-modal {
-    --ion-background-color: var(--ion-color-step-100);
-    --ion-toolbar-background: var(--ion-color-step-150);
-    --ion-toolbar-border-color: var(--ion-color-step-250);
-  }
+  // .ios ion-modal {
+    // --ion-background-color: var(--ion-color-secondary);
+    // --ion-toolbar-background: var(--ion-color-secondary);
+    // --ion-toolbar-border-color: trans[]
+  // }
 
 
   /*
