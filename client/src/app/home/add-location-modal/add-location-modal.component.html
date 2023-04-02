@@ -1,0 +1,11 @@
+<ion-content class="ion-padding">
+  <div class="">
+    <ion-input label="" show-clear-button="focus" class="location-searchbar" placeholder="Enter Address:" [clearInput]="true"></ion-input>
+  </div>
+
+  <ion-range aria-label="Volume" class="ion-margin-horizontal" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" [max]="getMax()" [min]="getMin()">
+    <div slot="label" class="mr-4 -ml-4">Radius:</div>
+  </ion-range>
+
+  <!-- Add google maps in the future -->
+</ion-content>
