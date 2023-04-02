@@ -15,7 +15,9 @@ enum SelectedUnit{
   imports: [SharedModule],
 })
 export class AddLocationModalComponent implements OnInit {
-  selectedUnit: string = "m";
+  selectedUnit: string = "m"; // set default unit to 'm' which is meters
+  isAddRemInputOpen: boolean = false;
+
   constructor(
     private modalController: ModalController
   ) {
@@ -97,5 +99,9 @@ export class AddLocationModalComponent implements OnInit {
 
   async closeModal(){
     await this.modalController.dismiss();
+  }
+
+  handleToogleInputs(){
+    this.isAddRemInputOpen = !this.isAddRemInputOpen;
   }
 }

@@ -45,12 +45,12 @@
       </ion-item-sliding>
 
       <!-- some inputs to add the reminder -->
-      <div>
+      <div *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
-          <ion-input label="" placeholder="Title" [clearInput]="true"></ion-input>
+          <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
         </ion-item>
         <ion-item class="ion-no-padding">
-          <ion-input label="" placeholder="Subtitle" [clearInput]="true"></ion-input>
+          <ion-input label="" placeholder="Subtitle" type="text" [clearInput]="true"></ion-input>
         </ion-item>
         <div class="flex justify-center items-center my-2">
           <ion-button expand="block" class="add-rem w-36">
@@ -60,13 +60,19 @@
       </div>
     </ion-card-content>
 
-    <ion-button expand="block" fill="clear">
-      <ion-icon name="add-circle-sharp"></ion-icon>
+    <ion-button expand="block" fill="clear" (click)="handleToogleInputs()">
+      <ion-icon name="add-circle-sharp" *ngIf="!isAddRemInputOpen"></ion-icon>
+      <ion-text *ngIf="isAddRemInputOpen">CANCEL</ion-text>
     </ion-button>
 
   </ion-card>
 
-  <ion-button class="save-rem-btn w-72 fixed bottom-14 left-1/2 -translate-x-1/2" (click)="closeModal()">
-    Save
-  </ion-button>
 </ion-content>
+
+<ion-footer class="ion-margin-vertical">
+  <div class="flex justify-center">
+    <ion-button class="save-rem-btn w-72 mx-auto" (click)="closeModal()">
+      Save
+    </ion-button>
+  </div>
+</ion-footer>
