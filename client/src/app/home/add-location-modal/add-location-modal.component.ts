@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { SharedModule } from '../../shared/shared.module';
 
-enum SelectedUnit{
+export enum SelectedUnit{
   km = "km",
   m = "m",
   mil = "mil"

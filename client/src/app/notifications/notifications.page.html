@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Notifications</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" color="tertiary"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large" class="text-3xl">Notifications</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list class="ion-margin-vertical">
+    <app-notification-item></app-notification-item>
+  </ion-list>
+
+</ion-content>

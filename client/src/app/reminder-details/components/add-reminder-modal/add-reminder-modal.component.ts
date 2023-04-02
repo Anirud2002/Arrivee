@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { ModalController } from '@ionic/angular';
 
@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
   imports: [SharedModule]
 })
 export class AddReminderModalComponent  implements OnInit {
-
+  @Output() inputOnFocus = new EventEmitter<boolean>();
   constructor(
     private modalController: ModalController
   ) { }
@@ -19,6 +19,10 @@ export class AddReminderModalComponent  implements OnInit {
 
   async closeModal(){
     await this.modalController.dismiss();
+  }
+
+  increaseBreakPoint(){
+    this.inputOnFocus.emit(true);
   }
 
 }

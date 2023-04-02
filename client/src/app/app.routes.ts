@@ -14,4 +14,8 @@ export const routes: Routes = [
     path: 'reminder-details/:id',
     loadComponent: () => import('./reminder-details/reminder-details.page').then( m => m.ReminderDetailsPage)
   },
+  {
+    path: 'notifications',
+    loadComponent: () => import('./notifications/notifications.page').then( m => m.NotificationsPage)
+  },
 ];

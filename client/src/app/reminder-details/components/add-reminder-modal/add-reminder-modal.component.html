@@ -2,11 +2,11 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-content>
       <ion-item class="ion-no-padding">
-        <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
+        <ion-input label="" placeholder="Title" type="text" [clearInput]="true" (ionFocus)="increaseBreakPoint()"></ion-input>
       </ion-item>
       <ion-item class="ion-no-padding">
         <ion-input label="" placeholder="Subtitle" type="text" [clearInput]="true"></ion-input>
@@ -14,9 +14,6 @@
       <div class="flex justify-center items-center my-2 relative">
         <ion-button expand="block" class="add-rem-btn w-36" (click)="closeModal()">
           Save
-        </ion-button>
-        <ion-button slot="end" fill="clear" class="absolute right-0" size="small" (click)="closeModal()">
-          CANCEL
         </ion-button>
       </div>
     </ion-card-content>
