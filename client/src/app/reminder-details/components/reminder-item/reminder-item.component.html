@@ -1,0 +1,36 @@
+<ion-item-sliding class="ion-no-padding" *ngIf="!isInEditState">
+  <ion-item class="ion-no-padding" lines="none">
+    <ion-checkbox aria-label="" slot="start"></ion-checkbox>
+    <ion-label>
+      <h2>Buy Milk</h2>
+      <p>Also buy bread!</p>
+    </ion-label>
+  </ion-item>
+
+  <ion-item-options>
+    <ion-item-option color="tertiary" (click)="handleEdit()">
+      <ion-icon name="pencil-sharp" slot="icon-only" size="small"></ion-icon>
+    </ion-item-option>
+    <ion-item-option (click)="handleDelete()">
+      <ion-icon name="trash" slot="icon-only" size="small"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+
+</ion-item-sliding>
+<!-- If user clicks on edit button show these inputs -->
+<div *ngIf="isInEditState">
+  <ion-item class="ion-no-padding">
+    <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
+  </ion-item>
+  <ion-item class="ion-no-padding">
+    <ion-input label="" placeholder="Subtitle" type="text" [clearInput]="true"></ion-input>
+  </ion-item>
+  <div class="flex justify-center items-center my-2 relative">
+    <ion-button expand="block" class="edit-rem w-36">
+      Save
+    </ion-button>
+    <ion-button slot="end" fill="clear" class="absolute right-0" size="small" (click)="handleCancelEditState()">
+      CANCEL
+    </ion-button>
+  </div>
+</div>

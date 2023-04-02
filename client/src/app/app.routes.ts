@@ -10,4 +10,8 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'reminder-details/:id',
+    loadComponent: () => import('./reminder-details/reminder-details.page').then( m => m.ReminderDetailsPage)
+  },
 ];
