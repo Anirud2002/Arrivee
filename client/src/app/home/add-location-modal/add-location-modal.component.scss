@@ -1,3 +1,7 @@
+ion-item.searchbar-item{
+    --border-radius: 60px;
+}
+
 ion-input.location-searchbar{
     --border-width: 2px;
     --background:white;
@@ -6,4 +10,13 @@ ion-input.location-searchbar{
     --padding-top: 10px;
     --padding-bottom: 10px;
     --border-radius: 10px;
+}
+
+ion-chip.active{
+    --background: var(--ion-color-tertiary);
+    --color: white;
+}
+
+ion-button.add-rem, ion-button.save-rem-btn{
+    --border-radius: none;
 }

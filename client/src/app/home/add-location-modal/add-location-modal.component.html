@@ -1,11 +1,72 @@
-<ion-content class="ion-padding">
-  <div class="">
-    <ion-input label="" show-clear-button="focus" class="location-searchbar" placeholder="Enter Address:" [clearInput]="true"></ion-input>
-  </div>
+<ion-header>
+  <!-- This is needed inorder to close the modal by swiping downwards -->
+</ion-header>
 
-  <ion-range aria-label="Volume" class="ion-margin-horizontal" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" [max]="getMax()" [min]="getMin()">
-    <div slot="label" class="mr-4 -ml-4">Radius:</div>
-  </ion-range>
+<ion-content class="ion-padding">
+  <ion-item lines="none" class="searchbar-item">
+    <ion-input label="" show-clear-button="focus" class="location-searchbar" placeholder="Enter Address:" [clearInput]="true"></ion-input>
+    <ion-icon name="location-sharp" slot="end"></ion-icon>
+  </ion-item>
 
   <!-- Add google maps in the future -->
+  
+  <ion-range aria-label="Volume" class="ion-margin-horizontal" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" [max]="getMax()" [min]="getMin()" [value]="getValue()">
+    <div slot="label" class="mr-4 -ml-4">Radius:</div>
+  </ion-range>
+  
+  <div class="flex justify-center items-center mt-4 space-x-6">
+    <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">km</ion-chip>
+    <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">m</ion-chip>
+    <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">mil</ion-chip>
+  </div>
+
+  <ion-card class="ion-no-padding ion-no-margin ion-margin-vertical">
+    <ion-card-header>
+      <ion-card-subtitle>Tell me what you forget</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- reminders for this particular location -->
+      <ion-item-sliding class="ion-no-padding">
+        <ion-item class="ion-no-padding" lines="none">
+          <ion-checkbox aria-label="" slot="start"></ion-checkbox>
+          <ion-label>
+            <h2>Buy Milk</h2>
+            <p>Also buy bread!</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item-options>
+          <ion-item-option>
+            <ion-icon name="trash" slot="icon-only" size="small"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+
+      </ion-item-sliding>
+
+      <!-- some inputs to add the reminder -->
+      <div>
+        <ion-item class="ion-no-padding">
+          <ion-input label="" placeholder="Title" [clearInput]="true"></ion-input>
+        </ion-item>
+        <ion-item class="ion-no-padding">
+          <ion-input label="" placeholder="Subtitle" [clearInput]="true"></ion-input>
+        </ion-item>
+        <div class="flex justify-center items-center my-2">
+          <ion-button expand="block" class="add-rem w-36">
+            Add
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-content>
+
+    <ion-button expand="block" fill="clear">
+      <ion-icon name="add-circle-sharp"></ion-icon>
+    </ion-button>
+
+  </ion-card>
+
+  <ion-button class="save-rem-btn w-72 fixed bottom-14 left-1/2 -translate-x-1/2" (click)="closeModal()">
+    Save
+  </ion-button>
 </ion-content>

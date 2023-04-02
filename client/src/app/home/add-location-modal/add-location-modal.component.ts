@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { SharedModule } from '../../shared/shared.module';
 
 enum SelectedUnit{
@@ -7,7 +7,6 @@ enum SelectedUnit{
   m = "m",
   mil = "mil"
 }
-
 @Component({
   selector: 'app-add-location-modal',
   templateUrl: './add-location-modal.component.html',
@@ -16,8 +15,12 @@ enum SelectedUnit{
   imports: [SharedModule],
 })
 export class AddLocationModalComponent implements OnInit {
-  selectedUnit: SelectedUnit = SelectedUnit.m;
-  constructor() { }
+  selectedUnit: string = "m";
+  constructor(
+    private modalController: ModalController
+  ) {
+    this.selectedUnit = SelectedUnit.m;
+   }
 
   ngOnInit() {
   }
@@ -64,4 +67,35 @@ export class AddLocationModalComponent implements OnInit {
     return retVal;
   }
 
+  getValue(){
+    return (this.getMax() + this.getMin()) / 2;
+  }
+
+  getColor(value: string): boolean{
+    if(value === this.selectedUnit){
+      return true;
+    }
+    return false;
+  }
+
+  changeUnit(unit: string){
+    switch(unit){
+      case "km":
+        this.selectedUnit = "km";
+        break;
+      case "m":
+        this.selectedUnit = "m";
+        break;
+      case "mil":
+        this.selectedUnit = "mil";
+        break;
+      default:
+        this.selectedUnit = "m";
+        break;
+    }
+  }
+
+  async closeModal(){
+    await this.modalController.dismiss();
+  }
 }
