@@ -5,6 +5,7 @@
     <ion-label>
       <h2>Buy Milk</h2>
     </ion-label>
+    <p>Arriving</p>
   </ion-item>
 
   <ion-item-options>
@@ -18,9 +19,15 @@
 
 </ion-item-sliding>
 <!-- If user clicks on edit button show these inputs -->
-<div *ngIf="isInEditState">
+<div *ngIf="isInEditState" class="ion-margin-vertical">
   <ion-item class="ion-no-padding">
-    <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
+    <ion-input placeholder="Title" class="ion-no-padding" type="text" [clearInput]="true"></ion-input>
+  </ion-item>
+  <ion-item class="ion-no-padding">
+    <ion-select label="When" value="Arriving">
+      <ion-select-option value="Arriving">Arriving</ion-select-option>
+      <ion-select-option value="Departing">Departing</ion-select-option>
+    </ion-select>
   </ion-item>
   <div class="flex justify-center items-center my-2 relative">
     <ion-button expand="block" class="edit-rem w-36">

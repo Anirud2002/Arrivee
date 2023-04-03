@@ -46,7 +46,13 @@
       <!-- some inputs to add the reminder -->
       <div *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
-          <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
+          <ion-input placeholder="Title" type="text" class="ion-no-padding" [clearInput]="true"></ion-input>
+        </ion-item>
+        <ion-item class="ion-no-padding">
+          <ion-select label="When" value="Arriving">
+            <ion-select-option value="Arriving">Arriving</ion-select-option>
+            <ion-select-option value="Departing">Departing</ion-select-option>
+          </ion-select>
         </ion-item>
         <div class="flex justify-center items-center my-2">
           <ion-button expand="block" class="add-rem w-36">
