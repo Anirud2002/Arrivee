@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonRouterOutlet, IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
 import { SelectedUnit } from '../home/add-location-modal/add-location-modal.component';
@@ -40,13 +40,13 @@ export class ReminderDetailsPage implements OnInit {
     let retVal;
     switch(this.selectedUnit){
       case SelectedUnit.km:
-        retVal = 5;
+        retVal = 3;
         break;
       case SelectedUnit.m:
         retVal = 1000;
         break;
       case SelectedUnit.mil:
-        retVal = 5;
+        retVal = 3;
         break;
       default:
         retVal = 0;
@@ -59,13 +59,13 @@ export class ReminderDetailsPage implements OnInit {
     let retVal;
     switch(this.selectedUnit){
       case SelectedUnit.km:
-        retVal = 1;
+        retVal = 0;
         break;
       case SelectedUnit.m:
         retVal = 10;
         break;
       case SelectedUnit.mil:
-        retVal = 1;
+        retVal = 0;
         break;
       default:
         retVal = 0;

@@ -35,13 +35,13 @@ export class AddLocationModalComponent implements OnInit {
     let retVal;
     switch(this.selectedUnit){
       case SelectedUnit.km:
-        retVal = 5;
+        retVal = 3;
         break;
       case SelectedUnit.m:
         retVal = 1000;
         break;
       case SelectedUnit.mil:
-        retVal = 5;
+        retVal = 3;
         break;
       default:
         retVal = 0;
@@ -54,13 +54,13 @@ export class AddLocationModalComponent implements OnInit {
     let retVal;
     switch(this.selectedUnit){
       case SelectedUnit.km:
-        retVal = 1;
+        retVal = 0;
         break;
       case SelectedUnit.m:
         retVal = 10;
         break;
       case SelectedUnit.mil:
-        retVal = 1;
+        retVal = 0;
         break;
       default:
         retVal = 0;
