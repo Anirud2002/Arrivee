@@ -28,11 +28,10 @@
     <ion-card-content>
       <!-- reminders for this particular location -->
       <ion-item-sliding class="ion-no-padding">
-        <ion-item class="ion-no-padding" lines="none">
+        <ion-item class="ion-no-padding">
           <ion-checkbox aria-label="" slot="start"></ion-checkbox>
           <ion-label>
             <h2>Buy Milk</h2>
-            <p>Also buy bread!</p>
           </ion-label>
         </ion-item>
 
@@ -48,9 +47,6 @@
       <div *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
           <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
-        </ion-item>
-        <ion-item class="ion-no-padding">
-          <ion-input label="" placeholder="Subtitle" type="text" [clearInput]="true"></ion-input>
         </ion-item>
         <div class="flex justify-center items-center my-2">
           <ion-button expand="block" class="add-rem w-36">

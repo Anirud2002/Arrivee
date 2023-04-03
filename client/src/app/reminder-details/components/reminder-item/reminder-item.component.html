@@ -1,9 +1,9 @@
 <ion-item-sliding class="ion-no-padding" *ngIf="!isInEditState">
-  <ion-item class="ion-no-padding" lines="none">
+  <!-- SET 'lines=none' IF IT IS THE LAST ION-ITEM -->
+  <ion-item class="ion-no-padding">
     <ion-checkbox aria-label="" slot="start"></ion-checkbox>
     <ion-label>
-      <h2>Buy MilkBuy MilkBuy MilkBuy MilkBuy MilkBuy Milk</h2>
-      <p>Also buy bread!</p>
+      <h2>Buy Milk</h2>
     </ion-label>
   </ion-item>
 
@@ -21,9 +21,6 @@
 <div *ngIf="isInEditState">
   <ion-item class="ion-no-padding">
     <ion-input label="" placeholder="Title" type="text" [clearInput]="true"></ion-input>
-  </ion-item>
-  <ion-item class="ion-no-padding">
-    <ion-input label="" placeholder="Subtitle" type="text" [clearInput]="true"></ion-input>
   </ion-item>
   <div class="flex justify-center items-center my-2 relative">
     <ion-button expand="block" class="edit-rem w-36">
