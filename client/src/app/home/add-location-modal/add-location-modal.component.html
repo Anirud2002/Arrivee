@@ -27,12 +27,13 @@
 
     <ion-card-content>
       <!-- reminders for this particular location -->
-      <ion-item-sliding class="ion-no-padding">
+      <app-reminder-item-modal></app-reminder-item-modal>
+
+      <!-- when user click "+" button: -->
+      <ion-item-sliding class="ion-no-padding" *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
           <ion-checkbox aria-label="" slot="start"></ion-checkbox>
-          <ion-label>
-            <h2>Buy Milk</h2>
-          </ion-label>
+          <ion-input [clearInput]="true" placeholder="Add" label=""></ion-input>
         </ion-item>
 
         <ion-item-options>
@@ -40,31 +41,12 @@
             <ion-icon name="trash" slot="icon-only" size="small"></ion-icon>
           </ion-item-option>
         </ion-item-options>
-
       </ion-item-sliding>
-
-      <!-- some inputs to add the reminder -->
-      <div *ngIf="isAddRemInputOpen">
-        <ion-item class="ion-no-padding">
-          <ion-input placeholder="Title" type="text" class="ion-no-padding" [clearInput]="true"></ion-input>
-        </ion-item>
-        <ion-item class="ion-no-padding">
-          <ion-select label="When" value="Arriving">
-            <ion-select-option value="Arriving">Arriving</ion-select-option>
-            <ion-select-option value="Departing">Departing</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <div class="flex justify-center items-center my-2">
-          <ion-button expand="block" class="add-rem w-36">
-            Add
-          </ion-button>
-        </div>
-      </div>
+        
     </ion-card-content>
 
     <ion-button expand="block" fill="clear" (click)="handleToogleInputs()">
-      <ion-icon name="add-circle-sharp" *ngIf="!isAddRemInputOpen"></ion-icon>
-      <ion-text *ngIf="isAddRemInputOpen">CANCEL</ion-text>
+      <ion-icon name="add-circle-sharp"></ion-icon>
     </ion-button>
 
   </ion-card>

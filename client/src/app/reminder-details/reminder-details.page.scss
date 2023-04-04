@@ -2,3 +2,7 @@ ion-chip.active{
     --background: var(--ion-color-tertiary);
     --color: white;
 }
+
+ion-button.add-rem-btn{
+    --border-radius: none;
+}

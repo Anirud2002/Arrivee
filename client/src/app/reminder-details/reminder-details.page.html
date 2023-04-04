@@ -39,15 +39,24 @@
 
       <!-- reminder 2 -->
       <app-reminder-item></app-reminder-item>
+
+      <ion-item-sliding class="ion-no-padding" *ngIf="isAddRemInputOpen">
+        <ion-item class="ion-no-padding">
+          <ion-checkbox aria-label="" slot="start"></ion-checkbox>
+          <ion-input [clearInput]="true" placeholder="Add" label="" (ionFocus)="enableSaveButton()"></ion-input>
+        </ion-item>
+
+        <ion-item-options>
+          <ion-item-option>
+            <ion-icon name="trash" slot="icon-only" size="small"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-card-content>
+
+    <ion-button expand="block" fill="clear" (click)="handleToogleInputs()">
+      <ion-icon name="add-circle-sharp"></ion-icon>
+    </ion-button>
   </ion-card>
   
 </ion-content>
-
-<ion-footer>
-  <div class="flex justify-center">
-    <ion-button class="add-rem-btn w-72 mx-auto" fill="clear" (click)="openAddReminderModal()">
-      Add <ion-icon name="add-circle" slot="end"></ion-icon>
-    </ion-button>
-  </div>
-</ion-footer>

@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { SharedModule } from '../../shared/shared.module';
+import { ReminderItemModalComponent } from './components/reminder-item-modal/reminder-item-modal.component';
 
 export enum SelectedUnit{
   km = "km",
@@ -12,11 +13,12 @@ export enum SelectedUnit{
   templateUrl: './add-location-modal.component.html',
   styleUrls: ['./add-location-modal.component.scss'],
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, ReminderItemModalComponent],
 })
 export class AddLocationModalComponent implements OnInit {
   selectedUnit: string = "m"; // set default unit to 'm' which is meters
   isAddRemInputOpen: boolean = false;
+  isInEditState: boolean = false;
 
   constructor(
     private modalController: ModalController
@@ -103,5 +105,9 @@ export class AddLocationModalComponent implements OnInit {
 
   handleToogleInputs(){
     this.isAddRemInputOpen = !this.isAddRemInputOpen;
+  }
+
+  handleEdit(){
+    this.isInEditState = true;
   }
 }

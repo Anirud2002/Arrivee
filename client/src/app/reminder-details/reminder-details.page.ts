@@ -15,6 +15,8 @@ import { SelectedUnit } from '../home/add-location-modal/add-location-modal.comp
 })
 export class ReminderDetailsPage implements OnInit {
   selectedUnit: string = "m"; // set default unit to 'm' which is meters
+  isAddRemInputOpen: boolean = false; // boolean to to store if user wants to create new reminder to not
+  isAddingNewReminder: boolean = false; // boolean to store current state if user is adding rem or not
   constructor(
     private modalController: ModalController,
   ) { }
@@ -93,6 +95,14 @@ export class ReminderDetailsPage implements OnInit {
         this.selectedUnit = "m";
         break;
     }
+  }
+
+  handleToogleInputs(){
+    this.isAddRemInputOpen = !this.isAddRemInputOpen;
+  }
+
+  enableSaveButton(){
+    this.isAddingNewReminder = true;
   }
 
 }
