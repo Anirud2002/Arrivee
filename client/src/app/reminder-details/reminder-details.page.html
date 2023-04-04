@@ -26,13 +26,13 @@
     <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">mil</ion-chip>
   </div>
 
-  <div class="ion-margin my-6">
+  <div class="ion-margin mt-6">
     <ion-text>
-      <strong class="text-xl">Reminders:</strong>
+      <strong class="text-xl">Reminders</strong>
     </ion-text>
   </div>
 
-  <ion-card class="ion-no-padding ion-margin-vertical">
+  <ion-card class="ion-no-padding">
     <ion-card-content>
       <!-- reminder 1 -->
       <app-reminder-item></app-reminder-item>
@@ -40,6 +40,7 @@
       <!-- reminder 2 -->
       <app-reminder-item></app-reminder-item>
 
+      <!-- when user clicks "+" button -->
       <ion-item-sliding class="ion-no-padding" *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
           <ion-checkbox aria-label="" slot="start"></ion-checkbox>
