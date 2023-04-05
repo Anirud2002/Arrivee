@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, IonicModule, ModalController } from '@ionic/angular';
-import { LocationsListComponent } from './locations-list/locations-list.component';
-import { AddLocationModalComponent } from './add-location-modal/add-location-modal.component';
+import { LocationsListComponent } from './components/locations-list/locations-list.component';
+import { AddLocationModalComponent } from './components/add-location-modal/add-location-modal.component';
 import { SharedModule } from '../shared/shared.module';
 
 @Component({
