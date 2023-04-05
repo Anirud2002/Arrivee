@@ -36,7 +36,6 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   returnUnit = (value: number) => {
-    console.log(value)
     this.currentRadiusValue = parseFloat(value.toFixed(1));
     return `${this.currentRadiusValue}${this.selectedUnit}`
   }
