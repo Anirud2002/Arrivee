@@ -19,6 +19,7 @@ export class AddLocationModalComponent implements OnInit {
   selectedUnit: string = "m"; // set default unit to 'm' which is meters
   isAddRemInputOpen: boolean = false;
   isInEditState: boolean = false;
+  currentRadiusValue: number = 0;
 
   constructor(
     private modalController: ModalController
@@ -27,10 +28,12 @@ export class AddLocationModalComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.currentRadiusValue = this.getValue();
   }
 
   returnUnit = (value: number) => {
-    return `${value}${this.selectedUnit}`
+    this.currentRadiusValue = parseFloat(value.toFixed(1));
+    return `${this.currentRadiusValue}${this.selectedUnit}`
   }
 
   getMax(){
@@ -56,13 +59,13 @@ export class AddLocationModalComponent implements OnInit {
     let retVal;
     switch(this.selectedUnit){
       case SelectedUnit.km:
-        retVal = 0;
+        retVal = 0.5;
         break;
       case SelectedUnit.m:
         retVal = 10;
         break;
       case SelectedUnit.mil:
-        retVal = 0;
+        retVal = 0.5;
         break;
       default:
         retVal = 0;
@@ -72,7 +75,7 @@ export class AddLocationModalComponent implements OnInit {
   }
 
   getValue(){
-    return (this.getMax() + this.getMin()) / 2;
+    return parseFloat(((this.getMax() + this.getMin()) / 2).toFixed(1));
   }
 
   getColor(value: string): boolean{
@@ -97,6 +100,7 @@ export class AddLocationModalComponent implements OnInit {
         this.selectedUnit = "m";
         break;
     }
+    this.currentRadiusValue = this.getValue();
   }
 
   async closeModal(){
@@ -109,5 +113,32 @@ export class AddLocationModalComponent implements OnInit {
 
   handleEdit(){
     this.isInEditState = true;
+  }
+
+  getStep(){
+    let retVal;
+    switch(this.selectedUnit){
+      case SelectedUnit.km:
+        retVal = 0.1;
+        break;
+      case SelectedUnit.m:
+        retVal = 10;
+        break;
+      case SelectedUnit.mil:
+        retVal = 0.1;
+        break;
+      default:
+        retVal = 1;
+        break;
+    }
+    return retVal;
+  }
+
+  /**
+   * THIS METHOD UPDATES currentRadiusValue WHEN DRAGGING THE RANGE. I DON'T KNOW WHY.
+   * WELL, IT WORKS SO...
+   *  */ 
+  updateRadius(e: any){
+  
   }
 }

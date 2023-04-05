@@ -10,14 +10,20 @@
 
   <!-- Add google maps in the future -->
   
-  <ion-range aria-label="Volume" class="ion-margin-horizontal" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" [max]="getMax()" [min]="getMin()" [value]="getValue()">
+  <ion-range aria-label="Radius" class="ion-margin-horizontal" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="getValue()">
     <div slot="label" class="mr-4 -ml-4">Radius:</div>
   </ion-range>
   
   <div class="flex justify-center items-center mt-4 space-x-6">
-    <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">km</ion-chip>
-    <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">m</ion-chip>
-    <ion-chip class="w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">mil</ion-chip>
+    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">
+      {{(selectedUnit === 'km') ? currentRadiusValue : ''}} km
+    </ion-chip>
+    <ion-chip class=" min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">
+      {{(selectedUnit === 'm') ? currentRadiusValue : ''}} m
+    </ion-chip>
+    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">
+      {{(selectedUnit === 'mil') ? currentRadiusValue : ''}} mil
+    </ion-chip>
   </div>
 
   <ion-card class="ion-no-padding ion-no-margin ion-margin-vertical">
