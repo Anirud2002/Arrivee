@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { ReminderItemModalComponent } from './components/reminder-item-modal/reminder-item-modal.component';
 
 export enum SelectedUnit{

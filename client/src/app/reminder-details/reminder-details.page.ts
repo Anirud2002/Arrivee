@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
-import { SelectedUnit } from '../home/add-location-modal/add-location-modal.component';
+import { SelectedUnit } from '../home/components/add-location-modal/add-location-modal.component'; 
 
 @Component({
   selector: 'app-reminder-details',
