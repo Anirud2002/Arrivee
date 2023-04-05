@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Anirud Shrestha</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" color="tertiary"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <p class="ion-padding-horizontal font-semibold">Hey,</p>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large" class="text-3xl">Anirud Shrestha</ion-title>
+    </ion-toolbar>
+    
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>
+        SETTINGS
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list class="space-y-4">
+        <ion-item class="ion-no-padding" lines="none">
+          <ion-label>
+            <strong>Notification</strong>
+          </ion-label>
+          <ion-toggle slot="end" legacy="true"></ion-toggle>
+        </ion-item>
+        <ion-item class="ion-no-padding" lines="none">
+          <ion-label>
+            <strong>Appearance</strong>
+          </ion-label>
+          <ion-select value="light" slot="end" interface="popover">
+            <ion-select-option value="light">Light</ion-select-option>
+            <ion-select-option value="dark">Dark</ion-select-option>
+            <ion-select-option value="system">System</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <div class="ion-margin mt-6">
+    <ion-text (click)="openReviewModal()">
+      <h3 class="text-base mr-2 flex items-center">
+        Have any feedback? 
+        <ion-icon name="chatbubble-outline" class="ml-2"></ion-icon></h3>
+    </ion-text>
+  </div>
+  <div class="ion-margin-horizontal">
+    <ion-text>
+      <h4 class="text-base mr-2 flex items-center">
+        v0.1
+      </h4>
+    </ion-text>
+  </div>
+</ion-content>
+
+
+<ion-footer class="ion-margin-vertical">
+  <div class="flex justify-center">
+    <ion-button class="logout-btn w-72 mx-auto" (click)="handleLogout()">
+      Logout
+    </ion-button>
+  </div>
+</ion-footer>

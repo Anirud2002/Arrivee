@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modal</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" color="tertiary">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="text-center my-4">
+    <ion-text>
+      <h2 class="font-extrabold">Rate your experience</h2>
+    </ion-text>
+  </div>
+
+  <div class="stars flex items-center justify-center space-x-2 my-4">
+    <ion-icon [name]="(currentRating >= 1) ? 'star' : 'star-outline'" size="large" (click)="setRating(1)"></ion-icon>
+    <ion-icon [name]="(currentRating >= 2) ? 'star' : 'star-outline'" size="large" (click)="setRating(2)"></ion-icon>
+    <ion-icon [name]="(currentRating >= 3) ? 'star' : 'star-outline'" size="large" (click)="setRating(3)"></ion-icon>
+    <ion-icon [name]="(currentRating >= 4) ? 'star' : 'star-outline'" size="large" (click)="setRating(4)"></ion-icon>
+    <ion-icon [name]="(currentRating >= 5) ? 'star' : 'star-outline'" size="large" (click)="setRating(5)"></ion-icon>
+  </div>
+
+  <ion-item lines="none">
+    <ion-textarea label="" class="ion-padding-vertical" counter="true" maxlength="100" autoGrow="true" placeholder="Give us feedback"></ion-textarea>
+  </ion-item>
+</ion-content>
+
+<ion-footer class="ion-margin-vertical">
+  <div class="flex justify-center">
+    <ion-button class="send-btn w-72 mx-auto" (click)="handleSendFeedback()">
+      Send
+    </ion-button>
+  </div>
+</ion-footer>
+
