@@ -99,7 +99,7 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   getValue(){
-    return (this.getMax() + this.getMin()) / 2;
+    return parseFloat(((this.getMax() + this.getMin()) / 2).toFixed(1));
   }
 
   changeUnit(unit: string){
@@ -117,6 +117,7 @@ export class ReminderDetailsPage implements OnInit {
         this.selectedUnit = "m";
         break;
     }
+    this.currentRadiusValue = this.getValue();
   }
 
   handleToogleInputs(){
