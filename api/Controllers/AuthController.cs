@@ -25,6 +25,19 @@ namespace api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.UserName);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.FirstName);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.LastName);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Email);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Password);
+
+            if (await UserExists(registerDTO.UserName))
+            {
+                return new BadRequestObjectResult(new
+                {
+                    message = "UserName already taken!"
+                });
+            }
             // hashing and salting password
             using var hmac = new HMACSHA512();
             var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password));
@@ -33,7 +46,7 @@ namespace api.Controllers
             // storing the user in database
             var user = new AppUser()
             {
-                AppUserID = Guid.NewGuid().ToString(),
+                UserName = registerDTO.UserName,
                 FirstName = registerDTO.FirstName,
                 LastName = registerDTO.LastName,
                 Email = registerDTO.Email,
@@ -44,6 +57,46 @@ namespace api.Controllers
 
             await _dbContext.SaveAsync<AppUser>(user);
             return new OkResult();
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.UserName);
+            ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.Password);
+
+            var user = await _dbContext.LoadAsync<AppUser>(loginDTO.UserName);
+            if(user == null)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    message = "Invalid Credentials!"
+                });
+            }
+
+            // checking the password
+            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var validateHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
+
+            for(var i = 0; i < validateHash.Length; i++)
+            {
+                if (user.PasswordHash[i] != validateHash[i])
+                {
+                    return new BadRequestObjectResult(new
+                    {
+                        message = "Invalid Credentials!"
+                    });
+                }
+            }
+
+            return new OkResult();
+
+        }
+
+        public async Task<bool> UserExists(string userName)
+        {
+            var user = await _dbContext.LoadAsync<AppUser>(userName);
+            return user != null;
         }
     }
 }
