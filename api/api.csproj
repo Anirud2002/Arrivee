@@ -18,8 +18,10 @@
   <ItemGroup>
     <None Remove="Entities\" />
     <None Remove="AWSSDK.DynamoDBv2" />
+    <None Remove="DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="DTOs\" />
   </ItemGroup>
 </Project>
