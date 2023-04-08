@@ -1,6 +1,9 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Runtime;
+using api.Extensions;
+using api.Interfaces;
+using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -20,6 +23,13 @@ var dbClient = new AmazonDynamoDBClient(awsCreds, config);
 builder.Services.AddSingleton<IAmazonDynamoDB>(dbClient);
 builder.Services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
 
+// adding token service
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.AddControllers();
+builder.Services.AddCors();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthenticationServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,6 +41,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().WithOrigins("*"));
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

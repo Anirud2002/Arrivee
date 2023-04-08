@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using api.DTOs;
 using api.Entities;
+using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,9 +18,11 @@ namespace api.Controllers
     public class AuthController : Controller
     {
         private readonly IDynamoDBContext _dbContext;
-        public AuthController(IDynamoDBContext context)
+        private readonly ITokenService _tokenSerivce;
+        public AuthController(IDynamoDBContext context, ITokenService tokenService)
         {
             _dbContext = context;
+            _tokenSerivce = tokenService;
         }
 
         [HttpPost("register")]
@@ -89,7 +92,14 @@ namespace api.Controllers
                 }
             }
 
-            return new OkResult();
+            return new OkObjectResult(new LoginResponseDTO()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                Token = _tokenSerivce.CreateToken(user.UserName)
+            }); ;
 
         }
 
