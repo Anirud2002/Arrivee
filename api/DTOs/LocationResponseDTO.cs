@@ -1,24 +1,17 @@
 ﻿using System;
-using Amazon.DynamoDBv2.DataModel;
+using static api.Entities.Location;
 
-namespace api.Entities
+namespace api.DTOs
 {
-    [DynamoDBTable("LocationsTable")]
-    public class Location
-    {
-        [DynamoDBHashKey]
+	public class LocationResponseDTO
+	{
         public string LocationID { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string StreetAddress { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
         public int Radius { get; set; }
         public string RadiusUnit { get; set; } = string.Empty;
         public List<Reminder> Reminders { get; set; } = new List<Reminder>();
-
-        public class Reminder
-        {
-            public string Title { get; set; } = string.Empty;
-        }
     }
 }
 
