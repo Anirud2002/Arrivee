@@ -1,5 +1,6 @@
 ﻿using System;
 using Amazon.DynamoDBv2.DataModel;
+using api.DTOs;
 
 namespace api.Entities
 {
@@ -18,6 +19,20 @@ namespace api.Entities
         public class Reminder
         {
             public string Title { get; set; } = string.Empty;
+        }
+
+        public LocationResponseDTO toViewModel()
+        {
+            return new LocationResponseDTO()
+            {
+                LocationID = LocationID,
+                UserName = UserName,
+                Title = Title,
+                StreetAddress = StreetAddress,
+                Radius = Radius,
+                RadiusUnit = RadiusUnit,
+                Reminders = Reminders
+            };
         }
     }
 }
