@@ -25,6 +25,8 @@ builder.Services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
 
 // adding token service
 builder.Services.AddScoped<ITokenService, TokenService>();
+// adding email service
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddControllers();
 builder.Services.AddCors();
