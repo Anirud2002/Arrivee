@@ -14,6 +14,7 @@ namespace api.Entities
 		public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
 		public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
 		public List<string> LocationReminderIDs { get; set; } = new List<string>();
-	}
+        public List<string> NotificationIDs { get; set; } = new List<string>();
+    }
 }
 
