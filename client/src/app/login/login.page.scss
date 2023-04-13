@@ -1,0 +1,7 @@
+ion-button.login-btn, ion-button.google-btn{
+    --border-radius: none;
+}
+
+ion-button.google-btn{
+    --background: var(--ion-color-tertiary);
+}

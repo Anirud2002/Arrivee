@@ -1,0 +1,39 @@
+<div [formGroup]="form">
+  <!-- USERNAME -->
+  <ion-item>
+    <ion-input label="Username" labelPlacement="floating" formControlName="username" type="text" (ionBlur)="markAsTouched('username')"></ion-input>
+  </ion-item>
+  <ion-text color="danger" size="small" *ngIf="hasErrors('username', 'required')" class="ion-padding-horizontal">
+    <small>Username is required!</small>
+  </ion-text>
+  
+  <!-- FIRSTNAME -->
+  <ion-item>
+    <ion-input label="First name" labelPlacement="floating" formControlName="firstname" type="text" (ionBlur)="markAsTouched('firstname')"></ion-input>
+  </ion-item>
+  <ion-text color="danger" size="small" *ngIf="hasErrors('firstname', 'required')" class="ion-padding-horizontal">
+    <small>Firstname is required!</small>
+  </ion-text>
+  
+  <!-- LASTNAME -->
+  <ion-item>
+    <ion-input label="Last name" labelPlacement="floating" formControlName="lastname" type="text" (ionBlur)="markAsTouched('lastname')"></ion-input>
+  </ion-item>
+  <ion-text color="danger" size="small" *ngIf="hasErrors('lastname', 'required')" class="ion-padding-horizontal">
+    <small>Lastname is required!</small>
+  </ion-text>
+  
+  <!-- EMAIL -->
+  <ion-item>
+    <ion-input label="Email" labelPlacement="floating" formControlName="email" type="text" (ionBlur)="markAsTouched('email')"></ion-input>
+  </ion-item>
+  <ion-text color="danger" size="small" *ngIf="hasErrors('email', 'required')" class="ion-padding-horizontal">
+    <small>Email is required!</small>
+  </ion-text>
+
+  <ion-item lines="none">
+    <ion-button slot="end" size="default" color="tertiary" fill="clear" (click)="handleNextForm()">
+      Next
+    </ion-button>
+  </ion-item>
+</div>
