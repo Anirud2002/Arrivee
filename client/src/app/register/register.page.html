@@ -13,7 +13,7 @@
   
       </ion-card-content>
     </ion-card>
-    <ion-button expand="block" (click)="checkFormsValidity()" class="login-btn w-72 mx-auto my-6">Register</ion-button>
+    <ion-button expand="block" (click)="handleRegister()" class="login-btn w-72 mx-auto my-6">Register</ion-button>
 
     <div class="w-full">
       <ion-button expand="block" class="google-btn w-72 mx-auto my-6">
@@ -26,6 +26,6 @@
 
 <ion-footer class="ion-margin-vertical">
   <ion-text>
-    <p class="text-center">Don't have an account? <span class="font-extrabold">Login</span></p>
+    <p class="text-center">Don't have an account? <span class="font-extrabold" routerLink="/login">Login</span></p>
   </ion-text>
 </ion-footer>

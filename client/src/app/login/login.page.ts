@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [SharedModule, ReactiveFormsModule]
 })
 export class LoginPage implements OnInit {
   form: FormGroup;
   isPasswordHidden: boolean = true;
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) { 
     this.initForm();
   }
@@ -49,6 +50,22 @@ export class LoginPage implements OnInit {
 
   get isPasswordInputEmpty() : boolean{
     return this.form.controls['password'].value.length === 0;
+  }
+
+  handleLogin(){
+    const controlNames = Object.keys(this.form.controls);
+    let errorCounts = 0;
+    // loop through each control and check if it has errors
+    for (const controlName of controlNames) {
+      this.markAsTouched(controlName)
+      if(this.form.controls[controlName].errors != null){
+        errorCounts++;
+      }
+    }
+
+    if(errorCounts === 0){
+      // handle register user
+    }
   }
 
 }

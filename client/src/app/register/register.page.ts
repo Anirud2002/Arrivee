@@ -4,13 +4,14 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { IonicModule } from '@ionic/angular';
 import { FirstFormComponent } from './components/first-form/first-form.component';
 import { SecondFormComponent } from './components/second-form/second-form.component';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, FirstFormComponent, SecondFormComponent]
+  imports: [SharedModule, ReactiveFormsModule, FirstFormComponent, SecondFormComponent]
 })
 export class RegisterPage implements OnInit {
   form: FormGroup;
@@ -57,13 +58,13 @@ export class RegisterPage implements OnInit {
     this.registerButtonEnable = true;
   }
 
-  checkFormsValidity(){
+  handleRegister(){
     const controlNames = Object.keys(this.form.controls);
     let errorCounts = 0;
     // loop through each control and check if it has errors
     for (const controlName of controlNames) {
       this.markAsTouched(controlName)
-      if(this.hasErrors(controlName, 'required')){
+      if(this.form.controls[controlName].errors != null){
         errorCounts++;
       }
     }

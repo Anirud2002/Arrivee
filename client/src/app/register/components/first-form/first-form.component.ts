@@ -37,7 +37,7 @@ export class FirstFormComponent  implements OnInit {
     let errorCount = 0;
     for(let i = 0; i < controlNames.length; i++){
       this.markAsTouched(controlNames[i]);
-      if(this.hasErrors(controlNames[i], 'required')){
+      if(this.form.controls[controlNames[i]].errors != null){
         errorCount++;
       }
     }
