@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -12,8 +13,9 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     IonicModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  exports: [CommonModule, IonicModule, RouterModule, FormsModule]
+  exports: [CommonModule, IonicModule, RouterModule, FormsModule, HttpClientModule]
 })
 export class SharedModule { }

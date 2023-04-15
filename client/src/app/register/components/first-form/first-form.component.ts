@@ -11,7 +11,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class FirstFormComponent  implements OnInit {
   @Input() form: FormGroup;
-  @Output() nextButtonClicked: EventEmitter<boolean> = new EventEmitter();
+  @Output() navFormButtonClicked: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
@@ -33,17 +33,7 @@ export class FirstFormComponent  implements OnInit {
   }
 
   handleNextForm(){
-    const controlNames = ['username', 'firstname', 'lastname', 'email']
-    let errorCount = 0;
-    for(let i = 0; i < controlNames.length; i++){
-      this.markAsTouched(controlNames[i]);
-      if(this.form.controls[controlNames[i]].errors != null){
-        errorCount++;
-      }
-    }
-    if(errorCount === 0){
-      this.nextButtonClicked.emit(true);
-    }
+    this.navFormButtonClicked.emit(2);
   }
 
 }

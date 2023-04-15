@@ -2,18 +2,23 @@
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full ion-padding-horizontal">
     <ion-card class="ion-no-padding ion-no-margin">
       <ion-card-header>
-        <ion-card-title>Register</ion-card-title> 
+        <ion-card-title>Sign Up</ion-card-title> 
       </ion-card-header>
+      <div class="ion-margin-horizontal" *ngIf="errorOccurred">
+        <ion-text color="danger">
+          <p>Username is already taken!</p>
+        </ion-text>
+      </div>
   
       <ion-card-content class="ion-no-padding ion-padding-vertical">
         <form [formGroup]="form">
-          <app-first-form [form]="form" *ngIf="formPart === 1" (nextButtonClicked)="handleChangeFormPart($event)"></app-first-form>
-          <app-second-form [form]="form" *ngIf="formPart === 2" (canRegister)="handleCanRegister($event)"></app-second-form>
+          <app-first-form [form]="form" *ngIf="formPart === 1" (navFormButtonClicked)="handleChangeFormPart($event)"></app-first-form>
+          <app-second-form [form]="form" *ngIf="formPart === 2" (navFormButtonClicked)="handleChangeFormPart($event)" (canRegister)="handleCanRegister($event)"></app-second-form>
         </form>
   
       </ion-card-content>
     </ion-card>
-    <ion-button expand="block" (click)="handleRegister()" class="login-btn w-72 mx-auto my-6">Register</ion-button>
+    <ion-button expand="block" (click)="handleRegister()" class="login-btn w-72 mx-auto my-6">Create account</ion-button>
 
     <div class="w-full">
       <ion-button expand="block" class="google-btn w-72 mx-auto my-6">

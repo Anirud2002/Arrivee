@@ -4,6 +4,11 @@
       <ion-card-header>
         <ion-card-title>Login</ion-card-title> 
       </ion-card-header>
+      <div class="ion-margin-horizontal" *ngIf="errorOccurred">
+        <ion-text color="danger">
+          <p>Credentials do not match!</p>
+        </ion-text>
+      </div>
   
       <ion-card-content class="ion-no-padding ion-padding-vertical">
         <form [formGroup]="form">
@@ -46,6 +51,6 @@
 
 <ion-footer class="ion-margin-vertical">
   <ion-text>
-    <p class="text-center">Don't have an account? <span class="font-extrabold" routerLink="/register">Register</span></p>
+    <p class="text-center">Don't have an account? <span class="font-extrabold" routerLink="/register">Sign Up</span></p>
   </ion-text>
 </ion-footer>

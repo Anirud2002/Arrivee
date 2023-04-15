@@ -59,7 +59,15 @@ namespace api.Controllers
             };
 
             await _dbContext.SaveAsync<AppUser>(user);
-            return new OkResult();
+
+            return new OkObjectResult(new LoginResponseDTO()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                Token = _tokenSerivce.CreateToken(user.UserName)
+            }); ;
         }
 
         [HttpPost("login")]

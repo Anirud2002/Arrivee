@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -11,8 +11,9 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class SecondFormComponent  implements OnInit {
   @Input() form: FormGroup;
+  @Output() navFormButtonClicked: EventEmitter<number> = new EventEmitter();
+
   isPasswordHidden: boolean = true;
-  confirmPasswordValue: string = "";
   constructor() { }
 
   ngOnInit() {}
@@ -38,12 +39,13 @@ export class SecondFormComponent  implements OnInit {
     return this.form.controls['password'].value.length === 0;
   }
 
-  get passwordMatched(): boolean{
-    if(this.confirmPasswordValue.length === 0){
-      return false;
-    }
-    const password = this.form.controls['password'].value;
-    if(password === this.confirmPasswordValue) return true;
-    return false;
+  isPasswordSame(){
+    const password = this.form.controls['password'];
+    const confirmPassword = this.form.controls['confirmPassword'];
+    return password.value === confirmPassword.value;
+  }
+
+  handlePrevForm(){
+    this.navFormButtonClicked.emit(1);
   }
 }
