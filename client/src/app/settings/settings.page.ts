@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonRouterOutlet, IonicModule, ModalController } from '@ionic/angular';
+import { IonRouterOutlet, ModalController } from '@ionic/angular';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
 import { SharedModule } from '../shared/shared.module';
 
