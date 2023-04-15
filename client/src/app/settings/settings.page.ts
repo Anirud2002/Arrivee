@@ -3,15 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonRouterOutlet, IonicModule, ModalController } from '@ionic/angular';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  templateUrl: './settings.page.html',
+  styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReviewModalComponent]
+  imports: [SharedModule, ReviewModalComponent]
 })
-export class ProfilePage implements OnInit {
+export class SettingsPage implements OnInit {
 
   constructor(
     private modalController: ModalController,

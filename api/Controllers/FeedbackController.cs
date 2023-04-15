@@ -44,7 +44,8 @@ namespace api.Controllers
             try
             {
                 await _emailService.SendEmail(feedbackDTO.Email, feedbackDTO.FirstName, feedbackDTO.LastName, feedbackDTO.Feedback);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return new BadRequestObjectResult(new
                 {
