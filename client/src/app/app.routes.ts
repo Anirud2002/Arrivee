@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './_guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -12,22 +14,25 @@ export const routes: Routes = [
   },
   {
     path: 'reminder-details/:id',
-    loadComponent: () => import('./reminder-details/reminder-details.page').then( m => m.ReminderDetailsPage)
+    loadComponent: () => import('./reminder-details/reminder-details.page').then( m => m.ReminderDetailsPage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'notifications',
-    loadComponent: () => import('./notifications/notifications.page').then( m => m.NotificationsPage)
+    loadComponent: () => import('./notifications/notifications.page').then( m => m.NotificationsPage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'settings',
-    loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
+    loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
-    loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
+    loadComponent: () => import('./login/login.page').then( m => m.LoginPage),
   },
   {
     path: 'register',
-    loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
+    loadComponent: () => import('./register/register.page').then( m => m.RegisterPage),
   },
 ];
