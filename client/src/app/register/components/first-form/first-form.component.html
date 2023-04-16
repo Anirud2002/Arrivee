@@ -1,10 +1,13 @@
 <div [formGroup]="form">
   <!-- USERNAME -->
   <ion-item>
-    <ion-input label="Username" labelPlacement="floating" formControlName="username" type="text" (ionBlur)="markAsTouched('username')"></ion-input>
+    <ion-input #username label="Username" labelPlacement="floating" formControlName="username" type="text" debounce="2000" (ionInput)="checkUsername()" (ionBlur)="markAsTouched('username')"></ion-input>
   </ion-item>
   <ion-text color="danger" size="small" *ngIf="hasErrors('username', 'required')" class="ion-padding-horizontal">
     <small>Username is required!</small>
+  </ion-text>
+  <ion-text color="danger" size="small" *ngIf="usernameTaken" class="ion-padding-horizontal">
+    <small>Username is already taken!</small>
   </ion-text>
   
   <!-- FIRSTNAME -->

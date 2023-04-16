@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../../_services/auth.service';
 
 @Component({
   selector: 'app-first-form',
@@ -11,12 +12,14 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class FirstFormComponent  implements OnInit {
   @Input() form: FormGroup;
+  @Input() usernameTaken: boolean = false; // this value comes from parent
   @Output() navFormButtonClicked: EventEmitter<number> = new EventEmitter();
-
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { 
+  }
 
   ngOnInit() {
-    console.log(this.form)
   }
 
   hasErrors(controlName: string, error: string):boolean{
@@ -30,6 +33,18 @@ export class FirstFormComponent  implements OnInit {
   markAsTouched(controlName){
     const control = this.form.controls[controlName];
     control.markAsTouched();
+  }
+
+  async checkUsername(){
+    const username = this.form.controls['username'].value;
+    if(username){
+      const response = await this.authService.checkUsername(username);
+      if(response){
+        return;
+      }else{
+        this.usernameTaken = true;
+      }
+    }
   }
 
   handleNextForm(){

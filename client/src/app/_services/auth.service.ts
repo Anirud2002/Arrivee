@@ -73,6 +73,13 @@ export class AuthService {
     return true;
   }
 
+
+  // Returns true if username can be used, else returns false
+  async checkUsername(username: string): Promise<boolean>{
+    const response = lastValueFrom(await this.http.get<boolean>(`${environment.baseApiUrl}/auth/check-username/${username}`)); 
+    return response;
+  }
+
   async setUser(){
       // set the user using Capacitor Preferences
       await Preferences.set({

@@ -4,15 +4,10 @@
       <ion-card-header>
         <ion-card-title>Sign Up</ion-card-title> 
       </ion-card-header>
-      <div class="ion-margin-horizontal" *ngIf="errorOccurred">
-        <ion-text color="danger">
-          <p>Username is already taken!</p>
-        </ion-text>
-      </div>
   
       <ion-card-content class="ion-no-padding ion-padding-vertical">
         <form [formGroup]="form">
-          <app-first-form [form]="form" *ngIf="formPart === 1" (navFormButtonClicked)="handleChangeFormPart($event)"></app-first-form>
+          <app-first-form [form]="form" *ngIf="formPart === 1" (navFormButtonClicked)="handleChangeFormPart($event)" [usernameTaken]="usernameTaken"></app-first-form>
           <app-second-form [form]="form" *ngIf="formPart === 2" (navFormButtonClicked)="handleChangeFormPart($event)" (canRegister)="handleCanRegister($event)"></app-second-form>
         </form>
   

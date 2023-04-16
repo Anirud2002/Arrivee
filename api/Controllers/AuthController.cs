@@ -111,6 +111,17 @@ namespace api.Controllers
 
         }
 
+        [HttpGet("check-username/{username}")]
+        public async Task<ActionResult> CheckUsername(string userName)
+        {
+            if (await UserExists(userName))
+            {
+                return new OkObjectResult(false);
+            }
+
+            return new OkObjectResult(true);
+        }
+
         public async Task<bool> UserExists(string userName)
         {
             var user = await _dbContext.LoadAsync<AppUser>(userName);

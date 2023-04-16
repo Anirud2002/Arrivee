@@ -20,7 +20,7 @@ export class RegisterPage implements OnInit {
   form: FormGroup;
   formPart: number = 1;
   registerButtonEnable: boolean = false;
-  errorOccurred: boolean = false;
+  usernameTaken: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -105,9 +105,9 @@ export class RegisterPage implements OnInit {
 
       const retVal = await this.authService.register(registerDTO);
 
-      if(!retVal){ // means username is already taken
-        this.errorOccurred = true;
+      if(!retVal){
         this.formPart = 1;
+        this.usernameTaken = true;
         return;
       }
       this.router.navigateByUrl("/home")
