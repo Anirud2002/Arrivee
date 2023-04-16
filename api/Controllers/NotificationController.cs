@@ -23,7 +23,7 @@ namespace api.Controllers
 
         private readonly IDynamoDBContext _dbContext;
         private readonly IAmazonDynamoDB _dbClient;
-             
+
         public NotificationController(IDynamoDBContext dBContext, IAmazonDynamoDB dbClient)
         {
             _dbContext = dBContext;
@@ -77,7 +77,7 @@ namespace api.Controllers
         {
             var newNotification = new Notification()
             {
-                UserName = notificationDTO.UserName,
+                Username = notificationDTO.Username,
                 CreatedOn = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds(),
                 NotificationID = Guid.NewGuid().ToString(),
                 LocationID = notificationDTO.LocationID,

@@ -39,7 +39,7 @@ namespace api.Controllers
 
             var user = await _dbContext.LoadAsync<AppUser>(userName);
 
-            if(user.LocationReminderIDs.Count > 0)
+            if (user.LocationReminderIDs.Count > 0)
             {
                 foreach (string id in user.LocationReminderIDs)
                 {
@@ -47,7 +47,7 @@ namespace api.Controllers
                     retVal.Add(location.toViewModel());
                 }
             }
-            
+
             return new OkObjectResult(retVal);
         }
 
@@ -75,14 +75,15 @@ namespace api.Controllers
         {
             ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.Title);
             ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.StreetAddress);
-            ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.UserName);
+            ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.Username);
             ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.RadiusUnit);
-            if(locationRequestDTO.Radius == 0)
+            if (locationRequestDTO.Radius == 0)
             {
                 throw new ArgumentNullException();
             };
 
-            if (!User.Exists(locationRequestDTO.UserName)) {
+            if (!User.Exists(locationRequestDTO.Username))
+            {
                 return new BadRequestObjectResult(new
                 {
                     authenticated = false
@@ -92,7 +93,7 @@ namespace api.Controllers
             var newLocation = new Location()
             {
                 LocationID = Guid.NewGuid().ToString(),
-                UserName = locationRequestDTO.UserName,
+                Username = locationRequestDTO.Username,
                 Title = locationRequestDTO.Title,
                 StreetAddress = locationRequestDTO.StreetAddress,
                 Radius = locationRequestDTO.Radius,
@@ -101,7 +102,7 @@ namespace api.Controllers
             };
 
             // get the user and update their locationIDs list
-            var user = await _dbContext.LoadAsync<AppUser>(locationRequestDTO.UserName);
+            var user = await _dbContext.LoadAsync<AppUser>(locationRequestDTO.Username);
             user.LocationReminderIDs.Add(newLocation.LocationID);
 
             await _dbContext.SaveAsync<AppUser>(user); // save updated user in table
@@ -115,14 +116,14 @@ namespace api.Controllers
             ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.LocationID);
             ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.Title);
             ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.StreetAddress);
-            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.UserName);
+            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.Username);
             ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.RadiusUnit);
             if (updateLocationRequestDTO.Radius == 0)
             {
                 throw new ArgumentNullException("Radius not defined!");
             };
 
-            if (!User.Exists(updateLocationRequestDTO.UserName))
+            if (!User.Exists(updateLocationRequestDTO.Username))
             {
                 return new BadRequestObjectResult(new
                 {
@@ -158,9 +159,9 @@ namespace api.Controllers
 
             user.LocationReminderIDs.Remove(locationID);
 
-            if(user.LocationReminderIDs.Count == 0) // Not the best solution, need to find another way in future
+            if (user.LocationReminderIDs.Count == 0) // Not the best solution, need to find another way in future
             {
-                user.LocationReminderIDs = null; 
+                user.LocationReminderIDs = null;
             }
 
             await _dbContext.SaveAsync<AppUser>(user);

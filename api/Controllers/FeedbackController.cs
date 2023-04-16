@@ -27,13 +27,13 @@ namespace api.Controllers
         [HttpPost("send-email")]
         public async Task<ActionResult> SendFeedback([FromBody] FeedbackDTO feedbackDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(feedbackDTO.UserName);
+            ArgumentNullException.ThrowIfNullOrEmpty(feedbackDTO.Username);
             ArgumentNullException.ThrowIfNullOrEmpty(feedbackDTO.Email);
             ArgumentNullException.ThrowIfNullOrEmpty(feedbackDTO.FirstName);
             ArgumentNullException.ThrowIfNullOrEmpty(feedbackDTO.LastName);
             ArgumentNullException.ThrowIfNullOrEmpty(feedbackDTO.Feedback);
 
-            if (!User.Exists(feedbackDTO.UserName))
+            if (!User.Exists(feedbackDTO.Username))
             {
                 return new BadRequestObjectResult(new
                 {

@@ -4,12 +4,12 @@ using api.DTOs;
 
 namespace api.Entities
 {
-    [DynamoDBTable("LocationsTable")]
+    [DynamoDBTable("Locations-Table")]
     public class Location
     {
         [DynamoDBHashKey]
         public string LocationID { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string StreetAddress { get; set; } = string.Empty;
         public double Radius { get; set; }
@@ -26,7 +26,7 @@ namespace api.Entities
             return new LocationResponseDTO()
             {
                 LocationID = LocationID,
-                UserName = UserName,
+                Username = Username,
                 Title = Title,
                 StreetAddress = StreetAddress,
                 Radius = Radius,

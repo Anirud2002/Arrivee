@@ -28,17 +28,17 @@ namespace api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.UserName);
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.FirstName);
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.LastName);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Username);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Firstname);
+            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Lastname);
             ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Email);
             ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Password);
 
-            if (await UserExists(registerDTO.UserName))
+            if (await UserExists(registerDTO.Username))
             {
                 return new BadRequestObjectResult(new
                 {
-                    message = "UserName already taken!"
+                    message = "Username already taken!"
                 });
             }
             // hashing and salting password
@@ -49,9 +49,9 @@ namespace api.Controllers
             // storing the user in database
             var user = new AppUser()
             {
-                UserName = registerDTO.UserName,
-                FirstName = registerDTO.FirstName,
-                LastName = registerDTO.LastName,
+                Username = registerDTO.Username,
+                Firstname = registerDTO.Firstname,
+                Lastname = registerDTO.Lastname,
                 Email = registerDTO.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
@@ -62,22 +62,22 @@ namespace api.Controllers
 
             return new OkObjectResult(new LoginResponseDTO()
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                UserName = user.UserName,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Username = user.Username,
                 Email = user.Email,
-                Token = _tokenSerivce.CreateToken(user.UserName)
+                Token = _tokenSerivce.CreateToken(user.Username)
             }); ;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.UserName);
+            ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.Username);
             ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.Password);
 
-            var user = await _dbContext.LoadAsync<AppUser>(loginDTO.UserName);
-            if(user == null)
+            var user = await _dbContext.LoadAsync<AppUser>(loginDTO.Username);
+            if (user == null)
             {
                 return new BadRequestObjectResult(new
                 {
@@ -89,7 +89,7 @@ namespace api.Controllers
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var validateHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
 
-            for(var i = 0; i < validateHash.Length; i++)
+            for (var i = 0; i < validateHash.Length; i++)
             {
                 if (user.PasswordHash[i] != validateHash[i])
                 {
@@ -102,11 +102,11 @@ namespace api.Controllers
 
             return new OkObjectResult(new LoginResponseDTO()
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                UserName = user.UserName,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Username = user.Username,
                 Email = user.Email,
-                Token = _tokenSerivce.CreateToken(user.UserName)
+                Token = _tokenSerivce.CreateToken(user.Username)
             }); ;
 
         }
