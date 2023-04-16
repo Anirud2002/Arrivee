@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, lastValueFrom, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, lastValueFrom, of, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http"
 import { LoginDTO, RegisterDTO, User } from '../_interfaces/Auth.modal';
 import { environment } from '../../environments/environment';
@@ -14,6 +14,7 @@ export class AuthService {
   user: User;
   jwtHelperService = new JwtHelperService();
   private userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+  user$: Observable<User> = this.userSubject.asObservable();
   constructor(
     private http: HttpClient,
     private toastController: ToastController
@@ -29,6 +30,8 @@ export class AuthService {
       return false;
     }
 
+    this.userSubject.next(user); // hacky way, might need a better solution in future
+
     return true;
   }
 
@@ -42,6 +45,7 @@ export class AuthService {
         })
       );
       this.user = await lastValueFrom(response);
+      console.log(this.user);
 
       if(!this.user){ //  handle if user == null
         return false;
@@ -89,6 +93,11 @@ export class AuthService {
 
       // update the observable
       this.userSubject.next(this.user);
+  }
+
+  async getUser(): Promise<User>{
+    console.log("yoo")
+    return JSON.parse((await Preferences.get({key: 'user'})).value) as User;
   }
 
   async presentErrorToast(message: string){
