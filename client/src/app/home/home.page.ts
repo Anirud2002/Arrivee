@@ -4,6 +4,7 @@ import { LocationsListComponent } from './components/locations-list/locations-li
 import { AddLocationModalComponent } from './components/add-location-modal/add-location-modal.component';
 import { SharedModule } from '../shared/shared.module';
 import { LocationService } from '../_services/location.service';
+import { Location } from '../_interfaces/Location.modal';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ import { LocationService } from '../_services/location.service';
   imports: [SharedModule, LocationsListComponent, AddLocationModalComponent],
 })
 export class HomePage implements OnInit {
+  locations: Location[] = [];
   constructor(
     private locationService: LocationService,
     private modalController: ModalController,
@@ -23,8 +25,8 @@ export class HomePage implements OnInit {
   }
 
   async loadLocations(){
-    const response = await this.locationService.getLocations();
-    console.log(response);
+    this.locations = await this.locationService.getLocations();
+    console.log(this.locations);
   }
 
   async showAddLocationModal(){

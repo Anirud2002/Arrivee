@@ -28,7 +28,7 @@ export class LocationService {
       catchError(() => {
         return of(null);
       })
-    )
+    );
 
     locations = await lastValueFrom(response);
 
@@ -38,6 +38,26 @@ export class LocationService {
     }
 
     return locations;
+  }
+
+  async getLocationDetails(locationID: string): Promise<Location>{
+    this.user = await this.authService.getUser();
+    let location: Location;
+    const response = await this.http.get<Location>(`${environment.baseApiUrl}/location/get-location/${this.user.username}/${locationID}`)
+    .pipe(
+      catchError(() => {
+        return of(null);
+      })
+    );
+
+    location = await lastValueFrom(response);
+    
+    if(!location){
+      await this.presentErrorToast("Something went wrong!")
+      return null;
+    }
+
+    return location;
   }
 
   async presentErrorToast(message: string){

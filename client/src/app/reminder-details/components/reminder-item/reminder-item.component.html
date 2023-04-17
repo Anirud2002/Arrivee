@@ -3,7 +3,7 @@
   <ion-item class="ion-no-padding">
     <ion-checkbox aria-label="" slot="start"></ion-checkbox>
     <ion-label>
-      <h2>Buy Milk</h2>
+      <h2>{{reminder.title}}</h2>
     </ion-label>
   </ion-item>
 
@@ -22,7 +22,7 @@
   <ion-item-sliding class="ion-no-padding">
     <ion-item class="ion-no-padding">
       <ion-checkbox aria-label="" slot="start"></ion-checkbox>
-      <ion-input [clearInput]="true" placeholder="Add" label="" (ionFocus)="isInEditState = true"></ion-input>
+      <ion-input [clearInput]="true" placeholder="Add" [value]="reminder.title" label="" (ionFocus)="isInEditState = true"></ion-input>
     </ion-item>
   
     <ion-item-options>

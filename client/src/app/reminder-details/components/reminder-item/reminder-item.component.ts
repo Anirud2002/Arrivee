@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
+import { Reminder } from '../../../_interfaces/Reminder.modal';
 
 @Component({
   selector: 'app-reminder-item',
@@ -9,6 +10,7 @@ import { SharedModule } from '../../../shared/shared.module';
   imports: [SharedModule]
 })
 export class ReminderItemComponent  implements OnInit {
+  @Input() reminder: Reminder;
   isInEditState: boolean = false;
   constructor() { }
 

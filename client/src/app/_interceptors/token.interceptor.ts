@@ -16,8 +16,6 @@ export class TokenInterceptor implements HttpInterceptor {
     let currentUser: User;
     this.authService.user$.pipe(take(1)).subscribe(user => currentUser = user);
 
-    console.log(currentUser);
-
     if(currentUser){
       request = request.clone({
         setHeaders: {

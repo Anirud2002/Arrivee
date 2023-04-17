@@ -5,6 +5,9 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
 import { SelectedUnit } from '../home/components/add-location-modal/add-location-modal.component'; 
+import { ActivatedRoute } from '@angular/router';
+import { LocationService } from '../_services/location.service';
+import { Location } from '../_interfaces/Location.modal';
 
 @Component({
   selector: 'app-reminder-details',
@@ -14,15 +17,37 @@ import { SelectedUnit } from '../home/components/add-location-modal/add-location
   imports: [IonicModule, CommonModule, FormsModule, ReminderItemComponent, AddReminderModalComponent]
 })
 export class ReminderDetailsPage implements OnInit {
+  location: Location;
+  isLoadingData: boolean = false;
   selectedUnit: string = "m"; // set default unit to 'm' which is meters
   isAddRemInputOpen: boolean = false; // boolean to to store if user wants to create new reminder to not
   isAddingNewReminder: boolean = false; // boolean to store current state if user is adding rem or not
   currentRadiusValue: number = 0;
   constructor(
+    private locationService: LocationService,
     private modalController: ModalController,
+    private actRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    let locationID = this.actRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      this.loadLocationDetails(id);
+    })
+  }
+
+  async loadLocationDetails(locationID: string){
+    this.isLoadingData = true;
+    this.location = await this.locationService.getLocationDetails(locationID);
+    if(this.location){
+      this.isLoadingData = false;
+      this.changeUnit(this.location.radiusUnit);
+    }
+
+    if(!this.location){
+      this.isLoadingData = false;
+    }
+    console.log(this.location);
   }
 
   async openAddReminderModal(){
@@ -97,8 +122,11 @@ export class ReminderDetailsPage implements OnInit {
     return retVal;
   }
 
-  getValue(){
+  getValue(): number{
+    console.log(this.location.radius)
+    return this.location.radius
     return parseFloat(((this.getMax() + this.getMin()) / 2).toFixed(1));
+
   }
 
   changeUnit(unit: string){

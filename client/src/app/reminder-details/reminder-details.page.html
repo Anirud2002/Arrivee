@@ -8,17 +8,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header collapse="condense">  
     <ion-toolbar>
-      <ion-title size="large" class="text-3xl">CostCo Whole Food</ion-title>
+      <ion-title size="large" class="text-3xl" *ngIf="!isLoadingData">{{location.title}}</ion-title>
+      <ion-skeleton-text class="ion-margin-start" animated="true" style="width: 60%;" *ngIf="isLoadingData"></ion-skeleton-text>
     </ion-toolbar>
     
-    <p class="ion-padding-horizontal">2540 West Boise Avenue</p>
+    <p class="ion-padding-horizontal" *ngIf="!isLoadingData">{{location.streetAddress}}</p>
+    <ion-skeleton-text class="ion-margin-start" animated="true" style="width: 30%;" *ngIf="isLoadingData"></ion-skeleton-text>
   </ion-header>
 
-  <ion-range aria-label="Volume" class="ion-margin-horizontal ion-padding" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="getValue()">
+  <ion-range *ngIf="!isLoadingData" aria-label="Volume" class="ion-margin-horizontal ion-padding" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="getValue()">
     <div slot="label" class="mr-4 -ml-4">Radius:</div>
-  </ion-range>
+  </ion-range> 
   
   <div class="flex justify-center items-center mt-4 space-x-6">
     <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">
@@ -41,10 +43,9 @@
   <ion-card class="ion-no-padding">
     <ion-card-content>
       <!-- reminder 1 -->
-      <app-reminder-item></app-reminder-item>
-
-      <!-- reminder 2 -->
-      <app-reminder-item></app-reminder-item>
+      <div *ngIf="!isLoadingData">
+        <app-reminder-item *ngFor="let reminder of location.reminders" [reminder]="reminder"></app-reminder-item>
+      </div>
 
       <!-- when user clicks "+" button -->
       <ion-item-sliding class="ion-no-padding" *ngIf="isAddRemInputOpen">
