@@ -60,6 +60,26 @@ export class LocationService {
     return location;
   }
 
+  async updateLocation(location: Location): Promise<Location>{
+    let updateLocation: Location;
+    console.log(location);
+    const response  = await this.http.put<Location>(`${environment.baseApiUrl}/location/update`, location)
+    .pipe(
+      catchError(() => {
+        return of(null);
+      })
+    )
+
+    updateLocation = await lastValueFrom(response);
+
+    if(!updateLocation){
+      await this.presentErrorToast("Couldn't save the location!");
+      return null;
+    }
+
+    return location;
+  }
+
   async presentErrorToast(message: string){
     const toast = await this.toastController.create({
       message: message,

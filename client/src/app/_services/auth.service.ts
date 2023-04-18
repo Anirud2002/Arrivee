@@ -96,7 +96,6 @@ export class AuthService {
   }
 
   async getUser(): Promise<User>{
-    console.log("yoo")
     return JSON.parse((await Preferences.get({key: 'user'})).value) as User;
   }
 

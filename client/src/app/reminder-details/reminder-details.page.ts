@@ -1,53 +1,46 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
 import { SelectedUnit } from '../home/components/add-location-modal/add-location-modal.component'; 
 import { ActivatedRoute } from '@angular/router';
 import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
+import { SharedModule } from '../shared/shared.module';
+import { ToastService } from '../_services/toast.service';
 
 @Component({
   selector: 'app-reminder-details',
   templateUrl: './reminder-details.page.html',
   styleUrls: ['./reminder-details.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReminderItemComponent, AddReminderModalComponent]
+  imports: [SharedModule, ReminderItemComponent, AddReminderModalComponent]
 })
 export class ReminderDetailsPage implements OnInit {
   location: Location;
   isLoadingData: boolean = false;
-  selectedUnit: string = "m"; // set default unit to 'm' which is meters
   isAddRemInputOpen: boolean = false; // boolean to to store if user wants to create new reminder to not
-  isAddingNewReminder: boolean = false; // boolean to store current state if user is adding rem or not
-  currentRadiusValue: number = 0;
+  locationUpdated: boolean = false; // boolean for location update logic
+  newReminderTitle: string = "";
   constructor(
     private locationService: LocationService,
     private modalController: ModalController,
-    private actRoute: ActivatedRoute
+    private actRoute: ActivatedRoute,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
-    let locationID = this.actRoute.paramMap.subscribe(params => {
+    this.actRoute.paramMap.subscribe(params => {
       const id = params.get('id');
       this.loadLocationDetails(id);
     })
   }
 
+
   async loadLocationDetails(locationID: string){
     this.isLoadingData = true;
     this.location = await this.locationService.getLocationDetails(locationID);
-    if(this.location){
-      this.isLoadingData = false;
-      this.changeUnit(this.location.radiusUnit);
-    }
-
-    if(!this.location){
-      this.isLoadingData = false;
-    }
-    console.log(this.location);
+    this.isLoadingData = false;
   }
 
   async openAddReminderModal(){
@@ -61,13 +54,13 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   returnUnit = (value: number) => {
-    this.currentRadiusValue = parseFloat(value.toFixed(1));
-    return `${this.currentRadiusValue}${this.selectedUnit}`
+    this.location.radius = parseFloat(value.toFixed(1));
+    return `${this.location.radius}${this.location.radiusUnit}`
   }
 
   getMax(){
     let retVal;
-    switch(this.selectedUnit){
+    switch(this.location.radiusUnit){
       case SelectedUnit.km:
         retVal = 3;
         break;
@@ -86,7 +79,7 @@ export class ReminderDetailsPage implements OnInit {
 
   getMin(){
     let retVal;
-    switch(this.selectedUnit){
+    switch(this.location.radiusUnit){
       case SelectedUnit.km:
         retVal = 0.5;
         break;
@@ -105,7 +98,7 @@ export class ReminderDetailsPage implements OnInit {
 
   getStep(){
     let retVal;
-    switch(this.selectedUnit){
+    switch(this.location.radiusUnit){
       case SelectedUnit.km:
         retVal = 0.1;
         break;
@@ -122,9 +115,7 @@ export class ReminderDetailsPage implements OnInit {
     return retVal;
   }
 
-  getValue(): number{
-    console.log(this.location.radius)
-    return this.location.radius
+  getDefaultValue(): number{
     return parseFloat(((this.getMax() + this.getMin()) / 2).toFixed(1));
 
   }
@@ -132,27 +123,55 @@ export class ReminderDetailsPage implements OnInit {
   changeUnit(unit: string){
     switch(unit){
       case "km":
-        this.selectedUnit = "km";
+        this.location.radiusUnit = "km";
         break;
       case "m":
-        this.selectedUnit = "m";
+        this.location.radiusUnit = "m";
         break;
       case "mil":
-        this.selectedUnit = "mil";
+        this.location.radiusUnit = "mil";
         break;
       default:
-        this.selectedUnit = "m";
+        this.location.radiusUnit = "m";
         break;
     }
-    this.currentRadiusValue = this.getValue();
+    this.location.radius = this.getDefaultValue();
+    this.locationUpdated = true;
   }
 
-  handleToogleInputs(){
+  handleToggleInputs(){
     this.isAddRemInputOpen = !this.isAddRemInputOpen;
   }
 
-  enableSaveButton(){
-    this.isAddingNewReminder = true;
+  addNewReminder(){
+
+    if(this.newReminderTitle){
+      this.location.reminders.push({title: this.newReminderTitle});
+      this.locationUpdated = true;
+      this.isAddRemInputOpen = false;
+    }
+    this.newReminderTitle = "";
+  }
+
+  handleRemTitleUpdate(e){
+    if(e){
+      this.locationUpdated = true;
+    }
+    console.log(this.location.reminders);
+  }
+
+  handleReminderDelete(e){
+    let index = e;
+    this.location.reminders.splice(index, 1);
+    this.locationUpdated = true;
+  }
+
+  async updateLocation(){
+    await this.locationService.updateLocation(this.location).then(async () => {
+      this.locationUpdated = false;
+      await this.toastService.createSuccessToast("Saved!")
+    });
+    
   }
 
   /**
@@ -160,7 +179,7 @@ export class ReminderDetailsPage implements OnInit {
    * WELL, IT WORKS SO...
    *  */ 
   updateRadius(e: any){
-  
+    this.locationUpdated = true;
   }
 
 }

@@ -70,7 +70,7 @@ namespace api.Controllers
             return new OkObjectResult(location.toViewModel());
         }
 
-        [HttpPost("create-location")]
+        [HttpPost("create")]
         public async Task<ActionResult> CreateLocation([FromBody] LocationRequestDTO locationRequestDTO)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.Title);
@@ -110,7 +110,7 @@ namespace api.Controllers
             return new OkObjectResult(newLocation.toViewModel());
         }
 
-        [HttpPut("update-location")]
+        [HttpPut("update")]
         public async Task<ActionResult> UpdateLocation([FromBody] UpdateLocationRequestDTO updateLocationRequestDTO)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.LocationID);
