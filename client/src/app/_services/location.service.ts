@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { User } from '../_interfaces/Auth.modal';
 import { Location } from '../_interfaces/Location.modal';
 import { environment } from '../../environments/environment';
-import { catchError, lastValueFrom, of } from 'rxjs';
+import { BehaviorSubject, catchError, lastValueFrom, of } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { ToastService } from './toast.service';
 
@@ -13,6 +13,8 @@ import { ToastService } from './toast.service';
 })
 export class LocationService {
   user: User;
+  private locationUpdated: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  locationUpdated$ = this.locationUpdated.asObservable();
   constructor(
     private authService: AuthService,
     private http: HttpClient,
@@ -77,6 +79,8 @@ export class LocationService {
       await this.toastService.createErrorToast("Couldn't save the location!");
       return null;
     }
+
+    this.locationUpdated.next(true);
 
     return location;
   }

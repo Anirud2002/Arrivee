@@ -22,11 +22,19 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
       this.loadLocations();
+      this.subscribeToLocationUpdate();
   }
 
   async loadLocations(){
     this.locations = await this.locationService.getLocations();
-    console.log(this.locations);
+  }
+
+  subscribeToLocationUpdate(){
+    this.locationService.locationUpdated$.subscribe(updated => {
+      if(updated){
+        this.loadLocations();
+      }
+    })
   }
 
   async showAddLocationModal(){
