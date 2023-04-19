@@ -6,6 +6,7 @@ import { Location } from '../_interfaces/Location.modal';
 import { environment } from '../../environments/environment';
 import { catchError, lastValueFrom, of } from 'rxjs';
 import { ToastController } from '@ionic/angular';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class LocationService {
   constructor(
     private authService: AuthService,
     private http: HttpClient,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private toastService: ToastService
   ) { 
     
   }
@@ -33,7 +35,7 @@ export class LocationService {
     locations = await lastValueFrom(response);
 
     if(!locations){
-      await this.presentErrorToast("Something went wrong!");
+      await this.toastService.createErrorToast("Something went wrong!");
       return null;;
     }
 
@@ -53,7 +55,7 @@ export class LocationService {
     location = await lastValueFrom(response);
     
     if(!location){
-      await this.presentErrorToast("Something went wrong!")
+      await this.toastService.createErrorToast("Something went wrong!")
       return null;
     }
 
@@ -62,7 +64,6 @@ export class LocationService {
 
   async updateLocation(location: Location): Promise<Location>{
     let updateLocation: Location;
-    console.log(location);
     const response  = await this.http.put<Location>(`${environment.baseApiUrl}/location/update`, location)
     .pipe(
       catchError(() => {
@@ -73,20 +74,10 @@ export class LocationService {
     updateLocation = await lastValueFrom(response);
 
     if(!updateLocation){
-      await this.presentErrorToast("Couldn't save the location!");
+      await this.toastService.createErrorToast("Couldn't save the location!");
       return null;
     }
 
     return location;
-  }
-
-  async presentErrorToast(message: string){
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000, 
-      color: 'danger'
-    });
-    
-    await toast.present();
   }
 }
