@@ -10,19 +10,19 @@
 
   <!-- Add google maps in the future -->
   
-  <ion-range aria-label="Radius" class="ion-margin-horizontal" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="getValue()">
+  <ion-range aria-label="Radius" class="ion-margin-horizontal" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="newLocation.radius">
     <div slot="label" class="mr-4 -ml-4">Radius:</div>
   </ion-range>
   
   <div class="flex justify-center items-center mt-4 space-x-6">
-    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">
-      {{(selectedUnit === 'km') ? currentRadiusValue : ''}} km
+    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">
+      {{(newLocation.radiusUnit === 'km') ? newLocation.radius : ''}} km
     </ion-chip>
-    <ion-chip class=" min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">
-      {{(selectedUnit === 'm') ? currentRadiusValue : ''}} m
+    <ion-chip class=" min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">
+      {{(newLocation.radiusUnit === 'm') ? newLocation.radius : ''}} m
     </ion-chip>
-    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(selectedUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">
-      {{(selectedUnit === 'mil') ? currentRadiusValue : ''}} mil
+    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">
+      {{(newLocation.radiusUnit === 'mil') ? newLocation.radius : ''}} mil
     </ion-chip>
   </div>
 
@@ -32,14 +32,16 @@
     </ion-card-header>
 
     <ion-card-content>
-      <!-- reminders for this particular location -->
-      <app-reminder-item-modal></app-reminder-item-modal>
+      <div>
+        <!-- reminders for this particular location -->
+        <app-reminder-item-modal *ngFor="let reminder of newLocation.reminders; let i = index" [reminder]="reminder" [index]="i"></app-reminder-item-modal>
+      </div>
 
       <!-- when user click "+" button: -->
       <ion-item-sliding class="ion-no-padding" *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
           <ion-checkbox aria-label="" slot="start"></ion-checkbox>
-          <ion-input [clearInput]="true" placeholder="Add" label=""></ion-input>
+          <ion-input [clearInput]="true" placeholder="Add" [(ngModel)]="newReminderTitle" label="" (ionBlur)="addNewReminder()"></ion-input>
         </ion-item>
 
         <ion-item-options>
@@ -51,7 +53,7 @@
         
     </ion-card-content>
 
-    <ion-button expand="block" fill="clear" (click)="handleToogleInputs()">
+    <ion-button expand="block" fill="clear" (click)="handleToggleInputs()">
       <ion-icon name="add-circle-sharp"></ion-icon>
     </ion-button>
 
@@ -61,7 +63,7 @@
 
 <ion-footer class="ion-margin-vertical">
   <div class="flex justify-center">
-    <ion-button class="save-rem-btn w-72 mx-auto" (click)="closeModal()">
+    <ion-button class="save-rem-btn w-72 mx-auto" (click)="saveAndCloseModal()">
       Save
     </ion-button>
   </div>

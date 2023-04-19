@@ -2,15 +2,12 @@
   <!-- SET 'lines=none' IF IT IS THE LAST ION-ITEM -->
   <ion-item class="ion-no-padding">
     <ion-checkbox aria-label="" slot="start"></ion-checkbox>
-    <ion-label>
-      <h2>Buy Milk</h2>
+    <ion-label (click)="handleEdit()">
+      <h2>{{reminder.title}}</h2>
     </ion-label>
   </ion-item>
 
   <ion-item-options>
-    <ion-item-option color="tertiary" (click)="handleEdit()">
-      <ion-icon name="pencil-sharp" slot="icon-only" size="small"></ion-icon>
-    </ion-item-option>
     <ion-item-option (click)="handleDelete()">
       <ion-icon name="trash" slot="icon-only" size="small"></ion-icon>
     </ion-item-option>
@@ -22,7 +19,7 @@
   <ion-item-sliding class="ion-no-padding">
     <ion-item class="ion-no-padding">
       <ion-checkbox aria-label="" slot="start"></ion-checkbox>
-      <ion-input [clearInput]="true" placeholder="Add" label="" (ionFocus)="isInEditState = true"></ion-input>
+      <ion-input #remTitleInput [clearInput]="true" placeholder="Add" label="" (ionInput)="updateRemTitle($event)" (ionBlur)="setReminderUpdatedToTrue()" ></ion-input>
     </ion-item>
   
     <ion-item-options>

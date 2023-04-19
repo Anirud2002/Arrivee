@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { SharedModule } from '../../../shared/shared.module';
 import { ReminderItemModalComponent } from './components/reminder-item-modal/reminder-item-modal.component';
+import { NewLocation } from '../../../_interfaces/Location.modal';
+import { ToastService } from '../../../_services/toast.service';
 
 export enum SelectedUnit{
   km = "km",
@@ -16,29 +18,37 @@ export enum SelectedUnit{
   imports: [SharedModule, ReminderItemModalComponent],
 })
 export class AddLocationModalComponent implements OnInit {
-  selectedUnit: string = "m"; // set default unit to 'm' which is meters
   isAddRemInputOpen: boolean = false;
   isInEditState: boolean = false;
-  currentRadiusValue: number = 0;
+  newLocation: NewLocation;
+  newReminderTitle: string = "";
+
 
   constructor(
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastService: ToastService
   ) {
-    this.selectedUnit = SelectedUnit.m;
+    this.newLocation = {
+      title: "",
+      streetAddress: "",
+      radius: null,
+      radiusUnit: "m",
+      reminders: []
+    }
    }
 
   ngOnInit() {
-    this.currentRadiusValue = this.getValue();
+    this.newLocation.radius = this.getDefaultValue();
   }
 
   returnUnit = (value: number) => {
-    this.currentRadiusValue = parseFloat(value.toFixed(1));
-    return `${this.currentRadiusValue}${this.selectedUnit}`
+    this.newLocation.radius = parseFloat(value.toFixed(1));
+    return `${this.newLocation.radius}${this.newLocation.radiusUnit}`
   }
 
   getMax(){
     let retVal;
-    switch(this.selectedUnit){
+    switch(this.newLocation.radiusUnit){
       case SelectedUnit.km:
         retVal = 3;
         break;
@@ -57,7 +67,7 @@ export class AddLocationModalComponent implements OnInit {
 
   getMin(){
     let retVal;
-    switch(this.selectedUnit){
+    switch(this.newLocation.radiusUnit){
       case SelectedUnit.km:
         retVal = 0.5;
         break;
@@ -74,12 +84,12 @@ export class AddLocationModalComponent implements OnInit {
     return retVal;
   }
 
-  getValue(){
+  getDefaultValue(){
     return parseFloat(((this.getMax() + this.getMin()) / 2).toFixed(1));
   }
 
   getColor(value: string): boolean{
-    if(value === this.selectedUnit){
+    if(value === this.newLocation.radiusUnit){
       return true;
     }
     return false;
@@ -88,27 +98,31 @@ export class AddLocationModalComponent implements OnInit {
   changeUnit(unit: string){
     switch(unit){
       case "km":
-        this.selectedUnit = "km";
+        this.newLocation.radiusUnit = "km";
         break;
       case "m":
-        this.selectedUnit = "m";
+        this.newLocation.radiusUnit = "m";
         break;
       case "mil":
-        this.selectedUnit = "mil";
+        this.newLocation.radiusUnit = "mil";
         break;
       default:
-        this.selectedUnit = "m";
+        this.newLocation.radiusUnit = "m";
         break;
     }
-    this.currentRadiusValue = this.getValue();
+    this.newLocation.radius = this.getDefaultValue();
   }
 
-  async closeModal(){
-    await this.modalController.dismiss();
-  }
-
-  handleToogleInputs(){
+  handleToggleInputs(){
     this.isAddRemInputOpen = !this.isAddRemInputOpen;
+  }
+
+  addNewReminder(){
+    if(this.newReminderTitle){
+      this.newLocation.reminders.push({title: this.newReminderTitle});
+      this.isAddRemInputOpen = false;
+    }
+    this.newReminderTitle = "";
   }
 
   handleEdit(){
@@ -117,7 +131,7 @@ export class AddLocationModalComponent implements OnInit {
 
   getStep(){
     let retVal;
-    switch(this.selectedUnit){
+    switch(this.newLocation.radiusUnit){
       case SelectedUnit.km:
         retVal = 0.1;
         break;
@@ -140,5 +154,23 @@ export class AddLocationModalComponent implements OnInit {
    *  */ 
   updateRadius(e: any){
   
+  }
+
+  areFieldsValid(): boolean{
+    const {title, streetAddress, radius, radiusUnit, reminders} = this.newLocation;
+    if(!title || !streetAddress || !radius || !radiusUnit || reminders.length <= 0){
+      return false;
+    }
+    return true;
+  }
+
+  async saveAndCloseModal(){
+    if(!this.areFieldsValid()){
+      await this.toastService.createErrorToast("You are missing some fields!");
+      return;
+    }
+
+
+    // await this.modalController.dismiss();
   }
 }

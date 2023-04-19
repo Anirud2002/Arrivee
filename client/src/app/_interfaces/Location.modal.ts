@@ -8,3 +8,11 @@ export interface Location{
     radiusUnit: string,
     reminders?: Reminder[]
 }
+
+export interface NewLocation{
+    title: string,
+    streetAddress: string,
+    radius: number,
+    radiusUnit: string,
+    reminders?: Reminder[]
+}

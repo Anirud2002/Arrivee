@@ -144,7 +144,6 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   addNewReminder(){
-
     if(this.newReminderTitle){
       this.location.reminders.push({title: this.newReminderTitle});
       this.locationUpdated = true;
@@ -157,7 +156,6 @@ export class ReminderDetailsPage implements OnInit {
     if(e){
       this.locationUpdated = true;
     }
-    console.log(this.location.reminders);
   }
 
   handleReminderDelete(e){
