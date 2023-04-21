@@ -36,28 +36,14 @@ namespace api.Controllers
                 placeId = placeResponse?.Candidates[0].Place_Id;
             }
 
-            // logic to get the places
+            // api call to get the places
 
             HttpResponseMessage placesResponse = await client.GetAsync(
                     $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={GoogleApiKey}"
                 );
 
-            //var temp = await placesResponse.Content.ReadFromJsonAsync<PlaceDetails>();
-            dynamic? obj = JsonConvert.DeserializeObject(await placesResponse.Content.ReadAsStringAsync());
-
-            // Get the "result" object from the first element of the "candidates" array
-            dynamic? resultObj = obj?.candidates[0].result;
-
-            // Create a new object with only the desired fields
-            dynamic newObject = new
-            {
-                formatted_address = resultObj?.formatted_address,
-                name = resultObj.name,
-                geometry = resultObj.geometry
-            };
-
-
-            return new OkResult();
+            var jsonResult = await placesResponse.Content.ReadAsStringAsync();
+            return new OkObjectResult(jsonResult);
         }
     }
 
