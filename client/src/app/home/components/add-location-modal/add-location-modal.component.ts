@@ -4,6 +4,8 @@ import { SharedModule } from '../../../shared/shared.module';
 import { ReminderItemModalComponent } from './components/reminder-item-modal/reminder-item-modal.component';
 import { NewLocation } from '../../../_interfaces/Location.modal';
 import { ToastService } from '../../../_services/toast.service';
+import { GoogleService } from '../../../_services/google.service';
+import { LocationService } from '../../../_services/location.service';
 
 export enum SelectedUnit{
   km = "km",
@@ -14,17 +16,22 @@ export enum SelectedUnit{
   selector: 'app-add-location-modal',
   templateUrl: './add-location-modal.component.html',
   styleUrls: ['./add-location-modal.component.scss'],
-  standalone: true,
+  standalone: true, 
   imports: [SharedModule, ReminderItemModalComponent],
 })
+
 export class AddLocationModalComponent implements OnInit {
   isAddRemInputOpen: boolean = false;
   isInEditState: boolean = false;
   newLocation: NewLocation;
   newReminderTitle: string = "";
+  googlePlacesApiResponse: any;
+  searchBarInput: string = "";
 
 
   constructor(
+    private locationService: LocationService,
+    private googleService: GoogleService,
     private modalController: ModalController,
     private toastService: ToastService
   ) {
@@ -44,6 +51,26 @@ export class AddLocationModalComponent implements OnInit {
   returnUnit = (value: number) => {
     this.newLocation.radius = parseFloat(value.toFixed(1));
     return `${this.newLocation.radius}${this.newLocation.radiusUnit}`
+  }
+
+  async searchPlace(e){
+    this.newLocation.title = "";
+    this.newLocation.streetAddress = "";
+    this.googlePlacesApiResponse = null;
+
+    if(!this.searchBarInput) return;
+
+    this.googlePlacesApiResponse = await this.googleService.getPlaceResult(this.searchBarInput);
+  }
+
+  selectLocation(){
+    if(!this.searchBarInput){
+      return;
+    }
+    const {name, formatted_address} = this.googlePlacesApiResponse.result;
+    this.newLocation.title = this.searchBarInput = name;
+    this.newLocation.streetAddress = formatted_address;
+    this.googlePlacesApiResponse = null;
   }
 
   getMax(){
@@ -170,7 +197,11 @@ export class AddLocationModalComponent implements OnInit {
       return;
     }
 
-
-    // await this.modalController.dismiss();
+    const response = await this.locationService.createLocation(this.newLocation)
+    if(!response){
+      return;
+    }else{
+      await this.modalController.dismiss();
+    }
   }
 }

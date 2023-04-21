@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { User } from '../_interfaces/Auth.modal';
-import { Location } from '../_interfaces/Location.modal';
+import { Location, NewLocation } from '../_interfaces/Location.modal';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, lastValueFrom, of } from 'rxjs';
 import { ToastController } from '@ionic/angular';
@@ -27,7 +27,7 @@ export class LocationService {
   async getLocations(): Promise<Location[]>{
     this.user = await this.authService.getUser();
     let locations = [] as Location[];
-    const response = await this.http.get<Location[]>(`${environment.baseApiUrl}/location/get-all-location/${this.user.username}`)
+    const response = this.http.get<Location[]>(`${environment.baseApiUrl}/location/get-all-location/${this.user.username}`)
     .pipe(
       catchError(() => {
         return of(null);
@@ -47,7 +47,7 @@ export class LocationService {
   async getLocationDetails(locationID: string): Promise<Location>{
     this.user = await this.authService.getUser();
     let location: Location;
-    const response = await this.http.get<Location>(`${environment.baseApiUrl}/location/get-location/${this.user.username}/${locationID}`)
+    const response = this.http.get<Location>(`${environment.baseApiUrl}/location/get-location/${this.user.username}/${locationID}`)
     .pipe(
       catchError(() => {
         return of(null);
@@ -64,9 +64,33 @@ export class LocationService {
     return location;
   }
 
+  async createLocation(newLocation: NewLocation): Promise<Location>{
+    if(!this.user){
+      this.user = await this.authService.getUser();
+    }
+    let location: Location;
+    const response = this.http.post<Location>(`${environment.baseApiUrl}/location/create`, {...newLocation, username: this.user.username})
+    .pipe(
+      catchError(() => {
+        return of(null);
+      })
+    );
+
+    location = await lastValueFrom(response);
+
+    if(!location){
+      await this.toastService.createErrorToast("Couldn't save the location!");
+      return null;
+    }
+
+    this.locationUpdated.next(true);
+
+    return location;
+  }
+
   async updateLocation(location: Location): Promise<Location>{
     let updateLocation: Location;
-    const response  = await this.http.put<Location>(`${environment.baseApiUrl}/location/update`, location)
+    const response = this.http.put<Location>(`${environment.baseApiUrl}/location/update`, location)
     .pipe(
       catchError(() => {
         return of(null);

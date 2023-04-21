@@ -4,9 +4,16 @@
 
 <ion-content class="ion-padding">
   <ion-item lines="none" class="searchbar-item">
-    <ion-input label="" show-clear-button="focus" class="location-searchbar" placeholder="Search Address" [clearInput]="true"></ion-input>
+    <ion-input label="" debounce="500" [(ngModel)]="searchBarInput" (ionInput)="searchPlace($event)" show-clear-button="focus" class="location-searchbar" placeholder="Search Address" [clearInput]="true"></ion-input>
     <ion-icon name="location-sharp" slot="end"></ion-icon>
   </ion-item>
+  <ion-item *ngIf="googlePlacesApiResponse" class="ion-margin-top" lines="none" [detail]="false" button (click)="selectLocation()">
+    <ion-label>
+      <h3>{{googlePlacesApiResponse.result.name}}</h3>
+      <p>{{googlePlacesApiResponse.result.formatted_address}}</p>
+    </ion-label>
+  </ion-item>
+  <p class="ion-margin text-sm font-extrabold" *ngIf="newLocation.streetAddress">{{newLocation.streetAddress}}</p>
 
   <!-- Add google maps in the future -->
   
@@ -18,7 +25,7 @@
     <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'km') ? 'active' : ''" (click)="changeUnit('km')">
       {{(newLocation.radiusUnit === 'km') ? newLocation.radius : ''}} km
     </ion-chip>
-    <ion-chip class=" min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">
+    <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'm') ? 'active' : ''" (click)="changeUnit('m')">
       {{(newLocation.radiusUnit === 'm') ? newLocation.radius : ''}} m
     </ion-chip>
     <ion-chip class="min-w-14 h-7 flex justify-center font-extrabold" [class]="(newLocation.radiusUnit === 'mil') ? 'active' : ''" (click)="changeUnit('mil')">
