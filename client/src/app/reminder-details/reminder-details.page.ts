@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
 import { SelectedUnit } from '../home/components/add-location-modal/add-location-modal.component'; 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
 import { SharedModule } from '../shared/shared.module';
@@ -26,6 +26,8 @@ export class ReminderDetailsPage implements OnInit {
     private locationService: LocationService,
     private modalController: ModalController,
     private actRoute: ActivatedRoute,
+    private alertController: AlertController,
+    private router: Router,
     private toastService: ToastService
   ) { }
 
@@ -165,10 +167,34 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   async updateLocation(){
-    await this.locationService.updateLocation(this.location).then(async () => {
-      this.locationUpdated = false;
-      await this.toastService.createSuccessToast("Saved!")
-    });
+    if(this.location.reminders.length > 0){
+      await this.locationService.updateLocation(this.location).then(async () => {
+        this.locationUpdated = false;
+        await this.toastService.createSuccessToast("Saved!")
+      });
+    }else{
+      const alert = await this.alertController.create({
+        header: "Delete Location?",
+        message: "You don't have any reminders",
+        buttons: [
+          {
+            text: "Yes",
+            handler: async () => {
+              await this.locationService.deleteLocation(this.location.locationID).then(
+                () => {
+                  this.router.navigateByUrl("/");
+                }
+              );
+            }
+          },
+          {
+            text: "No",
+            role: "cancel"
+          }
+        ]
+      });
+      await alert.present();
+    }
     
   }
 

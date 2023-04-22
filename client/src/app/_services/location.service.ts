@@ -113,7 +113,7 @@ export class LocationService {
     if(!this.user){
       this.user = await this.authService.getUser();
     }
-    const response = this.http.delete(`${environment.baseApiUrl}/location/deletee/${this.user.username}/${locationID}`)
+    const response = this.http.delete(`${environment.baseApiUrl}/location/delete/${this.user.username}/${locationID}`)
     .pipe(
       catchError(() => {
         return of(null);
