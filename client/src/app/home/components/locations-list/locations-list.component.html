@@ -3,11 +3,18 @@
 </ion-text>
 
 <div class="space-y-4 my-2" *ngIf="locations.length > 0">
-  <ion-item button lines="none" *ngFor="let location of locations" [routerLink]="'/reminder-details/' + location.locationID">
-    <ion-label>
-      <h2>{{location.title}}</h2>
-      <p>{{location.streetAddress}}</p>
-    </ion-label>
-    <ion-badge color="tertiary">{{location.reminders.length}}</ion-badge>
-  </ion-item>
+  <ion-item-sliding *ngFor="let location of locations">
+    <ion-item button lines="none" [routerLink]="'/reminder-details/' + location.locationID">
+      <ion-label>
+        <h2>{{location.title}}</h2>
+        <p>{{location.streetAddress}}</p>
+      </ion-label>
+      <ion-badge color="tertiary">{{location.reminders.length}}</ion-badge>
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option (click)="handleDeleteLocation(location)">
+        <ion-icon name="trash" slot="icon-only" size="small"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
 </div>

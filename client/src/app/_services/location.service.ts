@@ -108,4 +108,28 @@ export class LocationService {
 
     return location;
   }
+
+  async deleteLocation(locationID: string): Promise<void>{
+    if(!this.user){
+      this.user = await this.authService.getUser();
+    }
+    const response = this.http.delete(`${environment.baseApiUrl}/location/deletee/${this.user.username}/${locationID}`)
+    .pipe(
+      catchError(() => {
+        return of(null);
+      })
+    );
+
+    const result = await lastValueFrom(response);
+
+    if(!result){
+      await this.toastService.createErrorToast("Couldn't delete locations!");
+      return;
+    }
+
+    this.locationUpdated.next(true);
+
+    await this.toastService.createSuccessToast("Deleted!");
+    return;
+  }
 }

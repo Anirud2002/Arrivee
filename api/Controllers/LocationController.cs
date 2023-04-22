@@ -140,7 +140,7 @@ namespace api.Controllers
             return new OkObjectResult(location.toViewModel());
         }
 
-        [HttpDelete("delete-location/{userName}/{locationID}")]
+        [HttpDelete("delete/{userName}/{locationID}")]
         public async Task<ActionResult> DeleteLocation(string userName, string locationID)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(userName);
@@ -167,7 +167,10 @@ namespace api.Controllers
             await _dbContext.SaveAsync<AppUser>(user);
             await _dbContext.DeleteAsync<Location>(location);
 
-            return new OkResult();
+            return new OkObjectResult(new
+            {
+                operationSuccess = true
+            });
         }
     }
 }
