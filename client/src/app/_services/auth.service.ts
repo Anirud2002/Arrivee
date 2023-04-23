@@ -5,7 +5,6 @@ import { LoginDTO, RegisterDTO, User } from '../_interfaces/Auth.modal';
 import { environment } from '../../environments/environment';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ToastController } from '@ionic/angular';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastService } from './toast.service';
 
@@ -21,7 +20,6 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private toastService: ToastService,
-    private toastController: ToastController
   ) { }
 
   async isAuthenticated(): Promise<boolean>{
@@ -44,7 +42,7 @@ export class AuthService {
       .pipe(
         catchError((err) => { // if login creds do not match
           let message = err.error.message;
-          this.presentErrorToast(message);
+          this.toastService.createErrorToast(message);
           return of(null); 
         })
       );
@@ -65,7 +63,7 @@ export class AuthService {
     .pipe(
       catchError((err) => {
         let message = err.error.message
-        this.presentErrorToast(message);
+        this.toastService.createErrorToast(message);
         return of(null);
       })
     );
@@ -113,16 +111,6 @@ export class AuthService {
 
   async getUser(): Promise<User>{
     return JSON.parse((await Preferences.get({key: 'user'})).value) as User;
-  }
-
-  async presentErrorToast(message: string){
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000, 
-      color: 'danger'
-    });
-    
-    await toast.present();
   }
   
 }
