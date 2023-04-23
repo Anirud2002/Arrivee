@@ -6,6 +6,8 @@ import { environment } from '../../environments/environment';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastController } from '@ionic/angular';
+import { NavigationExtras, Router } from '@angular/router';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +19,8 @@ export class AuthService {
   user$: Observable<User> = this.userSubject.asObservable();
   constructor(
     private http: HttpClient,
+    private router: Router,
+    private toastService: ToastService,
     private toastController: ToastController
   ) { }
 
@@ -75,6 +79,18 @@ export class AuthService {
     this.setUser();
 
     return true;
+  }
+
+  async logout(){
+    await Preferences.remove({key: "user"});
+
+    this.user = null;
+
+    this.userSubject.next(this.user);
+
+    this.router.navigateByUrl("/login");
+
+    await this.toastService.createSuccessToast("Successfully logged out!");
   }
 
 

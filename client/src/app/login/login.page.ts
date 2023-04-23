@@ -26,12 +26,24 @@ export class LoginPage implements OnInit {
     this.initForm();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.subscribeToUserStatus();
+   }
 
   initForm(){
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
+    })
+  }
+
+  subscribeToUserStatus(){
+    this.authService.user$.subscribe(user => {
+      if(!user){
+        let username = this.form.controls["username"].value;
+        this.initForm();
+        this.form.get("username").patchValue(username);
+      }
     })
   }
 
