@@ -38,6 +38,8 @@ export class AuthService {
   }
 
   async login(loginDTO: LoginDTO): Promise<boolean>{
+    console.log(environment.baseApiUrl);
+    console.log(loginDTO);
       const response = this.http.post<User>(`${environment.baseApiUrl}/auth/login`, loginDTO)
       .pipe(
         catchError((err) => { // if login creds do not match
