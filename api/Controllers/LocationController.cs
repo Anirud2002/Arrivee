@@ -25,7 +25,7 @@ namespace api.Controllers
         [HttpGet("get-all-location/{userName}")]
         public async Task<ActionResult> GetLocation(string userName)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(userName);
+            ArgumentNullException.ThrowIfNull(userName);
 
             if (!User.Exists(userName))
             {
@@ -54,8 +54,8 @@ namespace api.Controllers
         [HttpGet("get-location/{userName}/{locationID}")]
         public async Task<ActionResult> GetLocation(string userName, string locationID)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(userName);
-            ArgumentNullException.ThrowIfNullOrEmpty(locationID);
+            ArgumentNullException.ThrowIfNull(userName);
+            ArgumentNullException.ThrowIfNull(locationID);
 
             if (!User.Exists(userName))
             {
@@ -73,10 +73,10 @@ namespace api.Controllers
         [HttpPost("create")]
         public async Task<ActionResult> CreateLocation([FromBody] LocationRequestDTO locationRequestDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.Title);
-            ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.StreetAddress);
-            ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.Username);
-            ArgumentNullException.ThrowIfNullOrEmpty(locationRequestDTO.RadiusUnit);
+            ArgumentNullException.ThrowIfNull(locationRequestDTO.Title);
+            ArgumentNullException.ThrowIfNull(locationRequestDTO.StreetAddress);
+            ArgumentNullException.ThrowIfNull(locationRequestDTO.Username);
+            ArgumentNullException.ThrowIfNull(locationRequestDTO.RadiusUnit);
             if (locationRequestDTO.Radius == 0)
             {
                 throw new ArgumentNullException();
@@ -113,11 +113,11 @@ namespace api.Controllers
         [HttpPut("update")]
         public async Task<ActionResult> UpdateLocation([FromBody] UpdateLocationRequestDTO updateLocationRequestDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.LocationID);
-            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.Title);
-            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.StreetAddress);
-            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.Username);
-            ArgumentNullException.ThrowIfNullOrEmpty(updateLocationRequestDTO.RadiusUnit);
+            ArgumentNullException.ThrowIfNull(updateLocationRequestDTO.LocationID);
+            ArgumentNullException.ThrowIfNull(updateLocationRequestDTO.Title);
+            ArgumentNullException.ThrowIfNull(updateLocationRequestDTO.StreetAddress);
+            ArgumentNullException.ThrowIfNull(updateLocationRequestDTO.Username);
+            ArgumentNullException.ThrowIfNull(updateLocationRequestDTO.RadiusUnit);
             if (updateLocationRequestDTO.Radius == 0)
             {
                 throw new ArgumentNullException("Radius not defined!");
@@ -143,8 +143,8 @@ namespace api.Controllers
         [HttpDelete("delete/{userName}/{locationID}")]
         public async Task<ActionResult> DeleteLocation(string userName, string locationID)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(userName);
-            ArgumentNullException.ThrowIfNullOrEmpty(locationID);
+            ArgumentNullException.ThrowIfNull(userName);
+            ArgumentNullException.ThrowIfNull(locationID);
 
             if (!User.Exists(userName))
             {

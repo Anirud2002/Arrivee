@@ -33,7 +33,7 @@ namespace api.Controllers
         [HttpGet("get-all/{userName}")]
         public async Task<ActionResult> GetAllNotifications(string userName)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(userName);
+            ArgumentNullException.ThrowIfNull(userName);
 
             if (!User.Exists(userName))
             {

@@ -28,11 +28,11 @@ namespace api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Username);
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Firstname);
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Lastname);
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Email);
-            ArgumentNullException.ThrowIfNullOrEmpty(registerDTO.Password);
+            ArgumentNullException.ThrowIfNull(registerDTO.Username);
+            ArgumentNullException.ThrowIfNull(registerDTO.Firstname);
+            ArgumentNullException.ThrowIfNull(registerDTO.Lastname);
+            ArgumentNullException.ThrowIfNull(registerDTO.Email);
+            ArgumentNullException.ThrowIfNull(registerDTO.Password);
 
             if (await UserExists(registerDTO.Username))
             {
@@ -73,8 +73,8 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.Username);
-            ArgumentNullException.ThrowIfNullOrEmpty(loginDTO.Password);
+            ArgumentNullException.ThrowIfNull(loginDTO.Username);
+            ArgumentNullException.ThrowIfNull(loginDTO.Password);
 
             var user = await _dbContext.LoadAsync<AppUser>(loginDTO.Username);
             if (user == null)

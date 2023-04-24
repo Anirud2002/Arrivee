@@ -63,12 +63,12 @@ namespace api.Controllers
         }
     }
 
-    
 
-    
+
+
 
     public class PlaceIdResponse
-     {
+    {
         public Candidate[] Candidates { get; set; }
         public string Status { get; set; }
 
@@ -78,7 +78,7 @@ namespace api.Controllers
         }
     }
 
-    
+
 
 }
 
