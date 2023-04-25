@@ -55,7 +55,8 @@ namespace api.Controllers
                 Email = registerDTO.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                LocationReminderIDs = new List<string>()
+                LocationReminderIDs = new List<string>(),
+                NotificationIDs = new List<string>()
             };
 
             await _dbContext.SaveAsync<AppUser>(user);
@@ -108,6 +109,43 @@ namespace api.Controllers
                 Email = user.Email,
                 Token = _tokenSerivce.CreateToken(user.Username)
             }); ;
+
+        }
+
+        [HttpPost("google-login")]
+        public async Task<ActionResult> GoogleLoginOrRegister([FromBody] GoogleSignInDTO googleSignInDTO)
+        {
+            ArgumentNullException.ThrowIfNull(googleSignInDTO.Username);
+            ArgumentNullException.ThrowIfNull(googleSignInDTO.Firstname);
+            ArgumentNullException.ThrowIfNull(googleSignInDTO.Lastname);
+            ArgumentNullException.ThrowIfNull(googleSignInDTO.Email);
+
+            var username = googleSignInDTO.Username;
+            if(await UserExists(username))
+            {
+                return new OkObjectResult(new
+                {
+                    loggedIn = true
+                });
+            }
+
+            var user = new AppUser()
+            {
+                Username = googleSignInDTO.Username,
+                Firstname = googleSignInDTO.Firstname,
+                Lastname = googleSignInDTO.Lastname,
+                Email = googleSignInDTO.Email,
+                PasswordHash = Guid.NewGuid().ToByteArray(),
+                PasswordSalt = Guid.NewGuid().ToByteArray(),
+                LocationReminderIDs = new List<string>(),
+                NotificationIDs = new List<string>()
+            };
+
+            await _dbContext.SaveAsync<AppUser>(user);
+            return new OkObjectResult(new
+            {
+                registered = true
+            });
 
         }
 
