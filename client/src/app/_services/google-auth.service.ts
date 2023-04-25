@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GoogleAuth} from '@codetrix-studio/capacitor-google-auth';
-import { User } from '../_interfaces/Auth.modal';
+import { GoogleSignInDTO, User } from '../_interfaces/Auth.modal';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 @Injectable({
@@ -15,6 +15,7 @@ export class GoogleAuthService {
 
   async signIn() {
     var response = await GoogleAuth.signIn();
+    
     this.user = {
       firstname: response.givenName,
       lastname: response.familyName,
@@ -22,8 +23,21 @@ export class GoogleAuthService {
       email: response.email,
       token: await this.authService.getTokenForGoogleSignIn(response.email.split("@")[0])
     }
-    await this.authService.setUser(this.user);
-    this.router.navigateByUrl("/");
+
+    let googleSignInDTO = {
+      username: this.user.username,
+      firstname: this.user.firstname,
+      lastname: this.user.lastname,
+      email: this.user.email
+    } as GoogleSignInDTO
+
+    const operationSuccess = await this.authService.googleLoginOrRegister(googleSignInDTO);
+    if(!operationSuccess){
+      return;
+    }else{
+      await this.authService.setUser(this.user);
+      this.router.navigateByUrl("/");
+    }
   }
 
   async refresh() {

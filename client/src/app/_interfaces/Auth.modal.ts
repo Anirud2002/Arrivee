@@ -18,3 +18,10 @@ export interface RegisterDTO{
     email: string, 
     password: string
 }
+
+export interface GoogleSignInDTO{
+    firstname: string, 
+    lastname: string, 
+    username: string, 
+    email: string, 
+}

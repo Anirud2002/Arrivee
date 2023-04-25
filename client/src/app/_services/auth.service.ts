@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, lastValueFrom, map, of, take, tap, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http"
-import { LoginDTO, RegisterDTO, User } from '../_interfaces/Auth.modal';
+import { GoogleSignInDTO, LoginDTO, RegisterDTO, User } from '../_interfaces/Auth.modal';
 import { environment } from '../../environments/environment';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -77,6 +77,22 @@ export class AuthService {
     this.setUser(this.user);
 
     return true;
+  }
+
+  async googleLoginOrRegister(googleSignInDTO: GoogleSignInDTO): Promise<boolean>{
+    let retVal: boolean = true;
+    const response = this.http.post<void>(`${environment.baseApiUrl}/auth/google-login`, googleSignInDTO)
+    .pipe(
+      catchError(() => {
+        retVal = false;
+        this.toastService.createErrorToast("Couldn't Sign in with Google!")
+        return of(null);
+      })
+    );
+
+    await lastValueFrom(response);
+
+    return retVal;
   }
 
   async logout(){
