@@ -9,7 +9,7 @@
   </ion-text>
 
   <ion-item>
-    <ion-input label="Confirm password" labelPlacement="floating" formControlName="confirmPassword"></ion-input>
+    <ion-input label="Confirm password" labelPlacement="floating" formControlName="confirmPassword" type="password"></ion-input>
   </ion-item>
   <ion-text color="danger" size="small" *ngIf="!isPasswordSame()" class="ion-padding-horizontal">
     <small>Password doesn't match!</small>
