@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, lastValueFrom, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, lastValueFrom, map, of, take, tap, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http"
 import { LoginDTO, RegisterDTO, User } from '../_interfaces/Auth.modal';
 import { environment } from '../../environments/environment';
@@ -38,8 +38,6 @@ export class AuthService {
   }
 
   async login(loginDTO: LoginDTO): Promise<boolean>{
-    console.log(environment.baseApiUrl);
-    console.log(loginDTO);
       const response = this.http.post<User>(`${environment.baseApiUrl}/auth/login`, loginDTO)
       .pipe(
         catchError((err) => { // if login creds do not match
@@ -55,7 +53,7 @@ export class AuthService {
         return false;
       }
 
-      this.setUser();
+      this.setUser(this.user);
 
       return true;
   }
@@ -76,7 +74,7 @@ export class AuthService {
       return false;
     }
 
-    this.setUser();
+    this.setUser(this.user);
 
     return true;
   }
@@ -93,22 +91,39 @@ export class AuthService {
     await this.toastService.createSuccessToast("Successfully logged out!");
   }
 
+  async getTokenForGoogleSignIn(username: string): Promise<string>{
+    let token: string = "";
+    const response = this.http.get<any>(`${environment.baseApiUrl}/auth/token/${username}`)
+    .pipe(
+      catchError(() => of(null))
+    );
+
+    token  = (await lastValueFrom(response)).value;
+
+    if(!token){
+      await this.toastService.createErrorToast("Couldn't sign in");
+      return  null;
+    }
+
+    return token;
+  }
+
 
   // Returns true if username can be used, else returns false
   async checkUsername(username: string): Promise<boolean>{
-    const response = lastValueFrom(await this.http.get<boolean>(`${environment.baseApiUrl}/auth/check-username/${username}`)); 
+    const response = await lastValueFrom(this.http.get<boolean>(`${environment.baseApiUrl}/auth/check-username/${username}`)); 
     return response;
   }
 
-  async setUser(){
+  async setUser(user: User){
       // set the user using Capacitor Preferences
       await Preferences.set({
         key: 'user',
-        value: JSON.stringify(this.user)
+        value: JSON.stringify(user)
       })
 
       // update the observable
-      this.userSubject.next(this.user);
+      this.userSubject.next(user);
   }
 
   async getUser(): Promise<User>{

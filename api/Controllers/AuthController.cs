@@ -127,6 +127,17 @@ namespace api.Controllers
             var user = await _dbContext.LoadAsync<AppUser>(userName);
             return user != null;
         }
+
+        [HttpGet("token/{username}")]
+        public async Task<ActionResult> GenerateToken(string username)
+        {
+            var token = _tokenSerivce.CreateToken(username);
+            return new OkObjectResult(new
+            {
+                value = token
+            }) ;
+        }
+
     }
 }
 
