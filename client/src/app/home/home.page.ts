@@ -5,6 +5,7 @@ import { AddLocationModalComponent } from './components/add-location-modal/add-l
 import { SharedModule } from '../shared/shared.module';
 import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ import { Location } from '../_interfaces/Location.modal';
 export class HomePage implements OnInit {
   locations: Location[] = [];
   constructor(
+    private authService: AuthService,
     private locationService: LocationService,
     private modalController: ModalController,
     private outlet: IonRouterOutlet) {}
@@ -23,10 +25,19 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
       this.loadLocations();
       this.subscribeToLocationUpdate();
+      this.subscribeToUserUpdates();
   }
 
   async loadLocations(){
     this.locations = await this.locationService.getLocations();
+  }
+
+  subscribeToUserUpdates(){
+    this.authService.user$.subscribe(async user => {
+      if(user){
+        await this.loadLocations();
+      }
+    })
   }
 
   subscribeToLocationUpdate(){
