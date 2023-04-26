@@ -17,7 +17,7 @@ import { ToastService } from '../_services/toast.service';
   imports: [SharedModule, ReminderItemComponent, AddReminderModalComponent]
 })
 export class ReminderDetailsPage implements OnInit {
-  location: Location;
+  location: Location = {} as Location;
   isLoadingData: boolean = false;
   isAddRemInputOpen: boolean = false; // boolean to to store if user wants to create new reminder to not
   locationUpdated: boolean = false; // boolean for location update logic
@@ -41,8 +41,10 @@ export class ReminderDetailsPage implements OnInit {
 
   async loadLocationDetails(locationID: string){
     this.isLoadingData = true;
-    this.location = await this.locationService.getLocationDetails(locationID);
-    this.isLoadingData = false;
+    this.location = await this.locationService.getLocationDetails(locationID).then(res => {
+      this.isLoadingData = false;
+      return res;
+    });
   }
 
   async openAddReminderModal(){

@@ -3,6 +3,7 @@ import { IonRouterOutlet, ModalController } from '@ionic/angular';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
 import { SharedModule } from '../shared/shared.module';
 import { AuthService } from '../_services/auth.service';
+import { User } from '../_interfaces/Auth.modal';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,8 @@ import { AuthService } from '../_services/auth.service';
   imports: [SharedModule, ReviewModalComponent]
 })
 export class SettingsPage implements OnInit {
-
+  user: User = {} as User;
+  isFetchingData: boolean;
   constructor(
     private authService: AuthService,
     private modalController: ModalController,
@@ -20,6 +22,15 @@ export class SettingsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getUserDetails();
+  }
+
+  async getUserDetails(){
+    this.isFetchingData = true;
+    this.user = await this.authService.getUser().then(res => {
+      this.isFetchingData = false;
+      return res;
+    })
   }
 
   async openReviewModal(){
