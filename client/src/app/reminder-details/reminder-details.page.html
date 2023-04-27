@@ -46,7 +46,7 @@
         <ion-text color="danger" *ngIf="!isLoadingData && location.reminders.length < 1">
           <small>Please add reminders!</small>
         </ion-text>
-        <app-reminder-item *ngFor="let reminder of location.reminders; let i = index" (reminderUpdatedBool)="handleRemTitleUpdate($event)" (reminderDeleted)="handleReminderDelete($event)" [reminder]="reminder" [index]="i"></app-reminder-item>
+        <app-reminder-item *ngFor="let reminder of location.reminders; let i = index" (reminderUpdatedBool)="handleRemTitleUpdate($event)" (reminderDeleted)="handleReminderDelete($event)" (reminderChecked)="handleReminderChecked($event)" [reminder]="reminder" [index]="i"></app-reminder-item>
       </div>
 
       <!-- when user clicks "+" button -->

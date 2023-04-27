@@ -16,8 +16,10 @@ export class ReminderItemComponent  implements OnInit{
   @Input() index: number;
   @Output() reminderUpdatedBool: EventEmitter<boolean> = new EventEmitter(false);
   @Output() reminderDeleted: EventEmitter<number> = new EventEmitter(null);
+  @Output() reminderChecked: EventEmitter<number> = new EventEmitter(null);
   @ViewChild("remTitleInput", {static: false}) remTitleInput: IonInput;
   isInEditState: boolean = false;
+  isInDeleteState: boolean = false;
   constructor() { }
 
   ngOnInit() {}
@@ -48,6 +50,15 @@ export class ReminderItemComponent  implements OnInit{
 
   handleDelete(){
     this.reminderDeleted.emit(this.index);
+  }
+
+  handleCheckReminder(e){
+    this.isInDeleteState = e.detail.checked;
+    setTimeout(() => {
+      if(this.isInDeleteState){
+        this.reminderChecked.emit(this.index);
+      }
+    }, 1000)
   }
 
 }

@@ -1,7 +1,7 @@
 <ion-item-sliding class="ion-no-padding" *ngIf="!isInEditState">
   <!-- SET 'lines=none' IF IT IS THE LAST ION-ITEM -->
   <ion-item class="ion-no-padding">
-    <ion-checkbox aria-label="" slot="start"></ion-checkbox>
+    <ion-checkbox (ionChange)="handleCheckReminder($event)" aria-label="" slot="start"></ion-checkbox>
     <ion-label (click)="handleEdit()">
       <h2>{{reminder.title}}</h2>
     </ion-label>

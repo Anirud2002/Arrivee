@@ -3,7 +3,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
 import { SelectedUnit } from '../home/components/add-location-modal/add-location-modal.component'; 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
 import { SharedModule } from '../shared/shared.module';
@@ -36,8 +36,21 @@ export class ReminderDetailsPage implements OnInit {
       const id = params.get('id');
       this.loadLocationDetails(id);
     })
+
+    this.subscribeToNavigationEnd();
   }
 
+  subscribeToNavigationEnd(){
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationEnd) {
+        this.validateLocationReminders()
+      }
+    })
+  }
+
+  validateLocationReminders(){
+
+  }
 
   async loadLocationDetails(locationID: string){
     this.isLoadingData = true;
@@ -162,42 +175,23 @@ export class ReminderDetailsPage implements OnInit {
     }
   }
 
-  handleReminderDelete(e){
+  handleReminderDelete(e: number){
     let index = e;
     this.location.reminders.splice(index, 1);
     this.locationUpdated = true;
   }
 
+  async handleReminderChecked(e: number){
+    let index = e;
+    this.location.reminders.splice(index, 1);
+    await this.updateLocation();
+  }
+
   async updateLocation(){
-    if(this.location.reminders.length > 0){
-      await this.locationService.updateLocation(this.location).then(async () => {
-        this.locationUpdated = false;
-        await this.toastService.createSuccessToast("Saved!")
-      });
-    }else{
-      const alert = await this.alertController.create({
-        header: "Delete Location?",
-        message: "You don't have any reminders",
-        buttons: [
-          {
-            text: "Yes",
-            handler: async () => {
-              await this.locationService.deleteLocation(this.location.locationID).then(
-                () => {
-                  this.router.navigateByUrl("/");
-                }
-              );
-            }
-          },
-          {
-            text: "No",
-            role: "cancel"
-          }
-        ]
-      });
-      await alert.present();
-    }
-    
+    await this.locationService.updateLocation(this.location).then(async () => {
+      this.locationUpdated = false;
+      await this.toastService.createSuccessToast("Saved!")
+    });
   }
 
   /**
