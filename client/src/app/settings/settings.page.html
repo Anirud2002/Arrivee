@@ -39,7 +39,7 @@
           <ion-label>
             <strong>Appearance</strong>
           </ion-label>
-          <ion-select value="light" slot="end" interface="popover">
+          <ion-select (ionChange)="handleThemeChange($event)" [value]="theme" slot="end" interface="popover">
             <ion-select-option value="light">Light</ion-select-option>
             <ion-select-option value="dark">Dark</ion-select-option>
             <ion-select-option value="system">System</ion-select-option>

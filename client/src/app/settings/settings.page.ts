@@ -4,6 +4,7 @@ import { ReviewModalComponent } from './components/review-modal/review-modal.com
 import { SharedModule } from '../shared/shared.module';
 import { AuthService } from '../_services/auth.service';
 import { User } from '../_interfaces/Auth.modal';
+import { UserConfigService } from '../_services/user-config.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,16 +14,19 @@ import { User } from '../_interfaces/Auth.modal';
   imports: [SharedModule, ReviewModalComponent]
 })
 export class SettingsPage implements OnInit {
+  theme: string;
   user: User = {} as User;
   isFetchingData: boolean;
   constructor(
     private authService: AuthService,
+    private userConfigService: UserConfigService,
     private modalController: ModalController,
     private outlet: IonRouterOutlet
   ) { }
 
   ngOnInit() {
     this.getUserDetails();
+    this.getTheme();
   }
 
   async getUserDetails(){
@@ -31,6 +35,15 @@ export class SettingsPage implements OnInit {
       this.isFetchingData = false;
       return res;
     })
+  }
+
+  async getTheme(){
+    this.theme = await this.userConfigService.getTheme();
+  }
+
+  handleThemeChange(e){
+    const theme = e.detail.value;
+    this.userConfigService.applyTheme(theme);
   }
 
   async openReviewModal(){
