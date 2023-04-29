@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{user.username}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/settings" color="tertiary" text="Settings"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding-horizontal">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large" class="ion-no-padding flex items-center w-full h-full">
+          <ion-item lines="none" class="title ion-padding-vertical rounded-lg"> 
+            <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="" class="w-10 h-10 rounded-full mr-4">
+            <p class="text-2xl">{{user.username}}</p>
+          </ion-item>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form *ngIf="!isFetchingData" [formGroup]="profileForm" class="ion-margin-vertical space-y-4">
+
+    <ion-item lines="none">
+      <ion-input label="First name" labelPlacement="stacked" type="text" formControlName="firstname" (ionBlur)="markAsTouched('firstname')"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="hasError('firstname')">
+      <small>First name is required*</small>
+    </ion-text>
+
+    <ion-item lines="none">
+      <ion-input label="Last name" labelPlacement="stacked" type="text" formControlName="lastname" (ionBlur)="markAsTouched('lastname')"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="hasError('lastname')">
+      <small>Last name is required*</small>
+    </ion-text>
+
+    <ion-item lines="none">
+      <ion-input label="Username" labelPlacement="stacked" type="text" formControlName="username" (ionBlur)="markAsTouched('username')"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="hasError('username')">
+      <small>Username is required*</small>
+    </ion-text>
+
+    <ion-item lines="none">
+      <ion-input label="Old password" labelPlacement="stacked" [type]="isOldPasswordHidden ? 'password' : 'text'" formControlName="oldPassword" (ionBlur)="markAsTouched('oldPassword')"></ion-input>
+      <ion-icon *ngIf="!isOldPasswordInputEmpty" [name]="isOldPasswordHidden ? 'eye-off' : 'eye'" (click)="toggleOldPasswordVisibility()" slot="end" size="small"></ion-icon>
+    </ion-item>
+    <ion-text color="danger" *ngIf="hasError('oldPassword')">
+      <small>Old password is required to change*</small>
+    </ion-text>
+
+    <div class="flex justify-end">
+      <ion-text color="tertiary" slot="end">
+        <small>Forgot password?</small>
+      </ion-text>
+    </div>
+
+    <ion-item lines="none">
+      <ion-input label="New password" labelPlacement="stacked" [type]="isNewPasswordHidden ? 'password' : 'text'" formControlName="newPassword" (ionBlur)="markAsTouched('newPassword')"></ion-input>
+      <ion-icon *ngIf="!isNewPasswordInputEmpty" [name]="isNewPasswordHidden ? 'eye-off' : 'eye'" (click)="toggleNewPasswordVisibility()" slot="end" size="small"></ion-icon>
+    </ion-item>
+    <ion-text color="danger" *ngIf="hasError('newPassword')">
+      <small>New password is required*</small>
+    </ion-text>
+
+  </form>
+
+</ion-content>
+
+<ion-footer class="ion-margin-vertical">
+  <div class="flex justify-center">
+    <ion-button class="update-rem-btn w-72 mx-auto" [disabled]="!isFetchingData && !profileForm.dirty" (click)="handleUpdateInfo()">
+      Update
+    </ion-button>
+  </div>
+</ion-footer>

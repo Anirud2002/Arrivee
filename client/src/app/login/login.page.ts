@@ -25,10 +25,11 @@ export class LoginPage implements OnInit {
     private googleAuthService: GoogleAuthService,
     private router: Router
   ) { 
-    this.initForm();
+    
   }
 
   ngOnInit() {
+    this.initForm();
     this.subscribeToUserStatus();
    }
 
@@ -81,18 +82,20 @@ export class LoginPage implements OnInit {
       }
     }
 
-    if(errorCounts === 0){
-      // handle register user
-      const retVal = await this.authService.login(this.form.value);
-      if(!retVal){
-        this.errorOccurred = true;
-        const passwordControl = this.form.controls['password'];
-        passwordControl.markAsUntouched();
-        passwordControl.patchValue("");
-        return;
-      }
-      this.router.navigateByUrl("/home")
+    if(errorCounts > 0){
+      return;
     }
+
+    // handle register user
+    const retVal = await this.authService.login(this.form.value);
+    if(!retVal){
+      this.errorOccurred = true;
+      const passwordControl = this.form.controls['password'];
+      passwordControl.markAsUntouched();
+      passwordControl.patchValue("");
+      return;
+    }
+    this.router.navigateByUrl("/home")
   }
 
   async handleGoogleSignIn(){

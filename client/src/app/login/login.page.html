@@ -24,7 +24,7 @@
             <!-- PASSWORD -->
             <ion-item>
               <ion-input label="Password" labelPlacement="floating" formControlName="password" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('password')"></ion-input>
-              <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye' : 'eye-off'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
+              <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye-off' : 'eye'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
             </ion-item>
             <ion-text color="danger" size="small" *ngIf="hasErrors('password', 'required')" class="ion-padding-horizontal">
               <small>Password is required!</small>
