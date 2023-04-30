@@ -5,9 +5,15 @@ namespace api.Extensions
 {
 	public static class ClaimsPrincipalExtenstion
 	{
-		public static bool Exists(this ClaimsPrincipal user, string userName)
+		// more secure way
+		public static bool Exists(this ClaimsPrincipal user, string username)
 		{
-			return user.FindFirst(ClaimTypes.NameIdentifier)?.Value == userName;
+			return user.FindFirst(ClaimTypes.NameIdentifier)?.Value == username;
+		}
+
+		public static string GetUsername(this ClaimsPrincipal user)
+		{
+			return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		}
 	}
 }
