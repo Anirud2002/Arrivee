@@ -27,6 +27,7 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
     this.getUserDetails();
     this.getTheme();
+    this.subscribeToUserUpdates()
   }
 
   async getUserDetails(){
@@ -34,6 +35,14 @@ export class SettingsPage implements OnInit {
     this.user = await this.authService.getUser().then(res => {
       this.isFetchingData = false;
       return res;
+    })
+  }
+
+  subscribeToUserUpdates(){
+    this.authService.user$.subscribe(user => {
+      if(user){
+        this.getUserDetails();
+      }
     })
   }
 

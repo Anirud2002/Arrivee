@@ -98,7 +98,9 @@ export class ProfilePage implements OnInit {
     }
 
     // handle update user info
-
+    await this.authService.updateUser(this.profileForm.value).then(_ => {
+      this.getUser();
+    });
   }
 
 }

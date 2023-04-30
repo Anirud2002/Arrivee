@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, lastValueFrom, map, of, take, tap, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http"
-import { GoogleSignInDTO, LoginDTO, RegisterDTO, User } from '../_interfaces/Auth.modal';
+import { GoogleSignInDTO, LoginDTO, RegisterDTO, UpdateUserDTO, User } from '../_interfaces/Auth.modal';
 import { environment } from '../../environments/environment';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -138,12 +138,46 @@ export class AuthService {
         value: JSON.stringify(user)
       })
 
+      // set user
+      this.user = user;
+
       // update the observable
       this.userSubject.next(user);
   }
 
   async getUser(): Promise<User>{
     return JSON.parse((await Preferences.get({key: 'user'})).value) as User;
+  }
+
+  async updateUser(updateUserDTO: UpdateUserDTO){
+    let apiCall = this.http.put<Promise<any>>(`${environment.baseApiUrl}/user/update`, updateUserDTO)
+    .pipe(
+      catchError((err) => {
+        let message = err.error.message
+        this.toastService.createErrorToast(message);
+        return of(null);
+      })
+    );
+
+    let response = await lastValueFrom(apiCall);
+
+    if(!response){
+      return;
+    }
+
+    this.user = await this.getUser();
+
+    let user = {
+      firstname: updateUserDTO.firstname,
+      lastname: updateUserDTO.lastname,
+      username: updateUserDTO.username,
+      email: this.user.email,
+      token: response.token ?? this.user.token,
+    } as User
+    
+    this.setUser(user);
+
+    this.toastService.createSuccessToast("Updated!")
   }
   
 }

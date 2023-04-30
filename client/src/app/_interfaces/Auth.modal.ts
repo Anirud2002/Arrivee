@@ -25,3 +25,11 @@ export interface GoogleSignInDTO{
     username: string, 
     email: string, 
 }
+
+export interface UpdateUserDTO{
+    firstname: string, 
+    lastname: string, 
+    username: string, 
+    oldPassword: string
+    newPassword: string
+}
