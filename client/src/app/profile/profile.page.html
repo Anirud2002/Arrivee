@@ -31,10 +31,13 @@
     </ion-text>
 
     <ion-item lines="none">
-      <ion-input label="Username" labelPlacement="stacked" type="text" formControlName="username" (ionBlur)="markAsTouched('username')"></ion-input>
+      <ion-input label="Username" labelPlacement="stacked" type="text" debounce="1000" (ionInput)="checkUsername($event)" formControlName="username" (ionBlur)="markAsTouched('username')"></ion-input>
     </ion-item>
     <ion-text color="danger" *ngIf="hasError('username')">
       <small>Username is required*</small>
+    </ion-text>
+    <ion-text color="danger" *ngIf="usernameTaken">
+      <small>Username is already taken!</small>
     </ion-text>
 
     <ion-item lines="none">

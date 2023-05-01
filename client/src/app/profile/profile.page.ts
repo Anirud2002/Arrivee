@@ -20,6 +20,7 @@ export class ProfilePage implements OnInit {
   isFetchingData: boolean;
   isOldPasswordHidden: boolean = true;
   isNewPasswordHidden: boolean = true;
+  usernameTaken: boolean = false;
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder
@@ -81,6 +82,24 @@ export class ProfilePage implements OnInit {
 
   toggleNewPasswordVisibility(){
     this.isNewPasswordHidden = !this.isNewPasswordHidden;
+  }
+
+  async checkUsername(e){
+    let username = e.detail.value;
+    if(!username){ // if it an empty value, don't do anything
+      return;
+    }
+
+    if(this.user.username === username){ // user basically again re-typed their username so don't do anything
+      return;
+    }
+
+    this.usernameTaken = false;
+    const retVal = await this.authService.checkUsername(username);
+    if(!retVal){ // means username is already taken
+      this.profileForm.get("username").setErrors({usernameTaken: true});
+      this.usernameTaken = true;
+    }
   }
 
   async handleUpdateInfo(): Promise<void>{
