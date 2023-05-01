@@ -77,7 +77,7 @@ namespace api.Controllers
             ArgumentNullException.ThrowIfNull(locationRequestDTO.StreetAddress);
             ArgumentNullException.ThrowIfNull(locationRequestDTO.Username);
             ArgumentNullException.ThrowIfNull(locationRequestDTO.RadiusUnit);
-            if (locationRequestDTO.Radius == 0)
+            if (locationRequestDTO.Radius == 0 || locationRequestDTO.Coords.Latitude == 0 || locationRequestDTO.Coords.Longitude == 0)
             {
                 throw new ArgumentNullException();
             };
@@ -97,6 +97,11 @@ namespace api.Controllers
                 Title = locationRequestDTO.Title,
                 StreetAddress = locationRequestDTO.StreetAddress,
                 Radius = locationRequestDTO.Radius,
+                Coords = new Coordinates()
+                {
+                    Latitude = locationRequestDTO.Coords.Latitude,
+                    Longitude = locationRequestDTO.Coords.Longitude
+                },
                 RadiusUnit = locationRequestDTO.RadiusUnit,
                 Reminders = locationRequestDTO.Reminders ?? new List<Reminder>(),
             };

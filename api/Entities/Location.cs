@@ -12,6 +12,7 @@ namespace api.Entities
         public string Username { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string StreetAddress { get; set; } = string.Empty;
+        public Coordinates Coords { get; set; } = new Coordinates();
         public double Radius { get; set; }
         public string RadiusUnit { get; set; } = string.Empty;
         public List<Reminder> Reminders { get; set; } = new List<Reminder>();
@@ -29,11 +30,18 @@ namespace api.Entities
                 Username = Username,
                 Title = Title,
                 StreetAddress = StreetAddress,
+                Coords = Coords,
                 Radius = Radius,
                 RadiusUnit = RadiusUnit,
                 Reminders = Reminders
             };
         }
+    }
+
+    public class Coordinates
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
 
