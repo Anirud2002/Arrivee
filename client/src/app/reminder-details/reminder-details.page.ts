@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
@@ -8,15 +8,19 @@ import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
 import { SharedModule } from '../shared/shared.module';
 import { ToastService } from '../_services/toast.service';
+import { GoogleMap } from '@capacitor/google-maps';
 
 @Component({
   selector: 'app-reminder-details',
   templateUrl: './reminder-details.page.html',
   styleUrls: ['./reminder-details.page.scss'],
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [SharedModule, ReminderItemComponent, AddReminderModalComponent]
 })
 export class ReminderDetailsPage implements OnInit {
+  @ViewChild("map") mapRef: ElementRef<HTMLElement>;
+  newMap: GoogleMap;
   location: Location = {} as Location;
   isLoadingData: boolean = false;
   isAddRemInputOpen: boolean = false; // boolean to to store if user wants to create new reminder to not
@@ -31,25 +35,13 @@ export class ReminderDetailsPage implements OnInit {
     private toastService: ToastService
   ) { }
 
-  ngOnInit() {
-    this.actRoute.paramMap.subscribe(params => {
+  async ngOnInit() {
+    this.actRoute.paramMap.subscribe(async params => {
       const id = params.get('id');
-      this.loadLocationDetails(id);
-    })
-
-    this.subscribeToNavigationEnd();
-  }
-
-  subscribeToNavigationEnd(){
-    this.router.events.subscribe(event => {
-      if(event instanceof NavigationEnd) {
-        this.validateLocationReminders()
-      }
-    })
-  }
-
-  validateLocationReminders(){
-
+      await this.loadLocationDetails(id);
+      const {coords:{latitude, longitude}} = this.location;
+      await this.renderGoogleMap(latitude, longitude);
+    });
   }
 
   async loadLocationDetails(locationID: string){
@@ -58,6 +50,28 @@ export class ReminderDetailsPage implements OnInit {
       this.isLoadingData = false;
       return res;
     });
+  }
+
+  async renderGoogleMap(latitude: number, longitude: number){
+    this.newMap = await GoogleMap.create({
+      id: "location-map",
+      element: this.mapRef.nativeElement,
+      apiKey: "AIzaSyBl0DyemjVHq01rjeUGzs8bsOc6g2422XA",
+      config: {
+        center: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 16
+      },
+    });
+
+    await this.newMap.addMarker({
+      coordinate: {
+        lat: latitude,
+        lng: longitude
+      }
+    })
   }
 
   async openAddReminderModal(){

@@ -39,6 +39,7 @@ export class AddLocationModalComponent implements OnInit {
       title: "",
       streetAddress: "",
       radius: null,
+      coords: null,
       radiusUnit: "m",
       reminders: []
     }
@@ -61,15 +62,20 @@ export class AddLocationModalComponent implements OnInit {
     if(!this.searchBarInput) return;
 
     this.googlePlacesApiResponse = await this.googleService.getPlaceResult(this.searchBarInput);
+    console.log(this.googlePlacesApiResponse)
   }
 
   selectLocation(){
     if(!this.searchBarInput){
       return;
     }
-    const {name, formatted_address} = this.googlePlacesApiResponse.result;
+    const {name, formatted_address, geometry:{location}} = this.googlePlacesApiResponse.result;
     this.newLocation.title = this.searchBarInput = name;
     this.newLocation.streetAddress = formatted_address;
+    this.newLocation.coords = {
+      latitude: location.lat,
+      longitude: location.lng
+    }
     this.googlePlacesApiResponse = null;
   }
 

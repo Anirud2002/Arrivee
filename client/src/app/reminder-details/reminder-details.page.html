@@ -17,6 +17,9 @@
     <p class="ion-padding-horizontal">{{location.streetAddress}}</p>
     <ion-skeleton-text class="ion-margin-start" animated="true" style="width: 30%;" *ngIf="isLoadingData"></ion-skeleton-text>
   </ion-header>
+  <ion-card class="google-card">
+    <capacitor-google-map #map></capacitor-google-map>
+  </ion-card>
 
   <ion-range aria-label="Volume" class="ion-margin-horizontal ion-padding" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="location.radius">
     <div slot="label" class="mr-4 -ml-4">Radius:</div>
