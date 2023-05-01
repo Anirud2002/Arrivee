@@ -75,6 +75,10 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
+  ion-text{
+    color: var(--ion-color-primary);
+  }
+
   ion-content, ion-toolbar, ion-modal{
     --background: var(--ion-color-secondary);
   }
