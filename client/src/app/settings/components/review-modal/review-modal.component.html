@@ -22,7 +22,7 @@
     <ion-icon [name]="(currentRating >= 5) ? 'star' : 'star-outline'" size="large" (click)="setRating(5)"></ion-icon>
   </div>
 
-  <ion-item lines="none">
+  <ion-item lines="none" class="feedback">
     <ion-textarea label="" class="ion-padding-vertical" counter="true" maxlength="100" autoGrow="true" placeholder="Give us feedback"></ion-textarea>
   </ion-item>
 </ion-content>
