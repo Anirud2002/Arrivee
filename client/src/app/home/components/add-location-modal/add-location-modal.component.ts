@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { SharedModule } from '../../../shared/shared.module';
 import { ReminderItemModalComponent } from './components/reminder-item-modal/reminder-item-modal.component';
@@ -6,6 +6,7 @@ import { NewLocation } from '../../../_interfaces/Location.modal';
 import { ToastService } from '../../../_services/toast.service';
 import { GoogleService } from '../../../_services/google.service';
 import { LocationService } from '../../../_services/location.service';
+import { GoogleMap } from '@capacitor/google-maps';
 
 export enum SelectedUnit{
   km = "km",
@@ -17,10 +18,13 @@ export enum SelectedUnit{
   templateUrl: './add-location-modal.component.html',
   styleUrls: ['./add-location-modal.component.scss'],
   standalone: true, 
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [SharedModule, ReminderItemModalComponent],
 })
 
 export class AddLocationModalComponent implements OnInit {
+  @ViewChild("map") mapRef: ElementRef<HTMLElement>;
+  newMap: GoogleMap;
   isAddRemInputOpen: boolean = false;
   isInEditState: boolean = false;
   newLocation: NewLocation;
@@ -49,6 +53,28 @@ export class AddLocationModalComponent implements OnInit {
     this.newLocation.radius = this.getDefaultValue();
   }
 
+  async renderGoogleMap(latitude: number, longitude: number){
+    this.newMap = await GoogleMap.create({
+      id: "location-map",
+      element: this.mapRef.nativeElement,
+      apiKey: "AIzaSyBl0DyemjVHq01rjeUGzs8bsOc6g2422XA",
+      config: {
+        center: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 16
+      },
+    });
+
+    await this.newMap.addMarker({
+      coordinate: {
+        lat: latitude,
+        lng: longitude
+      }
+    })
+  }
+
   returnUnit = (value: number) => {
     this.newLocation.radius = parseFloat(value.toFixed(1));
     return `${this.newLocation.radius}${this.newLocation.radiusUnit}`
@@ -57,12 +83,12 @@ export class AddLocationModalComponent implements OnInit {
   async searchPlace(e){
     this.newLocation.title = "";
     this.newLocation.streetAddress = "";
+    this.newLocation.coords = null;
     this.googlePlacesApiResponse = null;
 
     if(!this.searchBarInput) return;
 
     this.googlePlacesApiResponse = await this.googleService.getPlaceResult(this.searchBarInput);
-    console.log(this.googlePlacesApiResponse)
   }
 
   selectLocation(){
@@ -76,6 +102,8 @@ export class AddLocationModalComponent implements OnInit {
       latitude: location.lat,
       longitude: location.lng
     }
+    const {coords:{latitude, longitude}} = this.newLocation;
+    this.renderGoogleMap(latitude, longitude);
     this.googlePlacesApiResponse = null;
   }
 
