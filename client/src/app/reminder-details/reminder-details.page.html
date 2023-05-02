@@ -17,6 +17,8 @@
     <p class="ion-padding-horizontal">{{location.streetAddress}}</p>
     <ion-skeleton-text class="ion-margin-start" animated="true" style="width: 30%;" *ngIf="isLoadingData"></ion-skeleton-text>
   </ion-header>
+
+  <!-- Google MAP -->
   <ion-card class="google-card">
     <capacitor-google-map #map></capacitor-google-map>
   </ion-card>
