@@ -15,7 +15,11 @@
   </ion-header>
 
   <div class="mt-6">
-    <app-locations-list [locations]="locations"></app-locations-list>
+    <ion-text class="ion-padding">
+      <strong>Locations </strong>
+    </ion-text>
+    <app-locations-list [locations]="locations" *ngIf="isFetchingData"></app-locations-list>
+    <app-locations-list-skeleton *ngIf="isFetchingData"></app-locations-list-skeleton>
   </div>
 
 </ion-content>

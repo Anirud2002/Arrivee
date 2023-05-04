@@ -6,15 +6,17 @@ import { SharedModule } from '../shared/shared.module';
 import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
 import { AuthService } from '../_services/auth.service';
+import { LocationsListSkeletonComponent } from './components/locations-list-skeleton/locations-list-skeleton.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [SharedModule, LocationsListComponent, AddLocationModalComponent],
+  imports: [SharedModule, LocationsListComponent, AddLocationModalComponent, LocationsListSkeletonComponent],
 })
 export class HomePage implements OnInit {
+  isFetchingData: boolean = false;
   locations: Location[] = [];
   constructor(
     private authService: AuthService,
@@ -29,7 +31,11 @@ export class HomePage implements OnInit {
   }
 
   async loadLocations(){
-    this.locations = await this.locationService.getLocations();
+    this.isFetchingData = true;
+    this.locations = await this.locationService.getLocations().then((res) => {
+      this.isFetchingData = false;
+      return res;
+    });
   }
 
   subscribeToUserUpdates(){
