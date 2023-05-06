@@ -57,7 +57,7 @@ export class AddLocationModalComponent implements OnInit {
     this.newMap = await GoogleMap.create({
       id: "location-map",
       element: this.mapRef.nativeElement,
-      apiKey: "AIzaSyBl0DyemjVHq01rjeUGzs8bsOc6g2422XA",
+      apiKey: "AIzaSyDI9zF17bjo0MdmjhG0JlJbQxn3CqgrYDI",
       config: {
         center: {
           lat: latitude,

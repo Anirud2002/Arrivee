@@ -7,6 +7,7 @@ import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
 import { AuthService } from '../_services/auth.service';
 import { LocationsListSkeletonComponent } from './components/locations-list-skeleton/locations-list-skeleton.component';
+import { LocationPermService } from '../_services/location-perm.service';
 
 @Component({
   selector: 'app-home',
@@ -22,12 +23,14 @@ export class HomePage implements OnInit {
     private authService: AuthService,
     private locationService: LocationService,
     private modalController: ModalController,
+    private locationPermService: LocationPermService,
     private outlet: IonRouterOutlet) {}
 
   ngOnInit(): void {
-      this.loadLocations();
-      this.subscribeToLocationUpdate();
-      this.subscribeToUserUpdates();
+    this.checkAndRequestLocationPermission();
+    this.loadLocations();
+    this.subscribeToLocationUpdate();
+    this.subscribeToUserUpdates();
   }
 
   async loadLocations(){
@@ -36,6 +39,15 @@ export class HomePage implements OnInit {
       this.isFetchingData = false;
       return res;
     });
+  }
+
+  async checkAndRequestLocationPermission(){
+    const locationPermState = await this.locationPermService.checkPermission();
+    if(locationPermState === "denied"){
+      return;
+    }
+    console.log("2");
+    await this.locationPermService.requestLocationPermission();
   }
 
   subscribeToUserUpdates(){
