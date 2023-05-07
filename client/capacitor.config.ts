@@ -9,7 +9,7 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
   plugins: {
     Keyboard: {
-      resize: KeyboardResize.Ionic,
+      resize: KeyboardResize.None,
       style: KeyboardStyle.Light,
       resizeOnFullScreen: true,
     },
