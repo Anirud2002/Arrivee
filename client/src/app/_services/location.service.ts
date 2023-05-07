@@ -130,6 +130,7 @@ export class LocationService {
     return;
   }
 
+  // checks users and location coords and triggers the push notificaion workflow 
   checkUserAndLocationsCoords(userCoord: Coords){
     if(!this.locations){
       return;
@@ -137,12 +138,13 @@ export class LocationService {
     this.locations.forEach(location => {
       let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
       if(distanceFromUser <= location.radius){
+        // the workflow to trigger the notification goes in here
         this.toastService.createSuccessToast("You have a notification");
       }
     })
   }
-  
 
+  // gets distance between users coords and location coords in correct unit
   getDistance(userLat: number, userLng: number, locationLat: number, locationLng: number, unit: string): number{
     const earthRadius = 6371; // Radius of the earth in km
     const dLat = this.deg2Rad(locationLat - userLat); // deg2Rad below
@@ -158,6 +160,7 @@ export class LocationService {
     return distance;
   }
 
+  // converts the distance unit
   convertDistance(distance: number, unit: string): number{
     switch(unit){
       case "km":
@@ -171,6 +174,7 @@ export class LocationService {
     }
   }
 
+  // converts degree value to radian
   deg2Rad(deg: number){
     return deg * (Math.PI / 180);
   }
