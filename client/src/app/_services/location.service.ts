@@ -1,32 +1,29 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { User } from '../_interfaces/Auth.modal';
 import { Location, NewLocation } from '../_interfaces/Location.modal';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, lastValueFrom, of } from 'rxjs';
-import { ToastController } from '@ionic/angular';
 import { ToastService } from './toast.service';
+import { Coords } from '../_interfaces/Location.modal';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
   user: User;
+  locations: Location[];
   private locationUpdated: BehaviorSubject<boolean> = new BehaviorSubject(false);
   locationUpdated$ = this.locationUpdated.asObservable();
   constructor(
     private authService: AuthService,
     private http: HttpClient,
-    private toastController: ToastController,
     private toastService: ToastService
-  ) { 
-    
-  }
+  ) { }
 
   async getLocations(): Promise<Location[]>{
     this.user = await this.authService.getUser();
-    let locations = [] as Location[];
     const response = this.http.get<Location[]>(`${environment.baseApiUrl}/location/get-all-location/${this.user.username}`)
     .pipe(
       catchError(() => {
@@ -34,14 +31,14 @@ export class LocationService {
       })
     );
 
-    locations = await lastValueFrom(response);
+    this.locations = await lastValueFrom(response);
 
-    if(!locations){
+    if(!this.locations){
       await this.toastService.createErrorToast("Something went wrong!");
       return null;;
     }
 
-    return locations;
+    return this.locations;
   }
 
   async getLocationDetails(locationID: string): Promise<Location>{
@@ -131,5 +128,50 @@ export class LocationService {
 
     await this.toastService.createSuccessToast("Deleted!");
     return;
+  }
+
+  checkUserAndLocationsCoords(userCoord: Coords){
+    if(!this.locations){
+      return;
+    }
+    this.locations.forEach(location => {
+      let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
+      if(distanceFromUser <= location.radius){
+        this.toastService.createSuccessToast("You have a notification");
+      }
+    })
+  }
+  
+
+  getDistance(userLat: number, userLng: number, locationLat: number, locationLng: number, unit: string): number{
+    const earthRadius = 6371; // Radius of the earth in km
+    const dLat = this.deg2Rad(locationLat - userLat); // deg2Rad below
+    const dLon = this.deg2Rad(locationLng - userLng);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2Rad(userLat)) *
+        Math.cos(this.deg2Rad(locationLat)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = this.convertDistance(earthRadius * c, unit);
+    return distance;
+  }
+
+  convertDistance(distance: number, unit: string): number{
+    switch(unit){
+      case "km":
+        return distance;
+      case "m":
+        return distance * 1000;
+      case "mil":
+        return distance / 1.609;
+      default:
+        return distance;
+    }
+  }
+
+  deg2Rad(deg: number){
+    return deg * (Math.PI / 180);
   }
 }

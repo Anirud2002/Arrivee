@@ -43,10 +43,9 @@ export class HomePage implements OnInit {
 
   async checkAndRequestLocationPermission(){
     const locationPermState = await this.locationPermService.checkPermission();
-    if(locationPermState === "denied"){
+    if(!locationPermState || locationPermState === "denied"){
       return;
     }
-    console.log("2");
     await this.locationPermService.requestLocationPermission();
   }
 
