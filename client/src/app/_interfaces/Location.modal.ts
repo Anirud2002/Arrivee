@@ -7,7 +7,8 @@ export interface Location{
     radius: number,
     coords: Coords,
     radiusUnit: string,
-    reminders?: Reminder[]
+    reminders?: Reminder[],
+    notificationTimestamp?: number
 }
 
 export interface NewLocation{
@@ -22,4 +23,9 @@ export interface NewLocation{
 export interface Coords{
     latitude: number,
     longitude: number,
+}
+
+export interface UpdateTimestampDTO{
+    locationID: string,
+    username: string
 }

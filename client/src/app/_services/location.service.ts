@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { User } from '../_interfaces/Auth.modal';
-import { Location, NewLocation } from '../_interfaces/Location.modal';
+import { Location, NewLocation, UpdateTimestampDTO } from '../_interfaces/Location.modal';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, lastValueFrom, of } from 'rxjs';
 import { ToastService } from './toast.service';
@@ -130,18 +130,49 @@ export class LocationService {
     return;
   }
 
+  async updateLocationTimestamp(locationID: string): Promise<number>{
+    if(!locationID) return null;
+    if(!this.user){
+      this.user = await this.authService.getUser();
+    }
+    let updateTimestampDTO = {
+      locationID,
+      username: this.user.username
+    } as UpdateTimestampDTO
+    const response = this.http.put<number>(`${environment.baseApiUrl}/location/update-timestamp`, updateTimestampDTO);
+    const result = await lastValueFrom(response);
+    return result;
+  }
+
   // checks users and location coords and triggers the push notificaion workflow 
   checkUserAndLocationsCoords(userCoord: Coords){
     if(!this.locations){
       return;
     }
-    this.locations.forEach(location => {
+    this.locations.forEach(async location => {
       let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
-      if(distanceFromUser <= location.radius){
+      if(distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)){
+        location.notificationTimestamp = await this.updateLocationTimestamp(location.locationID);
+        console.log("new timestamp: ", location.notificationTimestamp);
+
         // the workflow to trigger the notification goes in here
         this.toastService.createSuccessToast("You have a notification");
       }
     })
+  }
+
+  // checks if notification can be pushed depending upon the last notification timestamp
+  canNotificationBePushed(lastTimestamp: number): boolean{
+    let retVal: boolean;
+    if(!lastTimestamp) retVal = true; // no timestamp means the notification is never created for this location
+    let currentUnixTimestamp = Date.now();
+    if((currentUnixTimestamp - lastTimestamp) < (2 * 60 * 60 * 1000)){ // if 2 hours has not elapsed since the last notification, return false
+      retVal = false;
+    }else {
+      retVal = true;
+    }
+
+    return retVal;
   }
 
   // gets distance between users coords and location coords in correct unit
