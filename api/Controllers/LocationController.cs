@@ -104,6 +104,7 @@ namespace api.Controllers
                 },
                 RadiusUnit = locationRequestDTO.RadiusUnit,
                 Reminders = locationRequestDTO.Reminders ?? new List<Reminder>(),
+                NotificationTimestamp = 0
             };
 
             // get the user and update their locationIDs list
@@ -143,6 +144,28 @@ namespace api.Controllers
 
             await _dbContext.SaveAsync<Location>(location);
             return new OkObjectResult(location.toViewModel());
+        }
+
+        [HttpPut("update-timestamp")]
+        public async Task<ActionResult> UpdateTimestamp([FromBody] UpdateTimestampDTO updateTimestampDTO)
+        {
+            ArgumentNullException.ThrowIfNull(updateTimestampDTO.Username);
+            ArgumentNullException.ThrowIfNull(updateTimestampDTO.LocationID);
+
+            if (!User.Exists(updateTimestampDTO.Username))
+            {
+                return new BadRequestObjectResult(new
+                {
+                    authenticated = false
+                }); ;
+            }
+
+            var location = await _dbContext.LoadAsync<Location>(updateTimestampDTO.LocationID);
+            location.NotificationTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+            await _dbContext.SaveAsync<Location>(location);
+
+            return new OkObjectResult(location.NotificationTimestamp);
         }
 
         [HttpDelete("delete/{userName}/{locationID}")]

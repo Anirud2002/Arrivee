@@ -16,6 +16,7 @@ namespace api.Entities
         public double Radius { get; set; }
         public string RadiusUnit { get; set; } = string.Empty;
         public List<Reminder> Reminders { get; set; } = new List<Reminder>();
+        public long NotificationTimestamp { get; set; }
 
         public class Reminder
         {
@@ -33,7 +34,8 @@ namespace api.Entities
                 Coords = Coords,
                 Radius = Radius,
                 RadiusUnit = RadiusUnit,
-                Reminders = Reminders
+                Reminders = Reminders,
+                NotificationTimestamp = NotificationTimestamp
             };
         }
     }

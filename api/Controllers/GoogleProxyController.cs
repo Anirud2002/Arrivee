@@ -47,21 +47,21 @@ namespace api.Controllers
         }
     }
 
-    public class PlaceDetails
-    {
-        public string FormattedAddress { get; set; }
-        public string Name { get; set; }
-        public Cords Geometry { get; set; }
-        public class Cords
-        {
-            public Location Location { get; set; }
-        }
-        public class Location
-        {
-            public double Lat { get; set; }
-            public double Lng { get; set; }
-        }
-    }
+    //public class PlaceDetails
+    //{
+    //    public string FormattedAddress { get; set; }
+    //    public string Name { get; set; }
+    //    public Cords Geometry { get; set; }
+    //    public class Cords
+    //    {
+    //        public Location Location { get; set; }
+    //    }
+    //    public class Location
+    //    {
+    //        public double Lat { get; set; }
+    //        public double Lng { get; set; }
+    //    }
+    //}
 
 
 
