@@ -30,7 +30,7 @@ export class LocationPermService {
     if(requestPerm){
       this.locationPermState = requestPerm.location;
       let userPrefLocationStatus = await this.userConfigService.getLocationStatus();
-      // if granted, watch users location
+      // if granted by userpreference and also by alert request then watch users location
       if(this.locationPermState === "granted" && (!userPrefLocationStatus || userPrefLocationStatus === "granted")){
         await this.watchUsersLocation();
         await this.userConfigService.setLocationStatus("granted");
