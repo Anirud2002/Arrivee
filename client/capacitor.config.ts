@@ -3,8 +3,8 @@ import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 const config: CapacitorConfig = {
-  appId: 'com.locationreminder.app',
-  appName: 'locationreminder',
+  appId: 'com.arrivee.app',
+  appName: 'Arrivee',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {
