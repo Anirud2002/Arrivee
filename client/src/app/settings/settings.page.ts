@@ -44,10 +44,9 @@ export class SettingsPage implements OnInit {
 
   subscribeToLocationPermState(){
     this.locationPermService.locationPermStateUpdated$.subscribe(async state => {
-      if(state !== "granted"){
-        await this.locationPermService.clearWatchUserLocation();
+      if(state === "granted"){
+        this.isLocationOn = (await this.userConfigService.getLocationStatus()) === "granted";
       }
-      this.isLocationOn = state === "granted";
     })
   }
 
@@ -62,8 +61,10 @@ export class SettingsPage implements OnInit {
   async handleLocationPerm(e){
     this.isLocationOn = e.detail.checked;
     if(this.isLocationOn){
+      await this.userConfigService.setLocationStatus("granted");
       await this.locationPermService.requestLocationPermission();
     }else{
+      await this.userConfigService.setLocationStatus("denied");
       await this.locationPermService.clearWatchUserLocation();
     }
   }

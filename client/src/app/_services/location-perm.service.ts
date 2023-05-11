@@ -3,6 +3,7 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 import { Coords } from '../_interfaces/Location.modal';
 import { BehaviorSubject } from 'rxjs';
 import { LocationService } from './location.service';
+import { UserConfigService } from './user-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,27 +16,26 @@ export class LocationPermService {
   locationPermStateUpdated$ = this.locationPermStateUpdated.asObservable();
 
   constructor(
-    private locationService: LocationService
+    private locationService: LocationService,
+    private userConfigService: UserConfigService
   ) { }
 
   async checkPermission(): Promise<string>{
     const permStatus = await Geolocation.checkPermissions();
-    if(permStatus){
-      this.locationPermState = permStatus.location; 
-      this.locationPermStateUpdated.next(this.locationPermState);
-    }
-    return this.locationPermState;
+    return permStatus.location;
   }
 
   async requestLocationPermission(){
     const requestPerm = await Geolocation.requestPermissions();
     if(requestPerm){
       this.locationPermState = requestPerm.location;
-      this.locationPermStateUpdated.next(this.locationPermState);
+      let userPrefLocationStatus = await this.userConfigService.getLocationStatus();
       // if granted, watch users location
-      if(this.locationPermState === "granted"){
+      if(this.locationPermState === "granted" && (!userPrefLocationStatus || userPrefLocationStatus === "granted")){
         await this.watchUsersLocation();
+        await this.userConfigService.setLocationStatus("granted");
       }
+      this.locationPermStateUpdated.next(this.locationPermState);
     }
   }
 

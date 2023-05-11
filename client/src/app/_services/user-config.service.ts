@@ -50,4 +50,16 @@ export class UserConfigService {
       value: theme
     })
   }
+
+  async setLocationStatus(status: "granted" | "denied"){
+    await Preferences.set({
+      key: "location-status",
+      value: status
+    })
+  }
+
+  async getLocationStatus(): Promise<string>{
+    const status = await Preferences.get({key: "location-status"});
+    return status.value;
+  }
 }

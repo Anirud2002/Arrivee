@@ -8,6 +8,7 @@ import { Location } from '../_interfaces/Location.modal';
 import { AuthService } from '../_services/auth.service';
 import { LocationsListSkeletonComponent } from './components/locations-list-skeleton/locations-list-skeleton.component';
 import { LocationPermService } from '../_services/location-perm.service';
+import { UserConfigService } from '../_services/user-config.service';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomePage implements OnInit {
   constructor(
     private authService: AuthService,
     private locationService: LocationService,
+    private userConfigService: UserConfigService,
     private modalController: ModalController,
     private locationPermService: LocationPermService,
     private outlet: IonRouterOutlet) {}
@@ -46,6 +48,12 @@ export class HomePage implements OnInit {
     if(!locationPermState || locationPermState === "denied"){
       return;
     }
+
+    const userPrefLocationStatus = await this.userConfigService.getLocationStatus();
+    if(userPrefLocationStatus && userPrefLocationStatus === "denied"){
+      return;
+    }
+    
     await this.locationPermService.requestLocationPermission();
   }
 
