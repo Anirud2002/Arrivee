@@ -156,7 +156,7 @@ export class LocationService {
         console.log("new timestamp: ", location.notificationTimestamp);
 
         // the workflow to trigger the notification goes in here
-        this.toastService.createSuccessToast("You have a notification");
+        await this.toastService.createSuccessToast("You have a notification");
       }
     })
   }
@@ -164,7 +164,6 @@ export class LocationService {
   // checks if notification can be pushed depending upon the last notification timestamp
   canNotificationBePushed(lastTimestamp: number): boolean{
     let retVal: boolean;
-    if(!lastTimestamp) retVal = true; // no timestamp means the notification is never created for this location
     let currentUnixTimestamp = Date.now();
     if((currentUnixTimestamp - lastTimestamp) < (2 * 60 * 60 * 1000)){ // if 2 hours has not elapsed since the last notification, return false
       retVal = false;
