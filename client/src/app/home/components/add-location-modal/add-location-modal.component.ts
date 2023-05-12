@@ -23,8 +23,6 @@ export enum SelectedUnit{
 })
 
 export class AddLocationModalComponent implements OnInit {
-  @ViewChild("map") mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
   isAddRemInputOpen: boolean = false;
   isInEditState: boolean = false;
   newLocation: NewLocation;
@@ -53,28 +51,6 @@ export class AddLocationModalComponent implements OnInit {
     this.newLocation.radius = this.getDefaultValue();
   }
 
-  async renderGoogleMap(latitude: number, longitude: number){
-    this.newMap = await GoogleMap.create({
-      id: "location-map",
-      element: this.mapRef.nativeElement,
-      apiKey: "AIzaSyDI9zF17bjo0MdmjhG0JlJbQxn3CqgrYDI",
-      config: {
-        center: {
-          lat: latitude,
-          lng: longitude
-        },
-        zoom: 16
-      },
-    });
-
-    await this.newMap.addMarker({
-      coordinate: {
-        lat: latitude,
-        lng: longitude
-      }
-    })
-  }
-
   returnUnit = (value: number) => {
     this.newLocation.radius = parseFloat(value.toFixed(1));
     return `${this.newLocation.radius}${this.newLocation.radiusUnit}`
@@ -91,7 +67,7 @@ export class AddLocationModalComponent implements OnInit {
     this.googlePlacesApiResponse = await this.googleService.getPlaceResult(this.searchBarInput);
   }
 
-  selectLocation(){
+  async selectLocation(){
     if(!this.searchBarInput){
       return;
     }
@@ -103,7 +79,6 @@ export class AddLocationModalComponent implements OnInit {
       longitude: location.lng
     }
     const {coords:{latitude, longitude}} = this.newLocation;
-    this.renderGoogleMap(latitude, longitude);
     this.googlePlacesApiResponse = null;
   }
 

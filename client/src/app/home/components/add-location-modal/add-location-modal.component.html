@@ -14,11 +14,6 @@
     </ion-label>
   </ion-item>
   <p class="ion-margin text-sm font-extrabold" *ngIf="newLocation.streetAddress">{{newLocation.streetAddress}}</p>
-
-  <!-- Google MAPs -->
-  <ion-card class="ion-no-margin" [style]="newLocation.coords ? 'height: 150px;' : 'height: 0px;'">
-    <capacitor-google-map #map></capacitor-google-map>
-  </ion-card>
   
   <ion-range aria-label="Radius" class="ion-margin-horizontal" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="newLocation.radius">
     <div slot="label" class="mr-4 -ml-4">Radius:</div>

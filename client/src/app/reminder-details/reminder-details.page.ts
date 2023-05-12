@@ -9,6 +9,7 @@ import { Location } from '../_interfaces/Location.modal';
 import { SharedModule } from '../shared/shared.module';
 import { ToastService } from '../_services/toast.service';
 import { GoogleMap } from '@capacitor/google-maps';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-reminder-details',
@@ -54,7 +55,7 @@ export class ReminderDetailsPage implements OnInit {
 
   async renderGoogleMap(latitude: number, longitude: number){
     this.newMap = await GoogleMap.create({
-      id: "location-map",
+      id: uuidv4(),
       element: this.mapRef.nativeElement,
       apiKey: "AIzaSyDI9zF17bjo0MdmjhG0JlJbQxn3CqgrYDI",
       config: {
