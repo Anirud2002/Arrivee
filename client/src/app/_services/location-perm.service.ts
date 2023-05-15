@@ -34,6 +34,8 @@ export class LocationPermService {
       if(this.locationPermState === "granted" && (!userPrefLocationStatus || userPrefLocationStatus === "granted")){
         await this.watchUsersLocation();
         await this.userConfigService.setLocationStatus("granted");
+      }else if(this.locationPermState === "denied"){
+        await this.userConfigService.setLocationStatus("denied");
       }
       this.locationPermStateUpdated.next(this.locationPermState);
     }
