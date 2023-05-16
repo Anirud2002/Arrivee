@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, lastValueFrom, of } from 'rxjs';
 import { ToastService } from './toast.service';
 import { Coords } from '../_interfaces/Location.modal';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class LocationService {
   locationUpdated$ = this.locationUpdated.asObservable();
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private http: HttpClient,
     private toastService: ToastService
   ) { }
@@ -153,10 +155,9 @@ export class LocationService {
       let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
       if(distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)){
         location.notificationTimestamp = await this.updateLocationTimestamp(location.locationID);
-        console.log("new timestamp: ", location.notificationTimestamp);
 
-        // the workflow to trigger the notification goes in here
-        await this.toastService.createSuccessToast("You have a notification");
+        // schedules the notification at the same instant
+        await this.notificationService.schedule(new Date(), location);
       }
     })
   }
