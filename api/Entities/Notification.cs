@@ -13,6 +13,8 @@ namespace api.Entities
         public long CreatedOn { get; set; }
         public string NotificationID { get; set; } = string.Empty;
         public string LocationID { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Body { get; set; } = string.Empty;
         public bool IsInteracted { get; set; } = false;
 
         public NotificationViewModel toViewModel()
@@ -22,6 +24,8 @@ namespace api.Entities
                 NotificationID = NotificationID,
                 CreatedOn = CreatedOn,
                 LocationID = LocationID,
+                Title = Title,
+                Body = Body,
                 IsInteracted = IsInteracted
             };
         }
@@ -31,6 +35,8 @@ namespace api.Entities
             public string NotificationID { get; set; } = string.Empty;
             public long CreatedOn { get; set; }
             public string LocationID { get; set; } = string.Empty;
+            public string Title { get; set; } = string.Empty;
+            public string Body { get; set; } = string.Empty;
             public bool IsInteracted { get; set; } = false;
         }
     }

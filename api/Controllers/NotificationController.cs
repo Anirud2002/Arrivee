@@ -46,7 +46,7 @@ namespace api.Controllers
             QueryRequest request = new QueryRequest
             {
                 TableName = "LocationReminderNotifications-Table",
-                KeyConditionExpression = "UserName = :pk",
+                KeyConditionExpression = "Username = :pk",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
                     { ":pk", new AttributeValue { S = userName } },
@@ -66,21 +66,42 @@ namespace api.Controllers
                 NotificationID = n["NotificationID"].S,
                 CreatedOn = long.Parse(n["CreatedOn"].N),
                 LocationID = n["LocationID"].S,
+                Title = n["Title"].S,
+                Body = n["Body"].S,
                 IsInteracted = bool.Parse(n["IsInteracted"].BOOL.ToString())
             }).ToList();
 
             return new OkObjectResult(retVal);
         }
 
-        [HttpPost("create")]
+        [HttpPost("save")]
         public async Task<ActionResult> CreateNotification([FromBody] NotificationDTO notificationDTO)
         {
+            ArgumentNullException.ThrowIfNull(notificationDTO.Username);
+            ArgumentNullException.ThrowIfNull(notificationDTO.Title);
+            ArgumentNullException.ThrowIfNull(notificationDTO.Body);
+            ArgumentNullException.ThrowIfNull(notificationDTO.LocationID);
+            if(notificationDTO.CreatedOn <= 0)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!User.Exists(notificationDTO.Username))
+            {
+                return new BadRequestObjectResult(new
+                {
+                    authenticated = false
+                }); ;
+            }
+
             var newNotification = new Notification()
             {
                 Username = notificationDTO.Username,
-                CreatedOn = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds(),
+                CreatedOn = notificationDTO.CreatedOn,
                 NotificationID = Guid.NewGuid().ToString(),
                 LocationID = notificationDTO.LocationID,
+                Title = notificationDTO.Title,
+                Body = notificationDTO.Body
             };
 
             await _dbContext.SaveAsync<Notification>(newNotification);
