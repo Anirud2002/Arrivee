@@ -27,6 +27,7 @@
     "@capacitor/google-maps": "^4.5.0",
     "@capacitor/ios": "^4.7.3",
     "@capacitor/keyboard": "^4.1.1",
+    "@capacitor/local-notifications": "^5.0.2",
     "@capacitor/preferences": "^4.0.2",
     "@codetrix-studio/capacitor-google-auth": "^3.2.2",
     "@ionic/angular": "^7.0.0",
