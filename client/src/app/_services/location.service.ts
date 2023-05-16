@@ -155,9 +155,11 @@ export class LocationService {
       let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
       if(distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)){
         location.notificationTimestamp = await this.updateLocationTimestamp(location.locationID);
-
+        console.log("I AM HERE!!")
         // schedules the notification at the same instant
-        await this.notificationService.schedule(new Date(), location);
+        setTimeout(async() => {
+          await this.notificationService.schedule(new Date(), location);
+        }, 500)
       }
     })
   }

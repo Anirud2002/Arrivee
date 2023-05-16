@@ -4,6 +4,7 @@ import { Coords } from '../_interfaces/Location.modal';
 import { BehaviorSubject } from 'rxjs';
 import { LocationService } from './location.service';
 import { UserConfigService } from './user-config.service';
+import { NotificationPermService } from './notification-perm.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class LocationPermService {
 
   constructor(
     private locationService: LocationService,
+    private notificationPermService: NotificationPermService,
     private userConfigService: UserConfigService
   ) { }
 
@@ -29,15 +31,26 @@ export class LocationPermService {
     const requestPerm = await Geolocation.requestPermissions();
     if(requestPerm){
       this.locationPermState = requestPerm.location;
+      this.locationPermStateUpdated.next(this.locationPermState);
       let userPrefLocationStatus = await this.userConfigService.getLocationStatus();
       // if granted by userpreference and also by alert request then watch users location
       if(this.locationPermState === "granted" && (!userPrefLocationStatus || userPrefLocationStatus === "granted")){
-        await this.watchUsersLocation();
         await this.userConfigService.setLocationStatus("granted");
+
+        let notificationPermState = await this.notificationPermService.checkPermission();
+        if(notificationPermState === "prompt"){
+          await this.notificationPermService.requestPermission();
+        }
+        // again check the notificaion perm state after alert has been popped 
+        notificationPermState = await this.notificationPermService.checkPermission();
+        if(notificationPermState === "granted"){
+          console.log("First");
+          await this.watchUsersLocation();
+        }
+
       }else if(this.locationPermState === "denied"){
         await this.userConfigService.setLocationStatus("denied");
       }
-      this.locationPermStateUpdated.next(this.locationPermState);
     }
   }
 
@@ -51,6 +64,7 @@ export class LocationPermService {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       }
+      console.log("second")
       this.locationService.checkUserAndLocationsCoords(this.userCoords);
     })
   }
