@@ -8,13 +8,14 @@ import { UserConfigService } from '../_services/user-config.service';
 import { LocationPermService } from '../_services/location-perm.service';
 import { OpenSettingsPopoverComponent } from './components/open-settings-popover/open-settings-popover.component';
 import { NotificationPermService } from '../_services/notification-perm.service';
+import { NotificationPopoverComponent } from './components/notification-popover/notification-popover.component';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [SharedModule, ReviewModalComponent, OpenSettingsPopoverComponent]
+  imports: [SharedModule, ReviewModalComponent, OpenSettingsPopoverComponent, NotificationPopoverComponent]
 })
 export class SettingsPage implements OnInit {
   theme: string;
@@ -101,8 +102,9 @@ export class SettingsPage implements OnInit {
     }
   }
 
-  dismissPopover(){
+  dismissPopover(e){
     this.isSettingsPopoverOpen = false;
+    this.isNotificationSettingsPopoverOpen = false;
   }
 
   async getTheme(){

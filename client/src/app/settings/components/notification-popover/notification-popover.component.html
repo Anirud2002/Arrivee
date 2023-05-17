@@ -1,0 +1,29 @@
+<ion-popover [isOpen]="isNotificationSettingsPopoverOpen" (didDismiss)="dismissPopover()">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <ion-item lines="none">
+        <ion-label>
+          <h1 class="font-bold">Settings</h1>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon name="notifications" slot="start"></ion-icon>
+        <ion-label>
+          <h3>Notifications</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon name="toggle" slot="start"></ion-icon>
+        <ion-label>
+          <h3>Allow Notifications</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-button slot="end" color="tertiary" (click)="openNativeSettingsApp()">GO TO SETTINGS</ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-button slot="end" fill="clear" color="primary" size="small" (click)="dismissPopover()">cancel</ion-button>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-popover>

@@ -62,7 +62,8 @@
     </ion-text>
   </div>
 
-  <app-open-settings-popover [isSettingsPopoverOpen]="isSettingsPopoverOpen" (popoverDismissed)="dismissPopover()"></app-open-settings-popover>
+  <app-open-settings-popover [isSettingsPopoverOpen]="isSettingsPopoverOpen" (popoverDismissed)="dismissPopover($event)"></app-open-settings-popover>
+  <app-notification-popover [isNotificationSettingsPopoverOpen]="isNotificationSettingsPopoverOpen" (popoverDismissed)="dismissPopover($event)"></app-notification-popover>
 </ion-content>
 
 
