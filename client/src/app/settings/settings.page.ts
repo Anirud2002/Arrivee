@@ -7,6 +7,7 @@ import { User } from '../_interfaces/Auth.modal';
 import { UserConfigService } from '../_services/user-config.service';
 import { LocationPermService } from '../_services/location-perm.service';
 import { OpenSettingsPopoverComponent } from './components/open-settings-popover/open-settings-popover.component';
+import { NotificationPermService } from '../_services/notification-perm.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,11 +20,14 @@ export class SettingsPage implements OnInit {
   theme: string;
   user: User = {} as User;
   isLocationOn: boolean;
+  isNotificationOn: boolean;
   isFetchingData: boolean;
   isSettingsPopoverOpen: boolean;
+  isNotificationSettingsPopoverOpen: boolean;
   constructor(
     private authService: AuthService,
     private locationPermService: LocationPermService,
+    private notificationPermService: NotificationPermService,
     private userConfigService: UserConfigService,
     private modalController: ModalController,
     private outlet: IonRouterOutlet
@@ -52,6 +56,14 @@ export class SettingsPage implements OnInit {
     })
   }
 
+  subscribeToNotificationPermState(){
+    this.notificationPermService.notificationPermStateUpdated$.subscribe(async state => {
+      if(state === "granted"){
+        this.isNotificationOn = (await this.userConfigService.getNotificationStatus()) === "granted";
+      }
+    })
+  }
+
   subscribeToUserUpdates(){
     this.authService.user$.subscribe(user => {
       if(user){
@@ -72,6 +84,20 @@ export class SettingsPage implements OnInit {
     }else{
       await this.userConfigService.setLocationStatus("denied");
       await this.locationPermService.clearWatchUserLocation();
+    }
+  }
+
+  async handleNotificationPerm(e){
+    this.isNotificationOn = e.detail.checked;
+    if(this.isNotificationOn){
+      const permStatus = await this.notificationPermService.checkPermission();
+      if(permStatus === "prompt"){
+        await this.notificationPermService.requestPermission();
+      } else if(permStatus === "denied"){
+        this.isNotificationSettingsPopoverOpen = true;
+      }
+    }else{
+      await this.userConfigService.setNotificationStatus("denied");
     }
   }
 

@@ -44,7 +44,6 @@ export class LocationPermService {
         // again check the notificaion perm state after alert has been popped 
         notificationPermState = await this.notificationPermService.checkPermission();
         if(notificationPermState === "granted"){
-          console.log("First");
           await this.watchUsersLocation();
         }
 

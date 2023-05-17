@@ -32,7 +32,7 @@
           <ion-label>
             <strong>Notification</strong>
           </ion-label>
-          <ion-toggle slot="end" legacy="true"></ion-toggle>
+          <ion-toggle slot="end" legacy="true" [checked]="isNotificationOn" (ionChange)="handleNotificationPerm($event)"></ion-toggle>
         </ion-item>
         <ion-item class="ion-no-padding" lines="none">
           <ion-label>
