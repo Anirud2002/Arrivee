@@ -9,6 +9,7 @@ import { AuthService } from '../_services/auth.service';
 import { LocationsListSkeletonComponent } from './components/locations-list-skeleton/locations-list-skeleton.component';
 import { LocationPermService } from '../_services/location-perm.service';
 import { UserConfigService } from '../_services/user-config.service';
+import { NotificationPermService } from '../_services/notification-perm.service';
 
 @Component({
   selector: 'app-home',
@@ -26,13 +27,15 @@ export class HomePage implements OnInit {
     private userConfigService: UserConfigService,
     private modalController: ModalController,
     private locationPermService: LocationPermService,
+    private notificationPermService: NotificationPermService,
     private outlet: IonRouterOutlet) {}
 
-  ngOnInit(): void {
-    this.checkAndRequestLocationPermission();
+  async ngOnInit() {
     this.loadLocations();
     this.subscribeToLocationUpdate();
     this.subscribeToUserUpdates();
+    await this.checkAndRequestLocationPermission();
+    await this.checkAndRequestNotificationPermission();
   }
 
   async loadLocations(){
@@ -48,13 +51,21 @@ export class HomePage implements OnInit {
     if(!locationPermState || locationPermState === "denied"){
       return;
     }
+    
+    if(locationPermState === "prompt"){
+      await this.locationPermService.requestLocationPermission();
+    }
+  }
 
-    const userPrefLocationStatus = await this.userConfigService.getLocationStatus();
-    if(userPrefLocationStatus && userPrefLocationStatus === "denied"){
+  async checkAndRequestNotificationPermission(){
+    const notificationPermState = await this.notificationPermService.checkPermission();
+    if(!notificationPermState || notificationPermState === "denied"){
       return;
     }
-    
-    await this.locationPermService.requestLocationPermission();
+
+    if(notificationPermState === "prompt"){
+      await this.notificationPermService.requestNotificationPermission();
+    }
   }
 
   subscribeToUserUpdates(){

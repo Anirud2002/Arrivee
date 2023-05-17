@@ -37,7 +37,6 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
     this.getUserDetails();
     this.getTheme();
-    this.subscribeToLocationPermState();
     this.subscribeToUserUpdates()
   }
 
@@ -49,57 +48,12 @@ export class SettingsPage implements OnInit {
     })
   }
 
-  subscribeToLocationPermState(){
-    this.locationPermService.locationPermStateUpdated$.subscribe(async state => {
-      if(state === "granted"){
-        this.isLocationOn = (await this.userConfigService.getLocationStatus()) === "granted";
-      }
-    })
-  }
-
-  subscribeToNotificationPermState(){
-    this.notificationPermService.notificationPermStateUpdated$.subscribe(async state => {
-      if(state === "granted"){
-        this.isNotificationOn = (await this.userConfigService.getNotificationStatus()) === "granted";
-      }
-    })
-  }
-
   subscribeToUserUpdates(){
     this.authService.user$.subscribe(user => {
       if(user){
         this.getUserDetails();
       }
     })
-  }
-
-  async handleLocationPerm(e){
-    this.isLocationOn = e.detail.checked;
-    if(this.isLocationOn){
-      const permStatus = await this.locationPermService.checkPermission();
-      if(permStatus === "prompt"){
-        await this.locationPermService.requestLocationPermission();
-      } else if(permStatus === "denied"){
-        this.isSettingsPopoverOpen = true;
-      }
-    }else{
-      await this.userConfigService.setLocationStatus("denied");
-      await this.locationPermService.clearWatchUserLocation();
-    }
-  }
-
-  async handleNotificationPerm(e){
-    this.isNotificationOn = e.detail.checked;
-    if(this.isNotificationOn){
-      const permStatus = await this.notificationPermService.checkPermission();
-      if(permStatus === "prompt"){
-        await this.notificationPermService.requestPermission();
-      } else if(permStatus === "denied"){
-        this.isNotificationSettingsPopoverOpen = true;
-      }
-    }else{
-      await this.userConfigService.setNotificationStatus("denied");
-    }
   }
 
   dismissPopover(e){

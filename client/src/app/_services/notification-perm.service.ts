@@ -19,17 +19,7 @@ export class NotificationPermService {
     return permStatus.display;
   }
 
-  async requestPermission(){
-    const requestPerm = await LocalNotifications.requestPermissions();
-    if(requestPerm){
-      this.notificationPermState = requestPerm.display;
-      this.notificationPermStateUpdated.next(this.notificationPermState);
-
-      if(this.notificationPermState === "granted"){
-        await this.userConfigService.setNotificationStatus("granted");
-      } else if(this.notificationPermState === "denied"){
-        await this.userConfigService.setNotificationStatus("denied");
-      }
-    }
+  async requestNotificationPermission(){
+    await LocalNotifications.requestPermissions();
   }
 }
