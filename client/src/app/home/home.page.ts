@@ -10,13 +10,14 @@ import { LocationsListSkeletonComponent } from './components/locations-list-skel
 import { LocationPermService } from '../_services/location-perm.service';
 import { UserConfigService } from '../_services/user-config.service';
 import { NotificationPermService } from '../_services/notification-perm.service';
+import { EnableSettingsModalComponent } from './components/enable-settings-modal/enable-settings-modal.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [SharedModule, LocationsListComponent, AddLocationModalComponent, LocationsListSkeletonComponent],
+  imports: [SharedModule, LocationsListComponent, AddLocationModalComponent, LocationsListSkeletonComponent, EnableSettingsModalComponent],
 })
 export class HomePage implements OnInit {
   isFetchingData: boolean = false;
@@ -54,7 +55,22 @@ export class HomePage implements OnInit {
     
     if(locationPermState === "prompt"){
       await this.locationPermService.requestLocationPermission();
+    } else if (locationPermState === "denied") {
+      await this.presentEnableModal("location");
     }
+  }
+
+  async presentEnableModal(type: "location" | "notification"){
+    const modal = await this.modalController.create({
+      component: EnableSettingsModalComponent,
+      initialBreakpoint: 0.3,
+      componentProps: {
+        data: {
+          type
+        }
+      }
+    });
+    await modal.present();
   }
 
   async checkAndRequestNotificationPermission(){
@@ -65,6 +81,8 @@ export class HomePage implements OnInit {
 
     if(notificationPermState === "prompt"){
       await this.notificationPermService.requestNotificationPermission();
+    } else if (notificationPermState === "denied") {
+      await this.presentEnableModal("notification");
     }
   }
 
