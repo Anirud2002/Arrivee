@@ -49,9 +49,6 @@ export class HomePage implements OnInit {
 
   async checkAndRequestLocationPermission(){
     const locationPermState = await this.locationPermService.checkPermission();
-    if(!locationPermState || locationPermState === "denied"){
-      return;
-    }
     
     if(locationPermState === "prompt"){
       await this.locationPermService.requestLocationPermission();
@@ -60,6 +57,17 @@ export class HomePage implements OnInit {
     }
   }
 
+  
+  async checkAndRequestNotificationPermission(){
+    const notificationPermState = await this.notificationPermService.checkPermission();
+    
+    if(notificationPermState === "prompt"){
+      await this.notificationPermService.requestNotificationPermission();
+    } else if (notificationPermState === "denied") {
+      await this.presentEnableModal("notification");
+    }
+  }
+  
   async presentEnableModal(type: "location" | "notification"){
     const modal = await this.modalController.create({
       component: EnableSettingsModalComponent,
@@ -72,20 +80,6 @@ export class HomePage implements OnInit {
     });
     await modal.present();
   }
-
-  async checkAndRequestNotificationPermission(){
-    const notificationPermState = await this.notificationPermService.checkPermission();
-    if(!notificationPermState || notificationPermState === "denied"){
-      return;
-    }
-
-    if(notificationPermState === "prompt"){
-      await this.notificationPermService.requestNotificationPermission();
-    } else if (notificationPermState === "denied") {
-      await this.presentEnableModal("notification");
-    }
-  }
-
   subscribeToUserUpdates(){
     this.authService.user$.subscribe(async user => {
       if(user){
