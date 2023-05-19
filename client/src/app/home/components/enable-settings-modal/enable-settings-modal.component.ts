@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { AndroidSettings, IOSSettings, NativeSettings,  } from 'capacitor-native-settings';
 import { Device } from '@capacitor/device';
@@ -11,12 +11,12 @@ import { Device } from '@capacitor/device';
   imports: [SharedModule]
 })
 export class EnableSettingsModalComponent  implements OnInit {
-  @Input() data: any;
-  type: "location" | "notification";
+  @Input() type: "location" | "notification";
+  @Input() shouldOpen: boolean;
+  @Output() modalDismissed: EventEmitter<"location" | "notification"> = new EventEmitter<"location" | "notification">(null);
   constructor() { }
 
   ngOnInit() {
-    this.type = this.data.type;
   }
 
   async openSettings(){
@@ -35,6 +35,16 @@ export class EnableSettingsModalComponent  implements OnInit {
       default:
         console.log("Only works natively bro!");
         break;
+    }
+
+    this.dismiss();
+  }
+
+  dismiss(){
+    if(this.type === "location"){
+      this.modalDismissed.emit("location");
+    }else {
+      this.modalDismissed.emit("notification");
     }
   }
 

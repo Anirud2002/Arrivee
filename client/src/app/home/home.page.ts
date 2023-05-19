@@ -21,6 +21,8 @@ import { EnableSettingsModalComponent } from './components/enable-settings-modal
 })
 export class HomePage implements OnInit {
   isFetchingData: boolean = false;
+  showLocationEnableSettingsModal: boolean = false;
+  showNotificationEnableSettingsModal: boolean = false;
   locations: Location[] = [];
   constructor(
     private authService: AuthService,
@@ -53,7 +55,7 @@ export class HomePage implements OnInit {
     if(locationPermState === "prompt"){
       await this.locationPermService.requestLocationPermission();
     } else if (locationPermState === "denied") {
-      await this.presentEnableModal("location");
+      this.showLocationEnableSettingsModal = true;
     }
   }
 
@@ -64,22 +66,10 @@ export class HomePage implements OnInit {
     if(notificationPermState === "prompt"){
       await this.notificationPermService.requestNotificationPermission();
     } else if (notificationPermState === "denied") {
-      await this.presentEnableModal("notification");
+      this.showNotificationEnableSettingsModal = true;
     }
   }
   
-  async presentEnableModal(type: "location" | "notification"){
-    const modal = await this.modalController.create({
-      component: EnableSettingsModalComponent,
-      initialBreakpoint: 0.3,
-      componentProps: {
-        data: {
-          type
-        }
-      }
-    });
-    await modal.present();
-  }
   subscribeToUserUpdates(){
     this.authService.user$.subscribe(async user => {
       if(user){
@@ -104,4 +94,12 @@ export class HomePage implements OnInit {
     });
     await modal.present();
   } 
+
+  handleModalDismiss(type: "location" | "notification"){
+    if(type === "location"){
+      this.showLocationEnableSettingsModal = false;
+    }else{
+      this.showNotificationEnableSettingsModal = false;
+    }
+  }
 }

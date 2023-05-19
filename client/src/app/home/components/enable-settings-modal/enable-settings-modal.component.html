@@ -1,53 +1,54 @@
-<ion-header>
 
-</ion-header>
-<ion-content class="ion-padding">
-  <ion-text>
-    <h2 class="font-semibold text-2xl flex items-center">
-      <ion-icon name="navigate" class="mr-2"></ion-icon>
-      Enable {{type === "location" ? "Location" : "Notification"}}
-    </h2>
-  </ion-text>
-
-  <ion-card class="ion-no-margin ion-padding mt-4">
-    <ion-text *ngIf="type === 'location'">
-      <p>
-        By enabling location, the app will be able to know your exact position and send notification if you are near any location you've set!
-      </p>
-      <p class="font-semibold mt-2">
-        To turn on Location:
-      </p>
-      <div class="steps ion-padding-horizontal">
-        <p>
-          1. Click on "Location".
-        </p>
-        <p>
-          2. Select "While Using the App" Or "Always".
-        </p>
-      </div>
-    </ion-text>
-    <ion-text *ngIf="type === 'notification'">
-      <p>
-        By enabling notification, the app will be able to remind you when you are inside the radius of any location you've set!
-      </p>
-      <p class="font-semibold mt-2">
-        To turn on Notification:
-      </p>
-      <div class="steps ion-padding-horizontal">
-        <p>
-          1. Click on "Notifications".
-        </p>
-        <p>
-          2. Turn on "Allow Notifications".
-        </p>
-      </div>
-    </ion-text>
-  </ion-card>
-  
-  <ion-button expand="block" color="tertiary" class="mt-4" (click)="openSettings()">
-    <ion-text class="font-medium text-lg">
-      Enable
-    </ion-text>
-  </ion-button>
-
-</ion-content>
+<ion-modal [isOpen]="shouldOpen" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (didDismiss)="dismiss()">
+  <ng-template class="ion-padding">
+    <div class="ion-padding">
+      <ion-text>
+        <h2 class="font-semibold text-2xl flex items-center">
+          <ion-icon [name]="type === 'location' ? 'navigate' : 'notifications'" class="mr-2"></ion-icon>
+        Enable {{type === "location" ? "Location" : "Notification"}}
+        </h2>
+      </ion-text>
+    
+      <ion-card class="ion-no-margin ion-padding mt-4">
+        <ion-text *ngIf="type === 'location'">
+          <p>
+            By enabling location, the app will be able to know your exact position and send notification if you are near any location you've set!
+          </p>
+          <p class="font-semibold mt-2">
+            To turn on Location:
+          </p>
+          <div class="steps ion-padding-horizontal">
+            <p>
+              1. Click on "Location".
+            </p>
+            <p>
+              2. Select "While Using the App" Or "Always".
+            </p>
+          </div>
+        </ion-text>
+        <ion-text *ngIf="type === 'notification'">
+          <p>
+            By enabling notification, the app will be able to remind you when you are inside the radius of any location you've set!
+          </p>
+          <p class="font-semibold mt-2">
+            To turn on Notification:
+          </p>
+          <div class="steps ion-padding-horizontal">
+            <p>
+              1. Click on "Notifications".
+            </p>
+            <p>
+              2. Turn on "Allow Notifications".
+            </p>
+          </div>
+        </ion-text>
+      </ion-card>
+      
+      <ion-button expand="block" color="tertiary" class="mt-4" (click)="openSettings()">
+        <ion-text class="font-medium text-lg">
+          Enable
+        </ion-text>
+      </ion-button>
+    </div>
+  </ng-template>
+</ion-modal>

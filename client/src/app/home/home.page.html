@@ -22,6 +22,9 @@
     <app-locations-list-skeleton *ngIf="isFetchingData"></app-locations-list-skeleton>
   </div>
 
+  <app-enable-settings-modal [shouldOpen]="showLocationEnableSettingsModal" [type]="'location'" (modalDismissed)="handleModalDismiss($event)"></app-enable-settings-modal>
+  <app-enable-settings-modal [shouldOpen]="showNotificationEnableSettingsModal" [type]="'notification'" (modalDismissed)="handleModalDismiss($event)"></app-enable-settings-modal>
+
 </ion-content>
 
 <ion-footer class="ion-margin-vertical">
