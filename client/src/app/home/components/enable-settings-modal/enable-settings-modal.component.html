@@ -2,7 +2,7 @@
 <ion-modal [isOpen]="shouldOpen" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (didDismiss)="dismiss()">
   <ng-template class="ion-padding">
     <div class="ion-padding">
-      <ion-text>
+      <ion-text color="primary">
         <h2 class="font-semibold text-2xl flex items-center">
           <ion-icon [name]="type === 'location' ? 'navigate' : 'notifications'" class="mr-2"></ion-icon>
         Enable {{type === "location" ? "Location" : "Notification"}}
