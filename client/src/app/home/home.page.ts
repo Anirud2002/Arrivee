@@ -11,6 +11,7 @@ import { LocationPermService } from '../_services/location-perm.service';
 import { UserConfigService } from '../_services/user-config.service';
 import { NotificationPermService } from '../_services/notification-perm.service';
 import { EnableSettingsModalComponent } from './components/enable-settings-modal/enable-settings-modal.component';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-home',
@@ -46,6 +47,15 @@ export class HomePage implements OnInit {
     this.locations = await this.locationService.getLocations().then((res) => {
       this.isFetchingData = false;
       return res;
+    });
+  }
+
+  listenForAppStateChange(){
+    App.addListener('appStateChange', async ({ isActive }) => {
+      if(isActive){
+        await this.checkAndRequestLocationPermission();
+        await this.checkAndRequestNotificationPermission();
+      }
     });
   }
 

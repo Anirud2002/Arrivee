@@ -3,7 +3,6 @@ import { IonicModule, isPlatform } from '@ionic/angular';
 import { SharedModule } from './shared/shared.module';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { UserConfigService } from './_services/user-config.service';
-import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +26,6 @@ export class AppComponent {
         grantOfflineAccess: true,
       })
     }
-    this.userConfigService.applyThemeOnInit();    
+    this.userConfigService.applyThemeOnInit();
   }
 }
