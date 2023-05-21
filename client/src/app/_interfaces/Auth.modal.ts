@@ -22,7 +22,6 @@ export interface RegisterDTO{
 export interface GoogleSignInDTO{
     firstname: string, 
     lastname: string, 
-    username: string, 
     email: string, 
 }
 

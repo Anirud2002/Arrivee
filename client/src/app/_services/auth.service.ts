@@ -79,22 +79,6 @@ export class AuthService {
     return true;
   }
 
-  async googleLoginOrRegister(googleSignInDTO: GoogleSignInDTO): Promise<boolean>{
-    let retVal: boolean = true;
-    const response = this.http.post<void>(`${environment.baseApiUrl}/auth/google-login`, googleSignInDTO)
-    .pipe(
-      catchError(() => {
-        retVal = false;
-        this.toastService.createErrorToast("Couldn't Sign in with Google!")
-        return of(null);
-      })
-    );
-
-    await lastValueFrom(response);
-
-    return retVal;
-  }
-
   async logout(){
     await Preferences.remove({key: "user"});
 

@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthService } from '../_services/auth.service';
 import { RegisterDTO } from '../_interfaces/Auth.modal';
 import { Router } from '@angular/router';
+import { GoogleAuthService } from '../_services/google-auth.service';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private googleAuthService: GoogleAuthService,
     private router: Router
   ) { 
     this.initForm();
@@ -112,6 +114,10 @@ export class RegisterPage implements OnInit {
       }
       this.router.navigateByUrl("/home")
     }
+  }
+
+  async handleGoogleSignIn(){
+    await this.googleAuthService.signIn();
   }
 
 }
