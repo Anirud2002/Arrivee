@@ -12,6 +12,7 @@ import { UserConfigService } from '../_services/user-config.service';
 import { NotificationPermService } from '../_services/notification-perm.service';
 import { EnableSettingsModalComponent } from './components/enable-settings-modal/enable-settings-modal.component';
 import { App } from '@capacitor/app';
+import { LocationNotificationService } from '../_services/location-notification.service';
 
 @Component({
   selector: 'app-home',
@@ -28,16 +29,18 @@ export class HomePage implements OnInit {
   constructor(
     private authService: AuthService,
     private locationService: LocationService,
-    private userConfigService: UserConfigService,
     private modalController: ModalController,
     private locationPermService: LocationPermService,
     private notificationPermService: NotificationPermService,
+    private locationNotificationService: LocationNotificationService,
     private outlet: IonRouterOutlet) {}
 
   async ngOnInit() {
     this.loadLocations();
     this.subscribeToLocationUpdate();
     this.subscribeToUserUpdates();
+    this.locationNotificationService.subscribeToLocationPermStatus();
+    this.locationNotificationService.subscribeToNotificationPermStatus();
     await this.checkAndRequestLocationPermission();
     await this.checkAndRequestNotificationPermission();
     this.listenForAppStateChange();

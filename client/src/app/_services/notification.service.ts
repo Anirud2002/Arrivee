@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { LocalNotifications} from "@capacitor/local-notifications"
 import { Location } from '../_interfaces/Location.modal';
 import { AuthService } from "../_services/auth.service"
 import { NotificationDTO, NotificationResponseDTO } from '../_interfaces/Notification.modal';
@@ -42,18 +41,8 @@ export class NotificationService {
 
   }
 
-  // schedules the notification based upon the date value received
-  async schedule(date: Date, location: Location){
-    await LocalNotifications.schedule({
-      notifications: [{
-        title: `You've ${location.reminders.length} things to do in ${location.title}.`,
-        body: "Check it out!",
-        id: 1,
-        schedule: {
-          at: date
-        }
-      }]
-    });
+  // saves the notification to the database
+  async saveNotification(location: Location, date: Date) {
 
     if(!this.user){
       this.user = await this.authService.getUser();
@@ -67,11 +56,6 @@ export class NotificationService {
       body: "Check it out!"
     } as NotificationDTO
 
-    await this.saveNotification(notificationDTO);
-  }
-
-  // saves the notification to the database
-  async saveNotification(notificationDTO: NotificationDTO) {
     const response = this.http.post(`${environment.baseApiUrl}/notification/save`, notificationDTO)
     .pipe(
       catchError(_ => of(null))

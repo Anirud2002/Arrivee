@@ -3,13 +3,13 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 import { Coords } from '../_interfaces/Location.modal';
 import { BehaviorSubject } from 'rxjs';
 import { LocationService } from './location.service';
-import { UserConfigService } from './user-config.service';
-import { NotificationPermService } from './notification-perm.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationPermService {
+  private locationPermStatus: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  locationPermStatus$ = this.locationPermStatus.asObservable();
   userCoords: Coords;
   watchID: string;
 
@@ -19,11 +19,13 @@ export class LocationPermService {
 
   async checkPermission(): Promise<string>{
     const permStatus = await Geolocation.checkPermissions();
+    this.locationPermStatus.next(permStatus.location);
     return permStatus.location;
   }
 
   async requestLocationPermission(){
-    await Geolocation.requestPermissions();
+    const permStatus = await Geolocation.requestPermissions();
+    this.locationPermStatus.next(permStatus.location);
   }
 
   async watchUsersLocation(){
@@ -36,15 +38,6 @@ export class LocationPermService {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       }
-      console.log("second")
-      this.locationService.checkUserAndLocationsCoords(this.userCoords);
     })
-  }
-
-  async clearWatchUserLocation(){
-    if(this.watchID){
-      await Geolocation.clearWatch({id: this.watchID});
-      this.userCoords = null;
-    }
   }
 }

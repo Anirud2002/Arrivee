@@ -5,7 +5,7 @@ import { GoogleSignInDTO, LoginDTO, RegisterDTO, UpdateUserDTO, User } from '../
 import { environment } from '../../environments/environment';
 import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
 
 @Injectable({

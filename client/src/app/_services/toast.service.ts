@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { IonToast, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
-  toast: any;
+  toast: HTMLIonToastElement;
   constructor(
     private toastController: ToastController
   ) { }

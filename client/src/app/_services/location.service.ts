@@ -6,7 +6,6 @@ import { Location, NewLocation, UpdateTimestampDTO } from '../_interfaces/Locati
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, lastValueFrom, of } from 'rxjs';
 import { ToastService } from './toast.service';
-import { Coords } from '../_interfaces/Location.modal';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -146,69 +145,4 @@ export class LocationService {
     return result;
   }
 
-  // checks users and location coords and triggers the push notificaion workflow 
-  checkUserAndLocationsCoords(userCoord: Coords){
-    if(!this.locations){
-      return;
-    }
-    this.locations.forEach(async location => {
-      let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
-      if(distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)){
-        location.notificationTimestamp = await this.updateLocationTimestamp(location.locationID);
-        console.log("I AM HERE!!")
-        // schedules the notification at the same instant
-        setTimeout(async() => {
-          await this.notificationService.schedule(new Date(), location);
-        }, 500)
-      }
-    })
-  }
-
-  // checks if notification can be pushed depending upon the last notification timestamp
-  canNotificationBePushed(lastTimestamp: number): boolean{
-    let retVal: boolean;
-    let currentUnixTimestamp = Date.now();
-    if((currentUnixTimestamp - lastTimestamp) < (2 * 60 * 60 * 1000)){ // if 2 hours has not elapsed since the last notification, return false
-      retVal = false;
-    }else {
-      retVal = true;
-    }
-
-    return retVal;
-  }
-
-  // gets distance between users coords and location coords in correct unit
-  getDistance(userLat: number, userLng: number, locationLat: number, locationLng: number, unit: string): number{
-    const earthRadius = 6371; // Radius of the earth in km
-    const dLat = this.deg2Rad(locationLat - userLat); // deg2Rad below
-    const dLon = this.deg2Rad(locationLng - userLng);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.deg2Rad(userLat)) *
-        Math.cos(this.deg2Rad(locationLat)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = this.convertDistance(earthRadius * c, unit);
-    return distance;
-  }
-
-  // converts the distance unit
-  convertDistance(distance: number, unit: string): number{
-    switch(unit){
-      case "km":
-        return distance;
-      case "m":
-        return distance * 1000;
-      case "mil":
-        return distance / 1.609;
-      default:
-        return distance;
-    }
-  }
-
-  // converts degree value to radian
-  deg2Rad(deg: number){
-    return deg * (Math.PI / 180);
-  }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { UserConfig } from '../_interfaces/UserConfig';
 
 @Injectable({
   providedIn: 'root'
