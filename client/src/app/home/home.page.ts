@@ -40,6 +40,7 @@ export class HomePage implements OnInit {
     this.subscribeToUserUpdates();
     await this.checkAndRequestLocationPermission();
     await this.checkAndRequestNotificationPermission();
+    this.listenForAppStateChange();
   }
 
   async loadLocations(){
