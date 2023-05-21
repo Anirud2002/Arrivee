@@ -18,11 +18,11 @@ namespace api.Controllers
     public class AuthController : Controller
     {
         private readonly IDynamoDBContext _dbContext;
-        private readonly ITokenService _tokenSerivce;
+        private readonly ITokenService _tokenService;
         public AuthController(IDynamoDBContext context, ITokenService tokenService)
         {
             _dbContext = context;
-            _tokenSerivce = tokenService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -56,7 +56,8 @@ namespace api.Controllers
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 LocationReminderIDs = new List<string>(),
-                NotificationIDs = new List<string>()
+                NotificationIDs = new List<string>(),
+                IsGoogleUser = false
             };
 
             await _dbContext.SaveAsync<AppUser>(user);
@@ -67,8 +68,8 @@ namespace api.Controllers
                 Lastname = user.Lastname,
                 Username = user.Username,
                 Email = user.Email,
-                Token = _tokenSerivce.CreateToken(user.Username)
-            }); ;
+                Token = _tokenService.CreateToken(user.Username)
+            });
         }
 
         [HttpPost("login")]
@@ -107,46 +108,15 @@ namespace api.Controllers
                 Lastname = user.Lastname,
                 Username = user.Username,
                 Email = user.Email,
-                Token = _tokenSerivce.CreateToken(user.Username)
+                Token = _tokenService.CreateToken(user.Username)
             }); ;
 
         }
 
-        [HttpPost("google-login")]
-        public async Task<ActionResult> GoogleLoginOrRegister([FromBody] GoogleSignInDTO googleSignInDTO)
+        public async Task<bool> UserExists(string userName)
         {
-            ArgumentNullException.ThrowIfNull(googleSignInDTO.Username);
-            ArgumentNullException.ThrowIfNull(googleSignInDTO.Firstname);
-            ArgumentNullException.ThrowIfNull(googleSignInDTO.Lastname);
-            ArgumentNullException.ThrowIfNull(googleSignInDTO.Email);
-
-            var username = googleSignInDTO.Username;
-            if(await UserExists(username))
-            {
-                return new OkObjectResult(new
-                {
-                    loggedIn = true
-                });
-            }
-
-            var user = new AppUser()
-            {
-                Username = googleSignInDTO.Username,
-                Firstname = googleSignInDTO.Firstname,
-                Lastname = googleSignInDTO.Lastname,
-                Email = googleSignInDTO.Email,
-                PasswordHash = Guid.NewGuid().ToByteArray(),
-                PasswordSalt = Guid.NewGuid().ToByteArray(),
-                LocationReminderIDs = new List<string>(),
-                NotificationIDs = new List<string>()
-            };
-
-            await _dbContext.SaveAsync<AppUser>(user);
-            return new OkObjectResult(new
-            {
-                registered = true
-            });
-
+            var user = await _dbContext.LoadAsync<AppUser>(userName);
+            return user != null;
         }
 
         [HttpGet("check-username/{username}")]
@@ -158,22 +128,6 @@ namespace api.Controllers
             }
 
             return new OkObjectResult(true);
-        }
-
-        public async Task<bool> UserExists(string userName)
-        {
-            var user = await _dbContext.LoadAsync<AppUser>(userName);
-            return user != null;
-        }
-
-        [HttpGet("token/{username}")]
-        public async Task<ActionResult> GenerateToken(string username)
-        {
-            var token = _tokenSerivce.CreateToken(username);
-            return new OkObjectResult(new
-            {
-                value = token
-            }) ;
         }
 
     }

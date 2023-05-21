@@ -15,6 +15,7 @@ namespace api.Entities
         public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
         public List<string> LocationReminderIDs { get; set; } = new List<string>();
         public List<string> NotificationIDs { get; set; } = new List<string>();
+        public bool IsGoogleUser { get; set; } = false;
     }
 }
 
