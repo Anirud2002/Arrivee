@@ -32,7 +32,7 @@ namespace api.Controllers
 
             var googleUser = await _dbContext.LoadAsync<GoogleUser>(googleSignInDTO.Email);
 
-            if(googleUser == null) // means users doesn't exists, so we need to register them
+            if (googleUser == null) // means users doesn't exists, so we need to register them
             {
                 Random random = new Random();
                 var randomUsername = "user" + random.Next(1000, 9999);
@@ -63,6 +63,7 @@ namespace api.Controllers
                     Lastname = user.Lastname,
                     Username = user.Username,
                     Email = user.Email,
+                    IsGoogleUser = true,
                     Token = _tokenService.CreateToken(user.Username)
                 });
             }
@@ -75,6 +76,7 @@ namespace api.Controllers
                     Lastname = user.Lastname,
                     Username = user.Username,
                     Email = user.Email,
+                    IsGoogleUser = true,
                     Token = _tokenService.CreateToken(user.Username)
                 }); ;
             }
