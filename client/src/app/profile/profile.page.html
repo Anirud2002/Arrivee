@@ -40,27 +40,29 @@
       <small>Username is already taken!</small>
     </ion-text>
 
-    <ion-item lines="none">
-      <ion-input label="Old password" labelPlacement="stacked" [type]="isOldPasswordHidden ? 'password' : 'text'" formControlName="oldPassword" (ionBlur)="markAsTouched('oldPassword')"></ion-input>
-      <ion-icon *ngIf="!isOldPasswordInputEmpty" [name]="isOldPasswordHidden ? 'eye-off' : 'eye'" (click)="toggleOldPasswordVisibility()" slot="end" size="small"></ion-icon>
-    </ion-item>
-    <ion-text color="danger" *ngIf="hasError('oldPassword')">
-      <small>Old password is required to change*</small>
-    </ion-text>
-
-    <div class="flex justify-end">
-      <ion-text color="tertiary" slot="end">
-        <small>Forgot password?</small>
+    <ng-container *ngIf="!user.isGoogleUser">
+      <ion-item lines="none">
+        <ion-input label="Old password" labelPlacement="stacked" [type]="isOldPasswordHidden ? 'password' : 'text'" formControlName="oldPassword" (ionBlur)="markAsTouched('oldPassword')"></ion-input>
+        <ion-icon *ngIf="!isOldPasswordInputEmpty" [name]="isOldPasswordHidden ? 'eye-off' : 'eye'" (click)="toggleOldPasswordVisibility()" slot="end" size="small"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" *ngIf="hasError('oldPassword')">
+        <small>Old password is required to change*</small>
       </ion-text>
-    </div>
+      <div class="flex justify-end">
+        <ion-text color="tertiary" slot="end">
+          <small>Forgot password?</small>
+        </ion-text>
+      </div>
+  
+      <ion-item lines="none">
+        <ion-input label="New password" labelPlacement="stacked" [type]="isNewPasswordHidden ? 'password' : 'text'" formControlName="newPassword" (ionBlur)="markAsTouched('newPassword')"></ion-input>
+        <ion-icon *ngIf="!isNewPasswordInputEmpty" [name]="isNewPasswordHidden ? 'eye-off' : 'eye'" (click)="toggleNewPasswordVisibility()" slot="end" size="small"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" *ngIf="hasError('newPassword')">
+        <small>New password is required*</small>
+      </ion-text>
+    </ng-container>
 
-    <ion-item lines="none">
-      <ion-input label="New password" labelPlacement="stacked" [type]="isNewPasswordHidden ? 'password' : 'text'" formControlName="newPassword" (ionBlur)="markAsTouched('newPassword')"></ion-input>
-      <ion-icon *ngIf="!isNewPasswordInputEmpty" [name]="isNewPasswordHidden ? 'eye-off' : 'eye'" (click)="toggleNewPasswordVisibility()" slot="end" size="small"></ion-icon>
-    </ion-item>
-    <ion-text color="danger" *ngIf="hasError('newPassword')">
-      <small>New password is required*</small>
-    </ion-text>
 
   </form>
 

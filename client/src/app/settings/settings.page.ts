@@ -27,8 +27,6 @@ export class SettingsPage implements OnInit {
   isNotificationSettingsPopoverOpen: boolean;
   constructor(
     private authService: AuthService,
-    private locationPermService: LocationPermService,
-    private notificationPermService: NotificationPermService,
     private userConfigService: UserConfigService,
     private modalController: ModalController,
     private outlet: IonRouterOutlet

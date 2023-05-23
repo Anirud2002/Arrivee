@@ -3,6 +3,7 @@ export interface User{
     lastname: string, 
     username: string, 
     email: string, 
+    isGoogleUser: boolean,
     token: string
 }
 
