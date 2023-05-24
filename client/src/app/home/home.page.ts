@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
     private locationPermService: LocationPermService,
     private notificationPermService: NotificationPermService,
     private locationNotificationService: LocationNotificationService,
-    private outlet: IonRouterOutlet) {}
+    private outlet: IonRouterOutlet) { }
 
   async ngOnInit() {
     this.loadLocations();
@@ -87,6 +87,7 @@ export class HomePage implements OnInit {
   subscribeToUserUpdates(){
     this.authService.user$.subscribe(async user => {
       if(user){
+        this.outlet.swipeGesture = true; // explicitly enable the swipe gesture, DO NOT REMOVE!
         await this.loadLocations();
       }
     })

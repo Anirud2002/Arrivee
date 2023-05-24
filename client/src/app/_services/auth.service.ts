@@ -47,9 +47,8 @@ export class AuthService {
         })
       );
       this.user = await lastValueFrom(response);
-      console.log(this.user);
 
-      if(!this.user){ //  handle if user == null
+      if(!this.user){
         return false;
       }
 
