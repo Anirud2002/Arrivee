@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { GoogleAuthService } from '../_services/google-auth.service';
+import { IonRouterOutlet } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -23,14 +24,14 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private googleAuthService: GoogleAuthService,
-    private router: Router
-  ) { 
-    
-  }
+    private router: Router,
+    private outlet: IonRouterOutlet
+  ) { }
 
   ngOnInit() {
     this.initForm();
     this.subscribeToUserStatus();
+    this.outlet.swipeGesture = false;
    }
 
   initForm(){
