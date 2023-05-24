@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonRouterOutlet, IonicModule } from '@ionic/angular';
 import { FirstFormComponent } from './components/first-form/first-form.component';
 import { SecondFormComponent } from './components/second-form/second-form.component';
 import { SharedModule } from '../shared/shared.module';
@@ -26,13 +26,13 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private googleAuthService: GoogleAuthService,
-    private router: Router
-  ) { 
-    this.initForm();
-  }
+    private router: Router,
+    private outlet: IonRouterOutlet
+  ) { }
 
   ngOnInit() {
     this.initForm();
+    this.outlet.swipeGesture = false;
   }
 
   initForm(){
