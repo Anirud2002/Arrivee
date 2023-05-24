@@ -36,6 +36,10 @@ namespace api.Controllers
             {
                 Random random = new Random();
                 var randomUsername = "user" + random.Next(1000, 9999);
+                while (await UserExists(randomUsername)) // making user that the randomly generated username doesn't exists in our database
+                {
+                    randomUsername = "user" + random.Next(1000, 9999);
+                }
                 var user = new AppUser()
                 {
                     Username = randomUsername,
