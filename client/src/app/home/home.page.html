@@ -10,7 +10,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Arrivee</ion-title>
+      <ion-title size="large" class="logo">Arrivee</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -22,6 +22,7 @@
     <app-locations-list-skeleton *ngIf="isFetchingData"></app-locations-list-skeleton>
   </div>
 
+  <!-- modal that opens if users has declined locaiton or notification modal -->
   <app-enable-settings-modal [shouldOpen]="showLocationEnableSettingsModal" [type]="'location'" (modalDismissed)="handleModalDismiss($event)"></app-enable-settings-modal>
   <app-enable-settings-modal [shouldOpen]="showNotificationEnableSettingsModal" [type]="'notification'" (modalDismissed)="handleModalDismiss($event)"></app-enable-settings-modal>
 

@@ -31,9 +31,14 @@
 
 @font-face {
     font-family: "Poppins";
-    src: url("./assets/Montserrat-Regular.ttf");
+    src: url("./assets/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Pacifico";
+    src: url("./assets/fonts/Pacifico-Regular.ttf");
 }
 
 *{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
