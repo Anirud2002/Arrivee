@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Arrivee</ion-title>
+    <ion-title>Locations</ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/notifications"><ion-icon class="text-3xl" name="notifications-outline"></ion-icon></ion-button>
       <ion-button routerLink="/settings"><ion-icon class="text-3xl" name="person-circle-outline"></ion-icon></ion-button>
@@ -10,14 +10,11 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large" class="logo">Arrivee</ion-title>
+      <ion-title size="large">Locations</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div class="mt-6">
-    <ion-text class="ion-padding">
-      <strong>Locations </strong>
-    </ion-text>
     <app-locations-list [locations]="locations" *ngIf="!isFetchingData"></app-locations-list>
     <app-locations-list-skeleton *ngIf="isFetchingData"></app-locations-list-skeleton>
   </div>

@@ -28,17 +28,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-    font-family: "Poppins";
-    src: url("./assets/fonts/Poppins-Regular.ttf");
-}
-
-@font-face {
-    font-family: "Pacifico";
-    src: url("./assets/fonts/Pacifico-Regular.ttf");
-}
-
-*{
-    font-family: 'Poppins', sans-serif;
-}
