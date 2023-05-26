@@ -165,6 +165,11 @@ export class AddLocationModalComponent implements OnInit {
     this.isInEditState = true;
   }
 
+  handleReminderDelete(e){
+    let index = e;
+    this.newLocation.reminders.splice(index, 1);
+  }
+
   getStep(){
     let retVal;
     switch(this.newLocation.radiusUnit){

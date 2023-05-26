@@ -39,7 +39,7 @@
     <ion-card-content>
       <div>
         <!-- reminders for this particular location -->
-        <app-reminder-item-modal *ngFor="let reminder of newLocation.reminders; let i = index" [reminder]="reminder" [index]="i"></app-reminder-item-modal>
+        <app-reminder-item-modal *ngFor="let reminder of newLocation.reminders; let i = index" [reminder]="reminder" [index]="i" (reminderDeleted)="handleReminderDelete($event)"></app-reminder-item-modal>
       </div>
 
       <!-- when user click "+" button: -->

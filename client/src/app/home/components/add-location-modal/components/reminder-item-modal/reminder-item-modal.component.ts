@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SharedModule } from '../../../../../shared/shared.module';
 import { Reminder } from '../../../../../_interfaces/Reminder.modal';
 import { IonInput } from '@ionic/angular';
@@ -13,6 +13,8 @@ import { IonInput } from '@ionic/angular';
 export class ReminderItemModalComponent  implements OnInit {
   @Input() reminder: Reminder;
   @Input() index: number;
+  @Output() reminderDeleted: EventEmitter<number> = new EventEmitter(null);
+
   @ViewChild("remTitleInput", {static: false}) remTitleInput: IonInput;
 
   isInEditState: boolean = false;
@@ -44,7 +46,7 @@ export class ReminderItemModalComponent  implements OnInit {
   }
 
   handleDelete(){
-
+    this.reminderDeleted.emit(this.index);
   }
 
 }
