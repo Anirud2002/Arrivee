@@ -57,7 +57,6 @@
       <!-- when user clicks "+" button -->
       <ion-item-sliding class="ion-no-padding" *ngIf="isAddRemInputOpen">
         <ion-item class="ion-no-padding">
-          <ion-checkbox aria-label="" slot="start"></ion-checkbox>
           <ion-input [clearInput]="true" [(ngModel)]="newReminderTitle" placeholder="Add" label="" (ionBlur)="addNewReminder()"></ion-input>
         </ion-item>
 
