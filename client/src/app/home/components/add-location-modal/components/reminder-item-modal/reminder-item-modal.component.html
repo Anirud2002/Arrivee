@@ -14,12 +14,12 @@
   </ion-item-options>
 
 </ion-item-sliding>
-<!-- If user clicks on edit button show these inputs -->
+<!-- If user clicks on any reminder, it goes in to editing state -->
 <div *ngIf="isInEditState">
   <ion-item-sliding class="ion-no-padding">
     <ion-item class="ion-no-padding">
       <ion-checkbox aria-label="" slot="start"></ion-checkbox>
-      <ion-input #remTitleInput [clearInput]="true" placeholder="Add" label="" (ionInput)="updateRemTitle($event)" (ionBlur)="setReminderUpdatedToTrue()" ></ion-input>
+      <ion-input #remTitleInput [clearInput]="true" placeholder="Add" [value]="reminder.title" (ionInput)="updateRemTitle($event)" (ionBlur)="setReminderUpdatedToTrue()" ></ion-input>
     </ion-item>
   
     <ion-item-options>
