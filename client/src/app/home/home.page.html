@@ -23,8 +23,8 @@
   <app-enable-settings-modal [shouldOpen]="showLocationEnableSettingsModal" [type]="'location'" (modalDismissed)="handleModalDismiss($event)"></app-enable-settings-modal>
   <app-enable-settings-modal [shouldOpen]="showNotificationEnableSettingsModal" [type]="'notification'" (modalDismissed)="handleModalDismiss($event)"></app-enable-settings-modal>
 
-  <div *ngIf="!isFetchingData && (!locations || !locations.length)" class="no-locations-logo fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center flex flex-col justify-center items-center">
-    <img src="../../assets/teenager.png" class="w-24" alt="">
+  <div *ngIf="!isFetchingData && (!locations || !locations.length)" class="no-locations-logo text-center flex flex-col justify-center items-center" slot="fixed">
+    <img src="../../assets/teenager.png" class="w-24" alt="dude_img">
     <ion-text>
       <p>Create Reminder <span class="font-bold">Dude!</span></p>
     </ion-text>
