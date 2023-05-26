@@ -41,9 +41,9 @@ namespace api.Controllers
             var user = await _dbContext.LoadAsync<AppUser>(username);
             var updatedUser = new AppUser()
             {
-                Firstname = user.Firstname,
-                Lastname = user.Firstname,
-                Username = user.Username,
+                Firstname = updateUserDTO.Firstname,
+                Lastname = updateUserDTO.Lastname,
+                Username = updateUserDTO.Username,
                 Email = user.Email,
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
@@ -78,11 +78,6 @@ namespace api.Controllers
                 updatedUser.PasswordSalt = newSalt;
             }
 
-            // update other fields
-            updatedUser.Username = updateUserDTO.Username;
-            updatedUser.Firstname = updateUserDTO.Firstname;
-            updatedUser.Lastname = updateUserDTO.Lastname;
-
             string newToken = null;
 
             // user needs to be deleted because primary key are immutable
@@ -92,6 +87,11 @@ namespace api.Controllers
                 await _dbContext.DeleteAsync<AppUser>(user);
 
                 newToken = _tokenService.CreateToken(updatedUser.Username);
+
+                // if username has been changed, need to update the google users table too
+                var googleUser = await _dbContext.LoadAsync<GoogleUser>(user.Email);
+                googleUser.Username = updatedUser.Username;
+                await _dbContext.SaveAsync<GoogleUser>(googleUser);
             }
 
             await _dbContext.SaveAsync<AppUser>(updatedUser);
