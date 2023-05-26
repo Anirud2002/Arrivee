@@ -156,6 +156,7 @@ export class AuthService {
       username: updateUserDTO.username,
       email: this.user.email,
       token: response.token ?? this.user.token,
+      isGoogleUser: this.user.isGoogleUser
     } as User
     
     this.setUser(user);
