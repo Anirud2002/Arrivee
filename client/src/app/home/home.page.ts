@@ -94,9 +94,14 @@ export class HomePage implements OnInit {
   }
 
   subscribeToLocationUpdate(){
-    this.locationService.locationUpdated$.subscribe(updated => {
+    this.locationService.locationUpdated$.subscribe(async updated => {
       if(updated){
-        this.loadLocations();
+        let prevLocations = this.locations.length;
+        await this.loadLocations();
+        if(this.locations.length > prevLocations){
+          await this.checkAndRequestLocationPermission();
+          await this.checkAndRequestNotificationPermission();
+        }
       }
     })
   }
