@@ -1,54 +1,51 @@
 <ion-content [fullscreen]="true">
-  <div class="flex justify-center items-center w-full ion-padding-horizontal h-full">
-    <div class="w-full">
-      <ion-card class="ion-no-padding ion-no-margin">
-        <ion-card-header>
-          <ion-card-title>Login</ion-card-title> 
-        </ion-card-header>
-        <div class="ion-margin-horizontal" *ngIf="errorOccurred">
-          <ion-text color="danger">
-            <p>Credentials do not match!</p>
-          </ion-text>
-        </div>
-    
-        <ion-card-content class="ion-no-padding ion-padding-vertical">
-          <form [formGroup]="form">
-            <!-- USERNAME -->
-            <ion-item>
-              <ion-input label="Username" labelPlacement="floating" formControlName="username" type="text" (ionBlur)="markAsTouched('username')"></ion-input>
-            </ion-item>
-            <ion-text color="danger" size="small" *ngIf="hasErrors('username', 'required')" class="ion-padding-horizontal">
-              <small>Username is required!</small>
-            </ion-text>
-  
-            <!-- PASSWORD -->
-            <ion-item>
-              <ion-input label="Password" labelPlacement="floating" formControlName="password" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('password')"></ion-input>
-              <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye-off' : 'eye'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
-            </ion-item>
-            <ion-text color="danger" size="small" *ngIf="hasErrors('password', 'required')" class="ion-padding-horizontal">
-              <small>Password is required!</small>
-            </ion-text>
-  
-            <ion-item lines="none">
-              <ion-label slot="end">
-                <small>Forgot password?</small>
-              </ion-label>
-            </ion-item>
-          </form>
-    
-        </ion-card-content>
-      </ion-card>
-      <ion-button expand="block" class="login-btn w-72 mx-auto my-6" (click)="handleLogin()">Login</ion-button>
-  
-      <div class="w-full">
-        <ion-button expand="block" class="google-btn w-72 mx-auto my-6" (click)="handleGoogleSignIn()">
-          <img src="../../assets/google-logo.png" class="w-8" alt="google-logo">
-          <ion-text class="ml-4 font-extrabold" color="white">Sign in with Google</ion-text>
-        </ion-button>
+  <div class="w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ion-padding-horizontal" slot="fixed">
+    <ion-card class="ion-no-padding ion-no-margin">
+      <ion-card-header>
+        <ion-card-title>Login</ion-card-title> 
+      </ion-card-header>
+      <div class="ion-margin-horizontal" *ngIf="errorOccurred">
+        <ion-text color="danger">
+          <p>Credentials do not match!</p>
+        </ion-text>
       </div>
+  
+      <ion-card-content class="ion-no-padding ion-padding-vertical">
+        <form [formGroup]="form">
+          <!-- USERNAME -->
+          <ion-item>
+            <ion-input label="Username" labelPlacement="floating" formControlName="username" type="text" (ionBlur)="markAsTouched('username')"></ion-input>
+          </ion-item>
+          <ion-text color="danger" size="small" *ngIf="hasErrors('username', 'required')" class="ion-padding-horizontal">
+            <small>Username is required!</small>
+          </ion-text>
+
+          <!-- PASSWORD -->
+          <ion-item>
+            <ion-input label="Password" labelPlacement="floating" formControlName="password" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('password')"></ion-input>
+            <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye-off' : 'eye'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
+          </ion-item>
+          <ion-text color="danger" size="small" *ngIf="hasErrors('password', 'required')" class="ion-padding-horizontal">
+            <small>Password is required!</small>
+          </ion-text>
+
+          <ion-item lines="none">
+            <ion-label slot="end">
+              <small>Forgot password?</small>
+            </ion-label>
+          </ion-item>
+        </form>
+  
+      </ion-card-content>
+    </ion-card>
+    <ion-button expand="block" class="login-btn w-72 mx-auto my-6" (click)="handleLogin()">Login</ion-button>
+
+    <div class="w-full">
+      <ion-button expand="block" class="google-btn w-72 mx-auto my-6" (click)="handleGoogleSignIn()">
+        <img src="../../assets/google-logo.png" class="w-8" alt="google-logo">
+        <ion-text class="ml-4 font-extrabold" color="white">Sign in with Google</ion-text>
+      </ion-button>
     </div>
-    
   </div>
 </ion-content>
 
