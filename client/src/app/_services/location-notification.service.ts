@@ -7,6 +7,7 @@ import { LocationService } from './location.service';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Location } from '../_interfaces/Location.modal';
 import { NotificationService } from './notification.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class LocationNotificationService {
     private locationService: LocationService,
     private notificationService: NotificationService,
     private locationPermService: LocationPermService,
-    private notificationPermService: NotificationPermService
+    private notificationPermService: NotificationPermService,
+    private router: Router
   ) { }
 
   async getLocations(){
@@ -59,6 +61,18 @@ export class LocationNotificationService {
     // first, let's get the all the locations
     await this.getLocations();
 
+    // add listener for when action is performed on local notification
+    await LocalNotifications.addListener("localNotificationActionPerformed", notificationAction => {
+      if(notificationAction.actionId === "tap") {
+        let locationID = notificationAction.notification.extra?.locationID;
+        if(locationID){
+          this.router.navigateByUrl(`/reminder-details/${locationID}`)
+        } else {
+          this.router.navigateByUrl("/")
+        }
+      }
+    })
+
     // let's start watching user's location
     this.watchID = await Geolocation.watchPosition({
       enableHighAccuracy: true,
@@ -78,6 +92,7 @@ export class LocationNotificationService {
     if(this.watchID){
       await Geolocation.clearWatch({id: this.watchID});
       this.userCoords = null;
+      await LocalNotifications.removeAllListeners();
     }
   }
 
@@ -155,6 +170,9 @@ export class LocationNotificationService {
         id: 1,
         schedule: {
           at: date
+        },
+        extra: {
+          locationID: location.locationID
         }
       }]
     });
