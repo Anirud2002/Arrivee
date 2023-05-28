@@ -5,28 +5,28 @@ PODS:
   - AppAuth/Core (1.6.1)
   - AppAuth/ExternalUserAgent (1.6.1):
     - AppAuth/Core
-  - Capacitor (4.7.3):
+  - Capacitor (5.0.4):
     - CapacitorCordova
   - CapacitorApp (5.0.2):
     - Capacitor
   - CapacitorAppLauncher (5.0.2):
     - Capacitor
-  - CapacitorCordova (4.7.3)
+  - CapacitorCordova (5.0.4)
   - CapacitorDevice (5.0.2):
     - Capacitor
   - CapacitorGeolocation (5.0.1):
     - Capacitor
-  - CapacitorGoogleMaps (4.5.0):
+  - CapacitorGoogleMaps (5.1.0):
     - Capacitor
-    - Google-Maps-iOS-Utils (~> 4.1.0)
-    - GoogleMaps (~> 6.0.0)
-  - CapacitorKeyboard (4.1.1):
+    - Google-Maps-iOS-Utils (~> 4.1)
+    - GoogleMaps (~> 7.3)
+  - CapacitorKeyboard (5.0.2):
     - Capacitor
   - CapacitorLocalNotifications (5.0.2):
     - Capacitor
   - CapacitorNativeSettings (5.0.0):
     - Capacitor
-  - CapacitorPreferences (4.0.2):
+  - CapacitorPreferences (5.0.2):
     - Capacitor
   - CapacitorSplashScreen (5.0.2):
     - Capacitor
@@ -52,10 +52,10 @@ PODS:
     - GoogleMaps
   - Google-Maps-iOS-Utils/QuadTree (4.1.0):
     - GoogleMaps
-  - GoogleMaps (6.0.1):
-    - GoogleMaps/Maps (= 6.0.1)
-  - GoogleMaps/Base (6.0.1)
-  - GoogleMaps/Maps (6.0.1):
+  - GoogleMaps (7.4.0):
+    - GoogleMaps/Maps (= 7.4.0)
+  - GoogleMaps/Base (7.4.0)
+  - GoogleMaps/Maps (7.4.0):
     - GoogleMaps/Base
   - GoogleSignIn (6.2.4):
     - AppAuth (~> 1.5)
@@ -120,21 +120,21 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
-  Capacitor: 736ef58c1aff08d3142fe3be9c7d928e47ee461d
+  Capacitor: d3d4463573438b9fa65326d1f3549da6f4c21634
   CapacitorApp: 28fef1fd75b2b3686e875216806fb8416d421097
   CapacitorAppLauncher: 222eb443f90379a47bd84c8b3ed8ec47fa7e236f
-  CapacitorCordova: e8ed29bd616c9f5a81498d47c0b84179b9c6a5a6
+  CapacitorCordova: b1fe6bf1f36974a8e4a9044b342d22d49c0996d6
   CapacitorDevice: 980e172f6fbfa0a945c73f908adc74b5a031e7d4
   CapacitorGeolocation: 80d87180e836e828ec8e8f40a101c61363e7a216
-  CapacitorGoogleMaps: fa503662dc0553e160fbff765bdfc93947e86c7e
-  CapacitorKeyboard: 16121a97b56c8609ec518ebcdc64d6386c84e5c8
+  CapacitorGoogleMaps: 86c3038e7be992e6c001a610bfefef3190e73909
+  CapacitorKeyboard: e628d4e66d621c69e449945ebabded17c5b9c2e8
   CapacitorLocalNotifications: db01feb38f85b4fd8c0a0d0fa94a4a6410239563
   CapacitorNativeSettings: 1bfca11cd2d3920ad0e319d6e4d81a99fc53255f
-  CapacitorPreferences: 1d66dc32299f55ed632c5611f312878979275ea5
+  CapacitorPreferences: 0ad8838944f900284900d9647d9b0145c89ca27d
   CapacitorSplashScreen: bd2a056394ba0b8807e7bb3e746424f67c426e03
   CodetrixStudioCapacitorGoogleAuth: fcce058390347c1ce5d8ac4764bdf1f5c1ee233b
   Google-Maps-iOS-Utils: 3343332b18dfd5be8f1f44edd7d481ace3da4d9a
-  GoogleMaps: c213fc2334b7374144cede914da779b99be0ab74
+  GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2

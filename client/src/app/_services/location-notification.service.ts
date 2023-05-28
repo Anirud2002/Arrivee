@@ -18,6 +18,7 @@ export class LocationNotificationService {
   userCoords: Coords;
   locationPermStatus: string;
   notificationPermStatus: string;
+  isUpdatingTimestamp: boolean = false;
   constructor(
     private locationService: LocationService,
     private notificationService: NotificationService,
@@ -78,12 +79,12 @@ export class LocationNotificationService {
       enableHighAccuracy: true,
       timeout: 20000,
       maximumAge: 0
-    }, (position) => {
+    }, async (position) => {
       this.userCoords = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       };
-      this.checkUserAndLocationsCoords(this.userCoords);
+      await this.checkUserAndLocationsCoords(this.userCoords);
     })
   }
 
@@ -97,20 +98,30 @@ export class LocationNotificationService {
   }
 
    // checks users and location coords and triggers the push notificaion workflow 
-   checkUserAndLocationsCoords(userCoord: Coords){
+   async checkUserAndLocationsCoords(userCoord: Coords){
     if(!this.locations){
       return;
     }
-    this.locations.forEach(async location => {
+    for (const location of this.locations) {
       let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
-      if(distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)){
-        location.notificationTimestamp = await this.locationService.updateLocationTimestamp(location.locationID);
-        // schedules the notification at the same instant
-        setTimeout(async() => {
-          await this.scheduleNotification(new Date(), location);
-        }, 500)
+      
+      if (distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)) {
+        if(!this.isUpdatingTimestamp){
+          this.isUpdatingTimestamp = true;
+          await this.locationService.updateLocationTimestamp(location.locationID)
+          .then(updatedTimestamp => {
+            location.notificationTimestamp = updatedTimestamp;
+            return this.scheduleNotification(new Date(), location);
+          })
+          .catch(error => {
+            console.log(error)
+          })
+          .finally(() => {
+            this.isUpdatingTimestamp = false;
+          })
+        }
       }
-    })
+    }
   }
 
   // checks if notification can be pushed depending upon the last notification timestamp
