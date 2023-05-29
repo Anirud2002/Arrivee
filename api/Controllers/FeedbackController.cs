@@ -33,6 +33,7 @@ namespace api.Controllers
             ArgumentNullException.ThrowIfNull(feedbackDTO.LastName);
             ArgumentNullException.ThrowIfNull(feedbackDTO.Feedback);
 
+
             if (!User.Exists(feedbackDTO.Username))
             {
                 return new BadRequestObjectResult(new
@@ -43,14 +44,15 @@ namespace api.Controllers
 
             try
             {
-                await _emailService.SendEmailAsync(feedbackDTO.FirstName, feedbackDTO.LastName, feedbackDTO.Feedback);
+                await _emailService.SendEmailAsync(feedbackDTO.FirstName, feedbackDTO.LastName, feedbackDTO.Feedback, feedbackDTO.Stars);
             }
             catch (Exception e)
             {
                 return new BadRequestObjectResult(new
                 {
-                    message = "Couldn't send feedback!"
-                });
+                    //message = "Couldn't send feedback!"
+                    message = e
+                }) ;
             };
 
             return new OkResult();

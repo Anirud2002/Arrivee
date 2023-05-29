@@ -37,8 +37,8 @@ builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
 // adding fluent email
 builder.Services
-    .AddFluentEmail("anirudstha5@gmail.com")
-    .AddRazorRenderer()
+    .AddFluentEmail("arrivebot@gmail.com")
+    .AddRazorRenderer(typeof(Program))
     .AddSmtpSender("smtp-relay.sendinblue.com", 587, "anirudstha5@gmail.com", "SLITA1raUX8khbNZ");
 
 var app = builder.Build();

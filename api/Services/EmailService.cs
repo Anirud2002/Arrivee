@@ -18,17 +18,19 @@ namespace api.Services
             _singleEmail = singleEmail;
         }
 
-        public async Task SendEmailAsync( string senderFirstName, string senderLastName, string senderFeedback)
+        public async Task SendEmailAsync( string senderFirstName, string senderLastName, string senderFeedback, int Stars)
         {
-            //var template =
-            //    @"<p> @Model.Firstname @Model.Lastname gave this feedback: </p>
-            //        <br>
-            //        <p> @Model.Feedback </p>";
+            var formattedBody = @$"
+                <p> Number of Stars: {Stars} <p>
+                <br>
+                <p> {senderFeedback}
+            ";
 
             var email = _singleEmail
                 .To("anirudstha5@gmail.com")
                 .Subject($"ARRIVEE feedback - {senderFirstName} {senderLastName}")
-                .Body(senderFeedback);
+                .Body(formattedBody, true);
+
             await email.SendAsync();
 
         }

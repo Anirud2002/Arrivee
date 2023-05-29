@@ -8,6 +8,7 @@ namespace api.DTOs
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 		public string Feedback { get; set; } = string.Empty;
+        public int Stars { get; set; } = 0;
     }
 }
 
