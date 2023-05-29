@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { ModalController } from '@ionic/angular';
+import { FeedbackService } from '../../../_services/feedback.service';
 
 @Component({
   selector: 'app-review-modal',
@@ -10,8 +11,10 @@ import { ModalController } from '@ionic/angular';
   imports: [SharedModule]
 })
 export class ReviewModalComponent  implements OnInit {
+  feedback: string;
   currentRating: number = 0;
   constructor(
+    private feedbackService: FeedbackService,
     private modalController: ModalController
   ) { }
 
@@ -21,8 +24,15 @@ export class ReviewModalComponent  implements OnInit {
     this.currentRating = rating;
   }
 
-  handleSendFeedback(){
-
+  async handleSendFeedback(){
+    const success = await this.feedbackService.sendFeedback(this.feedback, this.currentRating);
+    if(!success){
+      return; // do nothing
+    }
+    // else
+    this.currentRating = 0;
+    this.feedback = "";
+    this.modalController.dismiss();
   }
 
   async closeModal(){
