@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,19 @@ export class UserConfigService {
     }
   }
 
-  applyTheme(theme: "dark" | "light" | "system"){
+  async applyTheme(theme: "dark" | "light" | "system"){
     switch(theme){
       case "light":
         document.body.setAttribute("color-theme", "light");
+        await StatusBar.setStyle({
+          style: Style.Dark
+        });
         break;
       case "dark":
         document.body.setAttribute("color-theme", "dark");
+        await StatusBar.setStyle({
+          style: Style.Light
+        })
         break;
       case "system":
         // need to set the theme local storage to whatever the user's system pref theme is
