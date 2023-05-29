@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Net;
+using System.Net.Mail;
 using api.Interfaces;
+using FluentEmail.Core;
+using FluentEmail.Razor;
+using FluentEmail.Smtp;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -7,23 +12,24 @@ namespace api.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly IConfiguration _config;
-        public EmailService(IConfiguration config)
+        private readonly IFluentEmail _singleEmail;
+        public EmailService(IFluentEmail singleEmail)
         {
-            _config = config;
+            _singleEmail = singleEmail;
         }
 
-        public async Task SendEmail(string senderEmailAddress, string senderFirstName, string senderLastName, string senderFeedback)
+        public async Task SendEmailAsync( string senderFirstName, string senderLastName, string senderFeedback)
         {
-            var apiKey = _config.GetValue<string>("SendGrid:apiKey");
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress(senderEmailAddress, senderFirstName + " " + senderLastName);
-            var subject = "LocationReminder Feedback!";
-            var to = new EmailAddress("eduanirud@gmail.com", "Anirud Shrestha");
-            var plainTextContent = senderFeedback;
-            var htmlContent = "<strong>" + senderFeedback + "</strong>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+            //var template =
+            //    @"<p> @Model.Firstname @Model.Lastname gave this feedback: </p>
+            //        <br>
+            //        <p> @Model.Feedback </p>";
+
+            var email = _singleEmail
+                .To("anirudstha5@gmail.com")
+                .Subject($"ARRIVEE feedback - {senderFirstName} {senderLastName}")
+                .Body(senderFeedback);
+            await email.SendAsync();
 
         }
     }

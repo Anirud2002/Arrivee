@@ -43,13 +43,13 @@ namespace api.Controllers
 
             try
             {
-                await _emailService.SendEmail(feedbackDTO.Email, feedbackDTO.FirstName, feedbackDTO.LastName, feedbackDTO.Feedback);
+                await _emailService.SendEmailAsync(feedbackDTO.FirstName, feedbackDTO.LastName, feedbackDTO.Feedback);
             }
             catch (Exception e)
             {
                 return new BadRequestObjectResult(new
                 {
-                    message = "Couldn't receive feedback!"
+                    message = "Couldn't send feedback!"
                 });
             };
 

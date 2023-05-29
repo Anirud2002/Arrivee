@@ -35,6 +35,12 @@ builder.Services.AddAuthenticationServices(builder.Configuration);
 // adding ApiGateway & Lambda
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
+// adding fluent email
+builder.Services
+    .AddFluentEmail("anirudstha5@gmail.com")
+    .AddRazorRenderer()
+    .AddSmtpSender("smtp-relay.sendinblue.com", 587, "anirudstha5@gmail.com", "SLITA1raUX8khbNZ");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
