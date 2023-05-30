@@ -23,6 +23,7 @@
     <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageReference Include="FluentEmail.Core" Version="3.0.2" />
     <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
+    <PackageReference Include="AWSSDK.SecretsManager" Version="3.7.102.48" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,7 @@
     <None Remove="FluentEmail.Smtp" />
     <None Remove="FluentEmail.Core" />
     <None Remove="FluentEmail.Razor" />
+    <None Remove="AWSSDK.SecretsManager" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />

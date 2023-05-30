@@ -5,6 +5,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.SecretsManager;
+using Amazon.SecretsManager.Model;
 using api.DTOs;
 using api.Entities;
 using api.Interfaces;
@@ -75,6 +77,13 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
         {
+            // getting secrets from AWS secret manager
+            var secretManagerClient = new AmazonSecretsManagerClient();
+            var secretManagerResponse = await secretManagerClient.GetSecretValueAsync(new GetSecretValueRequest()
+            {
+                SecretId = "ArriveeSecrets"
+            });
+            var response = secretManagerResponse.SecretString;
             ArgumentNullException.ThrowIfNull(loginDTO.Username);
             ArgumentNullException.ThrowIfNull(loginDTO.Password);
 

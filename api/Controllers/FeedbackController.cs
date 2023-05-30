@@ -24,11 +24,10 @@ namespace api.Controllers
             _emailService = emailService;
         }
 
-        [HttpPost("send-email")]
+        [HttpPost("send-feedback")]
         public async Task<ActionResult> SendFeedback([FromBody] FeedbackDTO feedbackDTO)
         {
             ArgumentNullException.ThrowIfNull(feedbackDTO.Username);
-            ArgumentNullException.ThrowIfNull(feedbackDTO.Email);
             ArgumentNullException.ThrowIfNull(feedbackDTO.FirstName);
             ArgumentNullException.ThrowIfNull(feedbackDTO.LastName);
             ArgumentNullException.ThrowIfNull(feedbackDTO.Feedback);
@@ -50,12 +49,15 @@ namespace api.Controllers
             {
                 return new BadRequestObjectResult(new
                 {
-                    //message = "Couldn't send feedback!"
-                    message = e
+                    operationSuccess = false,
+                    message = "Counldn't send feedback!"
                 }) ;
             };
 
-            return new OkResult();
+            return new OkObjectResult(new
+            {
+                operationSuccess = true
+            });
         }
     }
 }

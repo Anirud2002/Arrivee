@@ -1,6 +1,9 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Runtime;
+using Amazon.SecretsManager;
+using Amazon.SecretsManager.Model;
+using api;
 using api.Extensions;
 using api.Interfaces;
 using api.Services;
@@ -15,7 +18,8 @@ builder.Services.AddSwaggerGen();
 
 // adding DynamoDB
 var awsCreds = new BasicAWSCredentials(configuration["LocationReminderDB:AccessKey"], configuration["LocationReminderDB:SecretAccessKey"]);
-var config = new AmazonDynamoDBConfig() {
+var config = new AmazonDynamoDBConfig()
+{
     RegionEndpoint = Amazon.RegionEndpoint.USWest2
 };
 var dbClient = new AmazonDynamoDBClient(awsCreds, config);
