@@ -34,6 +34,24 @@ namespace api.Services
             await email.SendAsync();
 
         }
+
+        public async Task SendVerificationCodeAsync(int vertificationCode, string emailAddress)
+        {
+            var formattedBody = @$"
+                <p> This is your vertification code to reset your password.<p>
+                <br>
+                <p> <b>{vertificationCode}</b>
+                <br>
+                <em><small> This code expires in 30 minutes </small><em>
+            ";
+
+            var email = _singleEmail
+                .To(emailAddress)
+                .Subject($"VERTIFICATION CODE - ARRIVEE")
+                .Body(formattedBody, true);
+
+            await email.SendAsync();
+        }
     }
 }
 

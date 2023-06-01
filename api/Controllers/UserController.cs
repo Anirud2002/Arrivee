@@ -102,6 +102,34 @@ namespace api.Controllers
                 token = newToken
             });
         }
+
+        [HttpPut("reset-password")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDTO)
+        {
+            ArgumentNullException.ThrowIfNull(resetPasswordDTO.NewPassword);
+            ArgumentNullException.ThrowIfNull(resetPasswordDTO.Username);
+
+            var user = await _dbContext.LoadAsync<AppUser>(resetPasswordDTO.Username);
+            using var hmac = new HMACSHA512();
+
+            // create new hash and salt for new password
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(resetPasswordDTO.NewPassword));
+            user.PasswordSalt = hmac.Key;
+
+            await _dbContext.SaveAsync<AppUser>(user);
+
+            return new OkObjectResult(new
+            {
+                operationSuccess = true
+            });
+        }
+
+
+        public class ResetPasswordDTO
+        {
+            public string Username { get; set; } = string.Empty;
+            public string NewPassword { get; set; } = string.Empty;
+        }
     }
 }
 

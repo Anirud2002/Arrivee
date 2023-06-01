@@ -21,10 +21,12 @@ namespace api.Controllers
     {
         private readonly IDynamoDBContext _dbContext;
         private readonly ITokenService _tokenService;
-        public AuthController(IDynamoDBContext context, ITokenService tokenService)
+        private readonly IEmailService _emailService;
+        public AuthController(IDynamoDBContext context, ITokenService tokenService, IEmailService emailService)
         {
             _dbContext = context;
             _tokenService = tokenService;
+            _emailService = emailService;
         }
 
         [HttpPost("register")]
@@ -121,6 +123,7 @@ namespace api.Controllers
             return user != null;
         }
 
+        // used during login/register
         [HttpGet("check-username/{username}")]
         public async Task<ActionResult> CheckUsername(string userName)
         {
@@ -130,6 +133,81 @@ namespace api.Controllers
             }
 
             return new OkObjectResult(true);
+        }
+
+
+        [HttpGet("verify-account/{username}")]
+        public async Task<ActionResult> SendVerficationCode(string username)
+        {
+            ArgumentNullException.ThrowIfNull(username);
+
+            var user = await _dbContext.LoadAsync<AppUser>(username);
+            if(user == null)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    operationSuccess = false,
+                    message = "Username doesn't exists"
+                }) ;
+            }
+
+            Random random = new Random();
+            var newVerficationCode = random.Next(10000, 99999);
+
+            if (!string.IsNullOrEmpty(user.VerificationCodeAndExpireTime))
+            {
+                var prevVerificationCode = user.VerificationCodeAndExpireTime.Split("-")[0];
+                while(string.Equals(prevVerificationCode, newVerficationCode))
+                {
+                    newVerficationCode = random.Next(10000, 99999);
+                }
+            }
+
+            long expiringTime = DateTime.Now.Millisecond + (30 * 60 * 1000); // 30 minutes for this code to expire
+            var vertificationCodeAndExpireTime = newVerficationCode + "-" + expiringTime;
+
+            user.VerificationCodeAndExpireTime = vertificationCodeAndExpireTime;
+            await _dbContext.SaveAsync<AppUser>(user);
+
+            await _emailService.SendVerificationCodeAsync(newVerficationCode, user.Email);
+
+            return new OkObjectResult(new
+            {
+                operationSuccess = true
+            });
+
+        }
+
+        [HttpGet("verify-code/{username}/{code}")]
+        public async Task<ActionResult> VerifyCode(string username, int code)
+        {
+            ArgumentNullException.ThrowIfNull(username);
+            ArgumentNullException.ThrowIfNull(code);
+
+            var user = await _dbContext.LoadAsync<AppUser>(username);
+            int userCode = int.Parse(user.VerificationCodeAndExpireTime.Split("-")[0]);
+            long userCodeExpiringTime = long.Parse(user.VerificationCodeAndExpireTime.Split("-")[1]);
+
+            long currentTime = DateTime.Now.Millisecond;
+
+            if(currentTime > userCodeExpiringTime)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    message = "Code already expired!"
+                });
+            }
+
+            if(userCode != code) 
+            {
+                return new BadRequestObjectResult(new
+                {
+                    message = "Code didn't match!"
+                });
+            }
+
+            return new OkObjectResult(true);
+
         }
 
     }

@@ -16,6 +16,7 @@ namespace api.Entities
         public List<string> LocationReminderIDs { get; set; } = new List<string>();
         public List<string> NotificationIDs { get; set; } = new List<string>();
         public bool IsGoogleUser { get; set; } = false;
+        public string VerificationCodeAndExpireTime { get; set; } = string.Empty;
     }
 }
 
