@@ -1,0 +1,18 @@
+<ion-card class="ion-no-padding ion-no-margin">
+  <ion-card-header>
+    <ion-card-title>Verify Code</ion-card-title> 
+    <ion-card-subtitle>We've just send you a verification code!</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content class="ion-no-padding ion-padding-vertical">
+    <ion-item>
+      <ion-input label="Vertification Code" labelPlacement="floating" formControlName="code" type="text" (ionBlur)="markAsTouched('code')"></ion-input>
+    </ion-item>
+    <ion-text color="danger" size="small" *ngIf="hasErrors('code', 'required')" class="ion-padding-horizontal">
+      <small>Verification Code is required!</small>
+    </ion-text>   
+  </ion-card-content>
+  <ion-button expand="block" class="btn w-72 mx-auto my-6">
+    <ion-text color="white">Verify</ion-text>
+  </ion-button>
+</ion-card>
