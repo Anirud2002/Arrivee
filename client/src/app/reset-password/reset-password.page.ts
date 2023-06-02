@@ -13,6 +13,7 @@ import { ResetComponent } from './components/reset/reset.component';
   imports: [SharedModule, ReactiveFormsModule, FindAccountComponent, VerifyCodeComponent, ResetComponent]
 })
 export class ResetPasswordPage implements OnInit {
+  rootComponent = FindAccountComponent;
   form: FormGroup;
   constructor(
     private formBuilder: FormBuilder

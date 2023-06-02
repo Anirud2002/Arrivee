@@ -1,24 +1,28 @@
-<form [formGroup]="form">
-  <ion-card class="ion-no-padding ion-no-margin">
-    <ion-card-header>
-      <ion-card-title>Reset Password</ion-card-title> 
-    </ion-card-header>
+<ion-content [fullscreen]="true">
+  <div class="w-full top-20 ion-padding-horizontal" slot="fixed">
+    <form [formGroup]="form">
+      <ion-card class="ion-no-padding ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>Reset Password</ion-card-title> 
+        </ion-card-header>
 
-    <ion-card-content class="ion-no-padding ion-padding-vertical">
-      <ion-item>
-        <ion-input label="New Password" labelPlacement="floating" formControlName="newPassword" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('newPassword')"></ion-input>
-        <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye-off' : 'eye'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
-      </ion-item>
-      <ion-text color="danger" size="small" *ngIf="hasErrors('newPassword', 'required')" class="ion-padding-horizontal">
-        <small>New Password is required!</small>
-      </ion-text>   
+        <ion-card-content class="ion-no-padding ion-padding-vertical">
+          <ion-item>
+            <ion-input label="New Password" labelPlacement="floating" formControlName="newPassword" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('newPassword')"></ion-input>
+            <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye-off' : 'eye'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
+          </ion-item>
+          <ion-text color="danger" size="small" *ngIf="hasErrors('newPassword', 'required')" class="ion-padding-horizontal">
+            <small>New Password is required!</small>
+          </ion-text>   
 
-      <ion-item>
-        <ion-input label="Confirm password" labelPlacement="floating" type="password"></ion-input>
-      </ion-item>
-    </ion-card-content>
-    <ion-button expand="block" class="btn w-72 mx-auto my-6">
-      <ion-text color="white">Reset</ion-text>
-    </ion-button>
-  </ion-card>
-</form>
+          <ion-item>
+            <ion-input label="Confirm password" labelPlacement="floating" type="password"></ion-input>
+          </ion-item>
+        </ion-card-content>
+        <ion-button expand="block" class="btn w-72 mx-auto my-6">
+          <ion-text color="white">Reset</ion-text>
+        </ion-button>
+      </ion-card>
+    </form>
+  </div>
+</ion-content>

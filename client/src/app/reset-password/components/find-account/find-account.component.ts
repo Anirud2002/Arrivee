@@ -1,15 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { VerifyCodeComponent } from '../verify-code/verify-code.component';
 
 @Component({
   selector: 'app-find-account',
   templateUrl: './find-account.component.html',
   styleUrls: ['./find-account.component.scss'],
   standalone: true,
-  imports: [SharedModule, ReactiveFormsModule]
+  imports: [SharedModule, ReactiveFormsModule, VerifyCodeComponent]
 })
 export class FindAccountComponent  implements OnInit {
+  component = VerifyCodeComponent;
   @Input() form: FormGroup;
   constructor() { }
 
