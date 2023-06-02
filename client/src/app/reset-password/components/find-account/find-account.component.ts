@@ -13,7 +13,9 @@ export class FindAccountComponent  implements OnInit {
   @Input() form: FormGroup;
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.form.value);
+  }
 
   hasErrors(controlName: string, error: string):boolean{
     const control = this.form.controls[controlName];
