@@ -30,6 +30,8 @@ PODS:
     - Capacitor
   - CapacitorSplashScreen (5.0.2):
     - Capacitor
+  - CapacitorStatusBar (5.0.2):
+    - Capacitor
   - CodetrixStudioCapacitorGoogleAuth (0.0.1):
     - Capacitor
     - GoogleSignIn (~> 6.2.4)
@@ -79,6 +81,7 @@ DEPENDENCIES:
   - CapacitorNativeSettings (from `../../node_modules/capacitor-native-settings`)
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CodetrixStudioCapacitorGoogleAuth (from `../../node_modules/@codetrix-studio/capacitor-google-auth`)"
 
 SPEC REPOS:
@@ -115,6 +118,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorSplashScreen:
     :path: "../../node_modules/@capacitor/splash-screen"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
   CodetrixStudioCapacitorGoogleAuth:
     :path: "../../node_modules/@codetrix-studio/capacitor-google-auth"
 
@@ -132,6 +137,7 @@ SPEC CHECKSUMS:
   CapacitorNativeSettings: 1bfca11cd2d3920ad0e319d6e4d81a99fc53255f
   CapacitorPreferences: 0ad8838944f900284900d9647d9b0145c89ca27d
   CapacitorSplashScreen: bd2a056394ba0b8807e7bb3e746424f67c426e03
+  CapacitorStatusBar: 48f2899f6846cc7d8431b251ebfc58e1c10e3d58
   CodetrixStudioCapacitorGoogleAuth: fcce058390347c1ce5d8ac4764bdf1f5c1ee233b
   Google-Maps-iOS-Utils: 3343332b18dfd5be8f1f44edd7d481ace3da4d9a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
@@ -139,6 +145,6 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
 
-PODFILE CHECKSUM: d8861c9b69190811fa61683fea54f3603e692be9
+PODFILE CHECKSUM: 3304e1f8f9a21135ad285d6517209d843d12b765
 
 COCOAPODS: 1.11.3
