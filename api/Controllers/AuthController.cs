@@ -10,6 +10,7 @@ using Amazon.SecretsManager.Model;
 using api.DTOs;
 using api.Entities;
 using api.Interfaces;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -173,15 +174,15 @@ namespace api.Controllers
 
             return new OkObjectResult(new
             {
-                operationSuccess = true
-            });
+                operationSuccess = true,
+                secretEmail = $"{user.Email[0]}{new string('*', user.Email.IndexOf('@') - 1)}{user.Email.Substring(user.Email.IndexOf('@'))}"
+        });
 
         }
-
-        [HttpGet("verify-code/{username}/{code}")]
-        public async Task<ActionResult> VerifyCode(string username, int code)
-        {
-            ArgumentNullException.ThrowIfNull(username);
+    [HttpGet("verify-code/{username}/{code}")]
+    public async Task<ActionResult> VerifyCode(string username, int code)
+    {
+        ArgumentNullException.ThrowIfNull(username);
             ArgumentNullException.ThrowIfNull(code);
 
             var user = await _dbContext.LoadAsync<AppUser>(username);
