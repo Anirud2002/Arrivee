@@ -185,28 +185,37 @@ namespace api.Controllers
             ArgumentNullException.ThrowIfNull(code);
 
             var user = await _dbContext.LoadAsync<AppUser>(username);
-            int userCode = int.Parse(user.VerificationCodeAndExpireTime.Split("-")[0]);
-            long userCodeExpiringTime = long.Parse(user.VerificationCodeAndExpireTime.Split("-")[1]);
+            if (!string.IsNullOrEmpty(user.VerificationCodeAndExpireTime))
+            {
+                int userCode = int.Parse(user.VerificationCodeAndExpireTime.Split("-")[0]);
+                long userCodeExpiringTime = long.Parse(user.VerificationCodeAndExpireTime.Split("-")[1]);
 
-            long currentTime = DateTime.Now.Millisecond;
+                long currentTime = DateTime.Now.Millisecond;
 
-            if(currentTime > userCodeExpiringTime)
+                if(currentTime > userCodeExpiringTime)
+                {
+                    return new BadRequestObjectResult(new
+                    {
+                        message = "Code already expired!"
+                    });
+                }
+
+                if(userCode != code) 
+                {
+                    return new BadRequestObjectResult(new
+                    {
+                        message = "Code didn't match!"
+                    });
+                }
+
+                return new OkObjectResult(true);
+            } else
             {
                 return new BadRequestObjectResult(new
                 {
-                    message = "Code already expired!"
+                    message = "Bad Request!"
                 });
             }
-
-            if(userCode != code) 
-            {
-                return new BadRequestObjectResult(new
-                {
-                    message = "Code didn't match!"
-                });
-            }
-
-            return new OkObjectResult(true);
 
         }
 
