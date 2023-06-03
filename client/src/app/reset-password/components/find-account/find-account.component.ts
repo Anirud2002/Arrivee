@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { VerifyCodeComponent } from '../verify-code/verify-code.component';
+import { ResetPasswordService } from '../../../_services/reset-password.service';
 
 @Component({
   selector: 'app-find-account',
@@ -13,10 +14,12 @@ import { VerifyCodeComponent } from '../verify-code/verify-code.component';
 export class FindAccountComponent  implements OnInit {
   component = VerifyCodeComponent;
   @Input() form: FormGroup;
-  constructor() { }
+  userFound: boolean = false;
+  constructor(
+    private resetPasswordService: ResetPasswordService
+  ) { }
 
   ngOnInit() {
-    console.log(this.form.value);
   }
 
   hasErrors(controlName: string, error: string):boolean{
@@ -28,8 +31,15 @@ export class FindAccountComponent  implements OnInit {
   }
 
   markAsTouched(controlName){
+    console.log("yoo")
     const control = this.form.controls[controlName];
     control.markAsTouched();
+  }
+
+  async findAccount(){
+    const username = this.form.controls['username'];
+    username.markAsUntouched();
+    this.userFound = await this.resetPasswordService.verifyAccount(username.value);
   }
 
 }

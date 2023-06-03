@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ResetPasswordService } from '../../../_services/reset-password.service';
+import { ResetPasswordDTO } from '../../../_interfaces/Auth.modal';
 
 @Component({
   selector: 'app-reset',
@@ -12,8 +15,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class ResetComponent  implements OnInit {
   @Input() form: FormGroup;
   isPasswordHidden: boolean = true;
-
-  constructor() { }
+  confirmPwdValue: string = "";
+  pwdNotMatchedError: boolean = false;
+  constructor(
+    private router: Router,
+    private resetPasswordService: ResetPasswordService
+  ) { }
 
   ngOnInit() {}
 
@@ -36,5 +43,24 @@ export class ResetComponent  implements OnInit {
 
   togglePasswordVisibility(){
     this.isPasswordHidden = !this.isPasswordHidden;
+  }
+
+  async resetPassword(){
+    const newPassword = this.form.controls["newPassword"].value;
+    if(newPassword != this.confirmPwdValue){
+      this.pwdNotMatchedError = true;
+    }else {
+      const username = this.form.controls["username"].value;
+      let resetPasswordDTO: ResetPasswordDTO = {
+        username,
+        newPassword
+      };
+      const operationSuccess = await this.resetPasswordService.resetPassword(resetPasswordDTO);
+      if(operationSuccess){
+        this.router.navigateByUrl("/login");
+      }else {
+        return;
+      }
+    }
   }
 }

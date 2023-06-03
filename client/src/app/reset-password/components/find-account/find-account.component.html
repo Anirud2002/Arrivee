@@ -9,17 +9,22 @@
         <ion-card-content class="ion-no-padding ion-padding-vertical">
           <!-- USERNAME -->
           <ion-item>
-            <ion-input label="What's your Username?" labelPlacement="floating" formControlName="username" type="text" (ionBlur)="markAsTouched('username')"></ion-input>
+            <ion-input label="What's your Username?" labelPlacement="floating" formControlName="username" type="text" (ionInput)="markAsTouched('username')"></ion-input>
           </ion-item>
           <ion-text color="danger" size="small" *ngIf="hasErrors('username', 'required')" class="ion-padding-horizontal">
             <small>Username is required!</small>
           </ion-text>   
         </ion-card-content>
-        <ion-nav-link routerDirection="forward" [component]="component" [componentProps]="{form}">
-          <ion-button expand="block" class="btn w-72 mx-auto my-6">
-            <ion-text color="white">Find</ion-text>
-          </ion-button>
-        </ion-nav-link>
+        <ion-item lines="none" *ngIf="userFound">
+          <ion-nav-link slot="end" routerDirection="forward" [component]="component" [componentProps]="{form}">
+            <ion-button size="default" fill="clear" color="tertiary">
+              <ion-text>Next</ion-text>
+            </ion-button>
+          </ion-nav-link>
+        </ion-item>
+        <ion-button [disabled]="!form.controls['username'].touched" expand="block" class="btn w-72 mx-auto my-6" (click)="findAccount()">
+          <ion-text color="white">Find</ion-text>
+        </ion-button>
       </ion-card>
     </form>
   </div>

@@ -16,10 +16,11 @@
           </ion-text>   
 
           <ion-item>
-            <ion-input label="Confirm password" labelPlacement="floating" type="password"></ion-input>
+            <ion-input label="Confirm password" labelPlacement="floating" type="password" [(ngModel)]="confirmPwdValue" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
+          <ion-text class="ion-padding-horizontal" *ngIf="pwdNotMatchedError" color="danger">Password didn't match try again!</ion-text>
         </ion-card-content>
-        <ion-button expand="block" class="btn w-72 mx-auto my-6">
+        <ion-button [disabled]="!form.controls['newPassword'].value || !confirmPwdValue" expand="block" class="btn w-72 mx-auto my-6" (click)="resetPassword()">
           <ion-text color="white">Reset</ion-text>
         </ion-button>
       </ion-card>

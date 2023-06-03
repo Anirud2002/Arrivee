@@ -9,17 +9,22 @@
 
         <ion-card-content class="ion-no-padding ion-padding-vertical">
           <ion-item>
-            <ion-input label="Vertification Code" labelPlacement="floating" formControlName="code" type="text" (ionBlur)="markAsTouched('code')"></ion-input>
+            <ion-input label="Vertification Code" labelPlacement="floating" formControlName="code" type="tel" (ionInput)="markAsTouched('code')"></ion-input>
           </ion-item>
           <ion-text color="danger" size="small" *ngIf="hasErrors('code', 'required')" class="ion-padding-horizontal">
             <small>Verification Code is required!</small>
           </ion-text>   
         </ion-card-content>
-        <ion-nav-link routerDirection="forward" [component]="component" [componentProps]="{form}">
-          <ion-button expand="block" class="btn w-72 mx-auto my-6">
-            <ion-text color="white">Verify</ion-text>
-          </ion-button>
-      </ion-nav-link>
+        <ion-item *ngIf="isCodeValid" lines="none">
+          <ion-nav-link slot="end" *ngIf="isCodeValid" routerDirection="forward" [component]="component" [componentProps]="{form}">
+            <ion-button color="tertiary" fill="clear" size="default">
+              <ion-text>Next</ion-text>
+            </ion-button>
+          </ion-nav-link>
+        </ion-item>
+        <ion-button [disabled]="!form.controls['code'].touched" expand="block" class="btn w-72 mx-auto my-6" (click)="verifyCode()">
+          <ion-text color="white">Verify</ion-text>
+        </ion-button>
       </ion-card>
     </form>
   </div>

@@ -33,3 +33,8 @@ export interface UpdateUserDTO{
     oldPassword: string
     newPassword: string
 }
+
+export interface ResetPasswordDTO {
+    username: string,
+    newPassword: string
+}
