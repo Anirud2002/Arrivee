@@ -23,13 +23,13 @@ export class UserConfigService {
       case "light":
         document.body.setAttribute("color-theme", "light");
         await StatusBar.setStyle({
-          style: Style.Dark
+          style: Style.Light
         });
         break;
       case "dark":
         document.body.setAttribute("color-theme", "dark");
         await StatusBar.setStyle({
-          style: Style.Light
+          style: Style.Dark
         })
         break;
       case "system":
