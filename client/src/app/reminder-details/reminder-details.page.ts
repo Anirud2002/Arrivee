@@ -75,23 +75,13 @@ export class ReminderDetailsPage implements OnInit {
     })
   }
 
-  async openAddReminderModal(){
-    const modal = await this.modalController.create({
-      component: AddReminderModalComponent,
-      breakpoints: [0, 0.6],
-      initialBreakpoint: 0.6,
-    })
-
-    await modal.present();
-  }
-
   returnUnit = (value: number) => {
     this.location.radius = parseFloat(value.toFixed(1));
     return `${this.location.radius}${this.location.radiusUnit}`
   }
 
   getMax(){
-    let retVal;
+    let retVal: number;
     switch(this.location.radiusUnit){
       case SelectedUnit.km:
         retVal = 3;
@@ -110,7 +100,7 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   getMin(){
-    let retVal;
+    let retVal: number;
     switch(this.location.radiusUnit){
       case SelectedUnit.km:
         retVal = 0.5;
@@ -129,7 +119,7 @@ export class ReminderDetailsPage implements OnInit {
   }
 
   getStep(){
-    let retVal;
+    let retVal: number;
     switch(this.location.radiusUnit){
       case SelectedUnit.km:
         retVal = 0.1;
@@ -205,7 +195,6 @@ export class ReminderDetailsPage implements OnInit {
   async updateLocation(){
     await this.locationService.updateLocation(this.location).then(async () => {
       this.locationUpdated = false;
-      await this.toastService.createSuccessToast("Saved!")
     });
   }
 
