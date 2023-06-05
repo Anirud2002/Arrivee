@@ -8,7 +8,6 @@ import { Location } from '../_interfaces/Location.modal';
 import { AuthService } from '../_services/auth.service';
 import { LocationsListSkeletonComponent } from './components/locations-list-skeleton/locations-list-skeleton.component';
 import { LocationPermService } from '../_services/location-perm.service';
-import { UserConfigService } from '../_services/user-config.service';
 import { NotificationPermService } from '../_services/notification-perm.service';
 import { EnableSettingsModalComponent } from './components/enable-settings-modal/enable-settings-modal.component';
 import { App } from '@capacitor/app';
@@ -55,10 +54,12 @@ export class HomePage implements OnInit {
   }
 
   listenForAppStateChange(){
-    App.addListener('appStateChange', async ({ isActive }) => {
+    App.addListener('appStateChange', ({ isActive }) => {
       if(isActive){
-        await this.checkAndRequestLocationPermission();
-        await this.checkAndRequestNotificationPermission();
+        this.checkAndRequestLocationPermission();
+        this.checkAndRequestNotificationPermission();
+      } else {
+        this.locationNotificationService.watchUsersLocationOnBackground();
       }
     });
   }

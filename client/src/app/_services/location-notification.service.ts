@@ -8,6 +8,9 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { Location } from '../_interfaces/Location.modal';
 import { NotificationService } from './notification.service';
 import { Router } from '@angular/router';
+import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
+import { registerPlugin } from '@capacitor/core';
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>("BackgroundGeolocation");
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +18,7 @@ import { Router } from '@angular/router';
 export class LocationNotificationService {
   locations: Location[];
   watchID: string;
+  backgroundWatchID: string;
   userCoords: Coords;
   locationPermStatus: string;
   notificationPermStatus: string;
@@ -79,22 +83,57 @@ export class LocationNotificationService {
       enableHighAccuracy: true,
       timeout: 20000,
       maximumAge: 0
-    }, async (position) => {
+    }, (position) => {
       this.userCoords = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       };
-      await this.checkUserAndLocationsCoords(this.userCoords);
-    })
+      this.checkUserAndLocationsCoords(this.userCoords);
+    });
+  }
+
+  async watchUsersLocationOnBackground(){
+    this.backgroundWatchID = await BackgroundGeolocation.addWatcher({
+      backgroundMessage: "Cancel to prevent battery drain.",
+      backgroundTitle: "Getting your location.",
+      requestPermissions: true,
+      stale: false,
+      distanceFilter: 10
+    }, (location, error) => {
+      if (error) {
+        if (error.code === "NOT_AUTHORIZED") {
+            if (window.confirm(
+                "This app needs your location, " +
+                "but does not have permission.\n\n" +
+                "Open settings now?"
+            )) {
+                BackgroundGeolocation.openSettings();
+            }
+        }
+        return console.error(error);
+      }
+      this.userCoords = {
+        latitude: location.latitude,
+        longitude: location.longitude
+      };
+      this.checkUserAndLocationsCoords(this.userCoords);
+    });
   }
 
   // stops watching for user's location
   async clearWatchUserLocation(){
     if(this.watchID){
-      await Geolocation.clearWatch({id: this.watchID});
-      this.userCoords = null;
-      await LocalNotifications.removeAllListeners();
+      Geolocation.clearWatch({id: this.watchID});
+      LocalNotifications.removeAllListeners();
     }
+
+    if(this.backgroundWatchID) {
+      BackgroundGeolocation.removeWatcher({
+        id: this.backgroundWatchID
+      });
+    }
+
+    this.userCoords = null;
   }
 
    // checks users and location coords and triggers the push notificaion workflow 

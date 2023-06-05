@@ -37,6 +37,10 @@
 	<string>Enabling location will let us send you notification when you are near the location you've set!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Enabling location will let us send you notification when you are near the location you've set!</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
