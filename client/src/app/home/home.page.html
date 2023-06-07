@@ -14,6 +14,11 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-item lines="none">
+    <ion-label>Enable Tracking</ion-label>
+    <ion-toggle slot="end" (ionChange)="handleEnableLocation($event)"></ion-toggle>
+  </ion-item>
+
   <div class="mt-6">
     <app-locations-list [locations]="locations" *ngIf="!isFetchingData"></app-locations-list>
     <app-locations-list-skeleton *ngIf="isFetchingData"></app-locations-list-skeleton>
@@ -30,12 +35,19 @@
     </ion-text>
   </div>
 
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="mb-10">
+    <ion-fab-button color="tertiary" (click)="showAddLocationModal()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>
 
-<ion-footer class="ion-margin-vertical">
-  <div class="flex justify-center">
-    <ion-button class="add-rem-btn w-72 mx-auto" (click)="showAddLocationModal()">
-      Add Reminder
+<!-- <ion-footer class="ion-margin-vertical">
+  <div class="flex flex-col justify-center items-center">
+    <p class="text-xs italic from-neutral-300">Note: Set Location to "Always" for the expected behavior.</p>
+    <ion-button class="add-rem-btn w-72 mx-auto" color="white">
+      Track
     </ion-button>
   </div>
-</ion-footer>
+</ion-footer> -->

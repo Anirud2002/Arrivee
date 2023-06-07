@@ -24,6 +24,7 @@ export class HomePage implements OnInit {
   isFetchingData: boolean = false;
   showLocationEnableSettingsModal: boolean = false;
   showNotificationEnableSettingsModal: boolean = false;
+  enableLocationToggle: boolean = false;
   locations: Location[] = [];
   constructor(
     private authService: AuthService,
@@ -68,7 +69,7 @@ export class HomePage implements OnInit {
     const locationPermState = await this.locationPermService.checkPermission();
     
     if(locationPermState === "prompt"){
-      await this.locationPermService.requestLocationPermission();
+      this.locationPermService.requestLocationPermission();
     } else if (locationPermState === "denied") {
       this.showLocationEnableSettingsModal = true;
     }
@@ -79,9 +80,18 @@ export class HomePage implements OnInit {
     const notificationPermState = await this.notificationPermService.checkPermission();
     
     if(notificationPermState === "prompt"){
-      await this.notificationPermService.requestNotificationPermission();
+      this.notificationPermService.requestNotificationPermission();
     } else if (notificationPermState === "denied") {
       this.showNotificationEnableSettingsModal = true;
+    }
+  }
+
+  handleEnableLocation(e){
+    if(e.detail.checked && this.locationNotificationService.locationPermStatus === "granted"){
+      this.enableLocationToggle = true;
+      this.checkAndRequestLocationPermission();
+    }else {
+      this.enableLocationToggle = false;
     }
   }
   
