@@ -64,7 +64,7 @@ export class LocationNotificationService {
     }
 
     // first, let's get the all the locations
-    await this.getLocations();
+    this.getLocations();
 
     // add listener for when action is performed on local notification
     await LocalNotifications.addListener("localNotificationActionPerformed", notificationAction => {
@@ -93,6 +93,13 @@ export class LocationNotificationService {
   }
 
   async watchUsersLocationOnBackground(){
+    if(this.locationPermStatus !== "granted" || this.notificationPermStatus !== "granted"){
+      return;
+    }
+
+    // first, let's get the all the locations
+    this.getLocations();
+
     this.backgroundWatchID = await BackgroundGeolocation.addWatcher({
       backgroundMessage: "Cancel to prevent battery drain.",
       backgroundTitle: "Getting your location.",

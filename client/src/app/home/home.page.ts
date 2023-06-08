@@ -12,6 +12,7 @@ import { NotificationPermService } from '../_services/notification-perm.service'
 import { EnableSettingsModalComponent } from './components/enable-settings-modal/enable-settings-modal.component';
 import { App } from '@capacitor/app';
 import { LocationNotificationService } from '../_services/location-notification.service';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomePage implements OnInit {
   isFetchingData: boolean = false;
   showLocationEnableSettingsModal: boolean = false;
   showNotificationEnableSettingsModal: boolean = false;
-  enableLocationToggle: boolean = false;
+  enableTrackingToggle: boolean = false;
   locations: Location[] = [];
   constructor(
     private authService: AuthService,
@@ -44,6 +45,7 @@ export class HomePage implements OnInit {
     await this.checkAndRequestLocationPermission();
     await this.checkAndRequestNotificationPermission();
     this.listenForAppStateChange();
+    this.getEnableTracking();
   }
 
   async loadLocations(){
@@ -88,11 +90,26 @@ export class HomePage implements OnInit {
 
   handleEnableLocation(e){
     if(e.detail.checked && this.locationNotificationService.locationPermStatus === "granted"){
-      this.enableLocationToggle = true;
+      this.enableTrackingToggle = true;
+      this.setEnableTracking(true);
+      // start watching users location
+      this.locationNotificationService.watchUserIfPossible();
+    }else if(e.detail.checked && this.locationNotificationService.locationPermStatus !== "granted"){
+      this.setEnableTracking(true);
       this.checkAndRequestLocationPermission();
     }else {
-      this.enableLocationToggle = false;
+      this.enableTrackingToggle = false;
+      this.setEnableTracking(false);
     }
+  }
+
+  subscribeToLocationPermStatus(){
+    this.locationPermService.locationPermStatus$.subscribe(async status => {
+      const {value} = await Preferences.get({key: "enableTracking"});
+      if(status === "granted" && JSON.parse(value)){
+        this.enableTrackingToggle = true;
+      }
+    })
   }
   
   subscribeToUserUpdates(){
@@ -115,6 +132,30 @@ export class HomePage implements OnInit {
         }
       }
     })
+  }
+
+  async getEnableTracking(){
+    const {value} = await Preferences.get({key: "enableTracking"});
+    if(!value){
+      await Preferences.set({
+        key: "enableTracking",
+        value: "false"
+      });
+      this.enableTrackingToggle = false;
+    } else {
+      this.enableTrackingToggle = JSON.parse(value) && this.locationNotificationService.locationPermStatus === "granted";
+      if(this.enableTrackingToggle){
+        // watch users location
+        this.locationNotificationService.watchUserIfPossible();
+      }
+    }
+  }
+
+  async setEnableTracking(value: boolean){
+    await Preferences.set({
+      key: "enableTracking",
+      value: JSON.stringify(value)
+    });
   }
 
   async showAddLocationModal(){
