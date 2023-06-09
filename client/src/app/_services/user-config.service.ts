@@ -1,13 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserConfigService {
+  private enableTrackingToggle: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  enableTrackingToggle$ = this.enableTrackingToggle.asObservable();
   theme: string;
-  constructor() { }
+  constructor(
+  ) { }
+
+  async getEnableTrackingValue() : Promise<boolean> {
+    const {value} = await Preferences.get({key: "enableTracking"});
+    if(!value){
+      Preferences.set({
+        key: "enableTracking",
+        value: "false"
+      });
+      return false;
+    }
+    return JSON.parse(value);
+  }
+
+  setEnableTrackingValue(value: boolean, locationPermStatus: string) {
+    if(value && locationPermStatus !== "granted"){
+      value = false;
+    }
+    this.enableTrackingToggle.next(value);
+    Preferences.set({
+      key: "enableTracking",
+      value: JSON.stringify(value)
+    });
+  }
 
   async applyThemeOnInit(){
     this.theme = (await Preferences.get({key: "theme"})).value;

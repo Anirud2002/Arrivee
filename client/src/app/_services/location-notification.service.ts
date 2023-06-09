@@ -10,6 +10,7 @@ import { NotificationService } from './notification.service';
 import { Router } from '@angular/router';
 import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
 import { registerPlugin } from '@capacitor/core';
+import { UserConfigService } from './user-config.service';
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>("BackgroundGeolocation");
 
 @Injectable({
@@ -22,10 +23,12 @@ export class LocationNotificationService {
   userCoords: Coords;
   locationPermStatus: string;
   notificationPermStatus: string;
+  enableTrackingToggleStatus: boolean;
   isUpdatingTimestamp: boolean = false;
   constructor(
     private locationService: LocationService,
     private notificationService: NotificationService,
+    private userConfigService: UserConfigService,
     private locationPermService: LocationPermService,
     private notificationPermService: NotificationPermService,
     private router: Router
@@ -33,6 +36,17 @@ export class LocationNotificationService {
 
   async getLocations(){
     this.locations = await this.locationService.getLocations();
+  }
+
+  subscribeToEnableTrackingToggle(){
+    this.userConfigService.enableTrackingToggle$.subscribe(isEnabled => {
+      this.enableTrackingToggleStatus = isEnabled;
+      if(this.enableTrackingToggleStatus){
+        this.watchUserIfPossible();
+      }else {
+        this.clearWatchUserLocation();
+      }
+    })
   }
 
   subscribeToLocationPermStatus(){
@@ -59,7 +73,7 @@ export class LocationNotificationService {
 
   // checks location perm and notification perm status and starts watching users location if possible
   async watchUserIfPossible(){
-    if(this.locationPermStatus !== "granted" || this.notificationPermStatus !== "granted"){
+    if(this.locationPermStatus !== "granted" || this.notificationPermStatus !== "granted" || !this.enableTrackingToggleStatus){
       return;
     }
 
@@ -93,7 +107,7 @@ export class LocationNotificationService {
   }
 
   async watchUsersLocationOnBackground(){
-    if(this.locationPermStatus !== "granted" || this.notificationPermStatus !== "granted"){
+    if(this.locationPermStatus !== "granted" || this.notificationPermStatus !== "granted" || !this.enableTrackingToggleStatus){
       return;
     }
 

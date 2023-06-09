@@ -13,6 +13,7 @@ import { EnableSettingsModalComponent } from './components/enable-settings-modal
 import { App } from '@capacitor/app';
 import { LocationNotificationService } from '../_services/location-notification.service';
 import { Preferences } from '@capacitor/preferences';
+import { UserConfigService } from '../_services/user-config.service';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +32,7 @@ export class HomePage implements OnInit {
     private authService: AuthService,
     private locationService: LocationService,
     private modalController: ModalController,
+    private userConfigService: UserConfigService,
     private locationPermService: LocationPermService,
     private notificationPermService: NotificationPermService,
     private locationNotificationService: LocationNotificationService,
@@ -40,12 +42,13 @@ export class HomePage implements OnInit {
     this.loadLocations();
     this.subscribeToLocationUpdate();
     this.subscribeToUserUpdates();
+    this.subsribeToEnableTrackingToggle();
+    this.locationNotificationService.subscribeToEnableTrackingToggle();
     this.locationNotificationService.subscribeToLocationPermStatus();
     this.locationNotificationService.subscribeToNotificationPermStatus();
-    await this.checkAndRequestLocationPermission();
-    await this.checkAndRequestNotificationPermission();
+    this.checkAndRequestLocationPermission();
+    this.checkAndRequestNotificationPermission();
     this.listenForAppStateChange();
-    this.getEnableTracking();
   }
 
   async loadLocations(){
@@ -89,18 +92,7 @@ export class HomePage implements OnInit {
   }
 
   handleEnableLocation(e){
-    if(e.detail.checked && this.locationNotificationService.locationPermStatus === "granted"){
-      this.enableTrackingToggle = true;
-      this.setEnableTracking(true);
-      // start watching users location
-      this.locationNotificationService.watchUserIfPossible();
-    }else if(e.detail.checked && this.locationNotificationService.locationPermStatus !== "granted"){
-      this.setEnableTracking(true);
-      this.checkAndRequestLocationPermission();
-    }else {
-      this.enableTrackingToggle = false;
-      this.setEnableTracking(false);
-    }
+    this.userConfigService.setEnableTrackingValue(e.detail.checked, this.locationNotificationService.locationPermStatus);
   }
 
   subscribeToLocationPermStatus(){
@@ -134,28 +126,10 @@ export class HomePage implements OnInit {
     })
   }
 
-  async getEnableTracking(){
-    const {value} = await Preferences.get({key: "enableTracking"});
-    if(!value){
-      await Preferences.set({
-        key: "enableTracking",
-        value: "false"
-      });
-      this.enableTrackingToggle = false;
-    } else {
-      this.enableTrackingToggle = JSON.parse(value) && this.locationNotificationService.locationPermStatus === "granted";
-      if(this.enableTrackingToggle){
-        // watch users location
-        this.locationNotificationService.watchUserIfPossible();
-      }
-    }
-  }
-
-  async setEnableTracking(value: boolean){
-    await Preferences.set({
-      key: "enableTracking",
-      value: JSON.stringify(value)
-    });
+  subsribeToEnableTrackingToggle(){
+    this.userConfigService.enableTrackingToggle$.subscribe(isEnabled => {
+      this.enableTrackingToggle = isEnabled;
+    })
   }
 
   async showAddLocationModal(){
