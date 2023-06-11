@@ -6,12 +6,13 @@ using Amazon.DynamoDBv2.DataModel;
 using api.DTOs;
 using api.Extensions;
 using api.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class FeedbackController : Controller
     {

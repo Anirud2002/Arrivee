@@ -176,50 +176,50 @@ namespace api.Controllers
             {
                 operationSuccess = true,
                 secretEmail = $"{user.Email[0]}{new string('*', user.Email.IndexOf('@') - 1)}{user.Email.Substring(user.Email.IndexOf('@'))}"
-        });
-
+            });
         }
-    [HttpGet("verify-code/{username}/{code}")]
-    public async Task<ActionResult> VerifyCode(string username, int code)
-    {
-        ArgumentNullException.ThrowIfNull(username);
-            ArgumentNullException.ThrowIfNull(code);
 
-            var user = await _dbContext.LoadAsync<AppUser>(username);
-            if (!string.IsNullOrEmpty(user.VerificationCodeAndExpireTime))
-            {
-                int userCode = int.Parse(user.VerificationCodeAndExpireTime.Split("-")[0]);
-                long userCodeExpiringTime = long.Parse(user.VerificationCodeAndExpireTime.Split("-")[1]);
+        [HttpGet("verify-code/{username}/{code}")]
+        public async Task<ActionResult> VerifyCode(string username, int code)
+        {
+            ArgumentNullException.ThrowIfNull(username);
+                ArgumentNullException.ThrowIfNull(code);
 
-                long currentTime = DateTime.Now.Millisecond;
+                var user = await _dbContext.LoadAsync<AppUser>(username);
+                if (!string.IsNullOrEmpty(user.VerificationCodeAndExpireTime))
+                {
+                    int userCode = int.Parse(user.VerificationCodeAndExpireTime.Split("-")[0]);
+                    long userCodeExpiringTime = long.Parse(user.VerificationCodeAndExpireTime.Split("-")[1]);
 
-                if(currentTime > userCodeExpiringTime)
+                    long currentTime = DateTime.Now.Millisecond;
+
+                    if(currentTime > userCodeExpiringTime)
+                    {
+                        return new BadRequestObjectResult(new
+                        {
+                            message = "Code already expired!"
+                        });
+                    }
+
+                    if(userCode != code) 
+                    {
+                        return new BadRequestObjectResult(new
+                        {
+                            message = "Code didn't match!"
+                        });
+                    }
+
+                    return new OkObjectResult(true);
+                } else
                 {
                     return new BadRequestObjectResult(new
                     {
-                        message = "Code already expired!"
+                        message = "Bad Request!"
                     });
                 }
 
-                if(userCode != code) 
-                {
-                    return new BadRequestObjectResult(new
-                    {
-                        message = "Code didn't match!"
-                    });
-                }
-
-                return new OkObjectResult(true);
-            } else
-            {
-                return new BadRequestObjectResult(new
-                {
-                    message = "Bad Request!"
-                });
             }
 
         }
-
-    }
 }
 

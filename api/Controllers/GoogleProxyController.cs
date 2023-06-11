@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using SendGrid;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace api.Controllers
@@ -21,6 +22,7 @@ namespace api.Controllers
             GoogleApiKey = _config.GetValue<string>("Google:apiKey") ?? "";
         }
 
+        [Authorize]
         [HttpGet("search-place/{place}")]
         public async Task<ActionResult> SearchPlace(string place)
         {
@@ -47,26 +49,6 @@ namespace api.Controllers
         }
     }
 
-    //public class PlaceDetails
-    //{
-    //    public string FormattedAddress { get; set; }
-    //    public string Name { get; set; }
-    //    public Cords Geometry { get; set; }
-    //    public class Cords
-    //    {
-    //        public Location Location { get; set; }
-    //    }
-    //    public class Location
-    //    {
-    //        public double Lat { get; set; }
-    //        public double Lng { get; set; }
-    //    }
-    //}
-
-
-
-
-
     public class PlaceIdResponse
     {
         public Candidate[] Candidates { get; set; }
@@ -77,8 +59,6 @@ namespace api.Controllers
             public string Place_Id { get; set; }
         }
     }
-
-
 
 }
 

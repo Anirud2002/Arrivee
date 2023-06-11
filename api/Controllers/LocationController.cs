@@ -6,6 +6,7 @@ using Amazon.DynamoDBv2.DataModel;
 using api.DTOs;
 using api.Entities;
 using api.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static api.Entities.Location;
 
@@ -13,6 +14,7 @@ using static api.Entities.Location;
 
 namespace api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class LocationController : Controller
     {
