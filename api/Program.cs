@@ -25,7 +25,8 @@ if (builder.Environment.IsDevelopment())
         .AddFluentEmail("arrivebot@gmail.com")
         .AddRazorRenderer(typeof(Program))
         .AddSmtpSender(configuration["SMTP:Host"], 587, "anirudstha5@gmail.com", configuration["SMTP:Password"]);
-} else
+}
+else
 {
     var secrets = await (new Secrets().GetSecret());
     awsCreds = new BasicAWSCredentials(secrets.DBAccessKey, secrets.DBSecretAccessKey);
@@ -63,7 +64,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
