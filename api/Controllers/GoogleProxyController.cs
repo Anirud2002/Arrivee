@@ -15,11 +15,13 @@ namespace api.Controllers
     public class GoogleProxyController : Controller
     {
         private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _environment;
         private string GoogleApiKey;
-        public GoogleProxyController(IConfiguration config)
+        public GoogleProxyController(IConfiguration config, IWebHostEnvironment environment)
         {
             _config = config;
-            GoogleApiKey = _config.GetValue<string>("Google:apiKey") ?? "";
+            _environment = environment;
+            GetGoogleApiKey();
         }
 
         [Authorize]
@@ -46,6 +48,18 @@ namespace api.Controllers
 
             var jsonResult = await placesResponse.Content.ReadAsStringAsync();
             return new OkObjectResult(jsonResult);
+        }
+
+        public async void GetGoogleApiKey()
+        {
+            if(_environment.IsDevelopment())
+            {
+                GoogleApiKey = _config.GetValue<string>("Google:apiKey");
+            } else
+            {
+                var secrets = await (new Secrets().GetSecret());
+                GoogleApiKey = secrets.GoogleApiKey;
+            }
         }
     }
 

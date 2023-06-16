@@ -15,9 +15,28 @@ ConfigurationManager configuration = builder.Configuration;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+BasicAWSCredentials awsCreds;
+
+if (builder.Environment.IsDevelopment())
+{
+    awsCreds = new BasicAWSCredentials(configuration["LocationReminderDB:AccessKey"], configuration["LocationReminderDB:SecretAccessKey"]);
+    // adding fluent email
+    builder.Services
+        .AddFluentEmail("arrivebot@gmail.com")
+        .AddRazorRenderer(typeof(Program))
+        .AddSmtpSender(configuration["SMTP:Host"], 587, "anirudstha5@gmail.com", configuration["SMTP:Password"]);
+} else
+{
+    var secrets = await (new Secrets().GetSecret());
+    awsCreds = new BasicAWSCredentials(secrets.DBAccessKey, secrets.DBSecretAccessKey);
+    // adding fluent email
+    builder.Services
+        .AddFluentEmail("arrivebot@gmail.com")
+        .AddRazorRenderer(typeof(Program))
+        .AddSmtpSender(secrets.SmtpHost, 587, "anirudstha5@gmail.com", secrets.SmtpPassword);
+}
 
 // adding DynamoDB
-var awsCreds = new BasicAWSCredentials(configuration["LocationReminderDB:AccessKey"], configuration["LocationReminderDB:SecretAccessKey"]);
 var config = new AmazonDynamoDBConfig()
 {
     RegionEndpoint = Amazon.RegionEndpoint.USWest2
@@ -39,19 +58,12 @@ builder.Services.AddAuthenticationServices(builder.Configuration);
 // adding ApiGateway & Lambda
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
-// adding fluent email
-builder.Services
-    .AddFluentEmail("arrivebot@gmail.com")
-    .AddRazorRenderer(typeof(Program))
-    .AddSmtpSender("smtp-relay.sendinblue.com", 587, "anirudstha5@gmail.com", "SLITA1raUX8khbNZ");
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    
 }
 
 app.UseHttpsRedirection();
