@@ -40,9 +40,7 @@ export class AuthService {
   async login(loginDTO: LoginDTO): Promise<boolean>{
       const response = this.http.post<User>(`${environment.baseApiUrl}/auth/login`, loginDTO)
       .pipe(
-        catchError((err) => { // if login creds do not match
-          let message = err.error.message;
-          this.toastService.createErrorToast(message);
+        catchError((_) => { // if login creds do not match
           return of(null); 
         })
       );
@@ -60,9 +58,7 @@ export class AuthService {
   async register(registerDTO: RegisterDTO): Promise<boolean>{
     const response = this.http.post<User>(`${environment.baseApiUrl}/auth/register`, registerDTO)
     .pipe(
-      catchError((err) => {
-        let message = err.error.message
-        this.toastService.createErrorToast(message);
+      catchError((_) => {
         return of(null);
       })
     );
@@ -135,9 +131,7 @@ export class AuthService {
   async updateUser(updateUserDTO: UpdateUserDTO){
     let apiCall = this.http.put<Promise<any>>(`${environment.baseApiUrl}/user/update`, updateUserDTO)
     .pipe(
-      catchError((err) => {
-        let message = err.error.message
-        this.toastService.createErrorToast(message);
+      catchError((_) => {
         return of(null);
       })
     );

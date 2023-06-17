@@ -18,8 +18,7 @@ export class ResetPasswordService {
   async verifyAccount(username: string): Promise<boolean>{
     const apiCall = this.http.get<any>(`${environment.baseApiUrl}/auth/verify-account/${username}`)
     .pipe(
-      catchError(err => {
-        this.toastService.createErrorToast(err.error.message);
+      catchError(_ => {
         return of(null);
       })
     );
@@ -36,8 +35,7 @@ export class ResetPasswordService {
   async verifyCode(username: string, code: number): Promise<boolean>{
     const apiCall = this.http.get<any>(`${environment.baseApiUrl}/auth/verify-code/${username}/${code}`)
     .pipe(
-      catchError(err => {
-        this.toastService.createErrorToast(err.error.message);
+      catchError(_ => {
         return of(null);
       })
     );
@@ -53,8 +51,7 @@ export class ResetPasswordService {
   async resetPassword(resetPasswordDTO: ResetPasswordDTO): Promise<boolean> {
     const apiCall = this.http.put<any>(`${environment.baseApiUrl}/user/reset-password`, resetPasswordDTO)
     .pipe(
-      catchError(err => {
-        this.toastService.createErrorToast(err.error.message ?? "Something went wrong!");
+      catchError(_ => {
         return of(null);
       })
     );

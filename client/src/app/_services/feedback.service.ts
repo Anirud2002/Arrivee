@@ -33,7 +33,7 @@ export class FeedbackService {
 
     const apiCall = this.http.post<Promise<any>>(`${environment.baseApiUrl}/feedback/send-feedback`, feedbackDTO)
     .pipe(
-      catchError(err => {
+      catchError(_ => {
         this.toastService.createErrorToast("Couldn't send feedback!");
         return of(null);
       })

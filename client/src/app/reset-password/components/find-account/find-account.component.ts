@@ -30,8 +30,7 @@ export class FindAccountComponent  implements OnInit {
     return false;
   }
 
-  markAsTouched(controlName){
-    console.log("yoo")
+  markAsTouched(controlName: string){
     const control = this.form.controls[controlName];
     control.markAsTouched();
   }

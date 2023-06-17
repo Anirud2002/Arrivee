@@ -42,6 +42,9 @@ export class TokenInterceptor implements HttpInterceptor {
           case 500: // backend error
             this.toastService.createErrorToast("Something went wrong!");
             break;
+          default:
+            this.toastService.createErrorToast(error.error.message);
+            break;
         }
         return throwError(() => new Error(error.message));
       })
