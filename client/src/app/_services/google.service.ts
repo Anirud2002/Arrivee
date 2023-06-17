@@ -15,9 +15,9 @@ export class GoogleService {
   ) { }
 
   async getPlaceResult(place: string): Promise<any>{
-    const response = await this.http.get<any>(`${environment.baseApiUrl}/googleproxy/search-place/${place}`)
+    const response = this.http.get<any>(`${environment.baseApiUrl}/googleproxy/search-place/${place}`)
     .pipe(
-      catchError(() => {
+      catchError((_) => {
         return of(null);
       })
     );

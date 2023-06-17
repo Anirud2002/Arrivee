@@ -21,13 +21,13 @@ namespace api.Controllers
         {
             _config = config;
             _environment = environment;
-            GetGoogleApiKey();
         }
 
         [Authorize]
         [HttpGet("search-place/{place}")]
         public async Task<ActionResult> SearchPlace(string place)
         {
+            await GetGoogleApiKey();
             // initially get the place id
             string? placeId = "";
             HttpClient client = new HttpClient();
@@ -50,7 +50,7 @@ namespace api.Controllers
             return new OkObjectResult(jsonResult);
         }
 
-        public async void GetGoogleApiKey()
+        public async Task GetGoogleApiKey()
         {
             if(_environment.IsDevelopment())
             {
