@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -32,6 +31,7 @@ namespace api.Controllers
 
         // updates the user from the incoming DTO
         // if username is updated, sends new Token back
+        [Authorize]
         [HttpPut("update")]
         public async Task<ActionResult> UpdateUserInfo([FromBody] UpdateUserDTO updateUserDTO)
         {
