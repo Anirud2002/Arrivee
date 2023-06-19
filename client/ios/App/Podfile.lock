@@ -18,10 +18,6 @@ PODS:
     - Capacitor
   - CapacitorGeolocation (5.0.1):
     - Capacitor
-  - CapacitorGoogleMaps (5.1.0):
-    - Capacitor
-    - Google-Maps-iOS-Utils (~> 4.1)
-    - GoogleMaps (~> 7.3)
   - CapacitorKeyboard (5.0.2):
     - Capacitor
   - CapacitorLocalNotifications (5.0.2):
@@ -37,30 +33,6 @@ PODS:
   - CodetrixStudioCapacitorGoogleAuth (0.0.1):
     - Capacitor
     - GoogleSignIn (~> 6.2.4)
-  - Google-Maps-iOS-Utils (4.1.0):
-    - Google-Maps-iOS-Utils/Clustering (= 4.1.0)
-    - Google-Maps-iOS-Utils/Geometry (= 4.1.0)
-    - Google-Maps-iOS-Utils/GeometryUtils (= 4.1.0)
-    - Google-Maps-iOS-Utils/Heatmap (= 4.1.0)
-    - Google-Maps-iOS-Utils/QuadTree (= 4.1.0)
-    - GoogleMaps
-  - Google-Maps-iOS-Utils/Clustering (4.1.0):
-    - Google-Maps-iOS-Utils/QuadTree
-    - GoogleMaps
-  - Google-Maps-iOS-Utils/Geometry (4.1.0):
-    - GoogleMaps
-  - Google-Maps-iOS-Utils/GeometryUtils (4.1.0):
-    - GoogleMaps
-  - Google-Maps-iOS-Utils/Heatmap (4.1.0):
-    - Google-Maps-iOS-Utils/QuadTree
-    - GoogleMaps
-  - Google-Maps-iOS-Utils/QuadTree (4.1.0):
-    - GoogleMaps
-  - GoogleMaps (7.4.0):
-    - GoogleMaps/Maps (= 7.4.0)
-  - GoogleMaps/Base (7.4.0)
-  - GoogleMaps/Maps (7.4.0):
-    - GoogleMaps/Base
   - GoogleSignIn (6.2.4):
     - AppAuth (~> 1.5)
     - GTMAppAuth (~> 1.3)
@@ -78,7 +50,6 @@ DEPENDENCIES:
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
-  - "CapacitorGoogleMaps (from `../../node_modules/@capacitor/google-maps`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - CapacitorNativeSettings (from `../../node_modules/capacitor-native-settings`)
@@ -90,8 +61,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - Google-Maps-iOS-Utils
-    - GoogleMaps
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
@@ -111,8 +80,6 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/device"
   CapacitorGeolocation:
     :path: "../../node_modules/@capacitor/geolocation"
-  CapacitorGoogleMaps:
-    :path: "../../node_modules/@capacitor/google-maps"
   CapacitorKeyboard:
     :path: "../../node_modules/@capacitor/keyboard"
   CapacitorLocalNotifications:
@@ -137,7 +104,6 @@ SPEC CHECKSUMS:
   CapacitorCordova: b1fe6bf1f36974a8e4a9044b342d22d49c0996d6
   CapacitorDevice: 980e172f6fbfa0a945c73f908adc74b5a031e7d4
   CapacitorGeolocation: 80d87180e836e828ec8e8f40a101c61363e7a216
-  CapacitorGoogleMaps: 86c3038e7be992e6c001a610bfefef3190e73909
   CapacitorKeyboard: e628d4e66d621c69e449945ebabded17c5b9c2e8
   CapacitorLocalNotifications: db01feb38f85b4fd8c0a0d0fa94a4a6410239563
   CapacitorNativeSettings: 1bfca11cd2d3920ad0e319d6e4d81a99fc53255f
@@ -145,12 +111,10 @@ SPEC CHECKSUMS:
   CapacitorSplashScreen: bd2a056394ba0b8807e7bb3e746424f67c426e03
   CapacitorStatusBar: 48f2899f6846cc7d8431b251ebfc58e1c10e3d58
   CodetrixStudioCapacitorGoogleAuth: fcce058390347c1ce5d8ac4764bdf1f5c1ee233b
-  Google-Maps-iOS-Utils: 3343332b18dfd5be8f1f44edd7d481ace3da4d9a
-  GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
 
-PODFILE CHECKSUM: 5250f2a0e3e49962f58554fd15c99b37213a0146
+PODFILE CHECKSUM: 23a4350653aad3ba42b03bfe621008ba85e69d03
 
 COCOAPODS: 1.11.3
