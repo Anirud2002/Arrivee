@@ -52,5 +52,5 @@ Please make sure to update api/appsettings.json to add your own api keys and SMT
 
 ## Demo
 
-![](https://github.com/Anirud2002/Arrivee/blob/main/demo.gif)
+<img src="https://github.com/Anirud2002/Arrivee/raw/main/demo.gif" alt="" style="width: 200px; display: inline-block;" data-target="animated-image.originalImage">
 
