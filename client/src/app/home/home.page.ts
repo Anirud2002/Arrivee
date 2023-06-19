@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
   isFetchingData: boolean = false;
   showLocationEnableSettingsModal: boolean = false;
   showNotificationEnableSettingsModal: boolean = false;
-  enableTrackingToggle: boolean = false;
+  enableTrackingToggle: boolean;
   locations: Location[] = [];
   constructor(
     private authService: AuthService,
@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
     this.loadLocations();
     this.subscribeToLocationUpdate();
     this.subscribeToUserUpdates();
-    this.subsribeToEnableTrackingToggle();
+    this.subscribeToEnableTrackingToggle();
     this.locationNotificationService.subscribeToEnableTrackingToggle();
     this.locationNotificationService.subscribeToLocationPermStatus();
     this.locationNotificationService.subscribeToNotificationPermStatus();
@@ -77,6 +77,9 @@ export class HomePage implements OnInit {
       this.locationPermService.requestLocationPermission();
     } else if (locationPermState === "denied") {
       this.showLocationEnableSettingsModal = true;
+      if(this.enableTrackingToggle){
+        this.enableTrackingToggle = false;
+      }
     }
   }
 
@@ -93,6 +96,7 @@ export class HomePage implements OnInit {
 
   handleEnableLocation(e){
     this.userConfigService.setEnableTrackingValue(e.detail.checked, this.locationNotificationService.locationPermStatus);
+    this.checkAndRequestLocationPermission();
   }
 
   subscribeToLocationPermStatus(){
@@ -126,9 +130,11 @@ export class HomePage implements OnInit {
     })
   }
 
-  subsribeToEnableTrackingToggle(){
+  subscribeToEnableTrackingToggle(){
     this.userConfigService.enableTrackingToggle$.subscribe(isEnabled => {
-      this.enableTrackingToggle = isEnabled;
+      setTimeout(() => {
+        this.enableTrackingToggle = isEnabled;
+      }, 1000);
     })
   }
 

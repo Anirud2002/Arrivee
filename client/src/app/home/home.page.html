@@ -17,7 +17,7 @@
 
   <ion-item lines="none">
     <ion-label>Enable Tracking</ion-label>
-    <ion-toggle slot="end" (ionChange)="handleEnableLocation($event)"></ion-toggle>
+    <ion-toggle slot="end" (ionChange)="handleEnableLocation($event)" [(ngModel)]="enableTrackingToggle"></ion-toggle>
   </ion-item>
 
   <div class="mt-6">
