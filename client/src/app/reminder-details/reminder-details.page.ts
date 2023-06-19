@@ -1,5 +1,4 @@
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { ReminderItemComponent } from './components/reminder-item/reminder-item.component';
 import { AddReminderModalComponent } from './components/add-reminder-modal/add-reminder-modal.component';
 import { SelectedUnit } from '../home/components/add-location-modal/add-location-modal.component'; 
@@ -7,9 +6,6 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { LocationService } from '../_services/location.service';
 import { Location } from '../_interfaces/Location.modal';
 import { SharedModule } from '../shared/shared.module';
-import { ToastService } from '../_services/toast.service';
-import { GoogleMap } from '@capacitor/google-maps';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-reminder-details',
@@ -20,8 +16,9 @@ import { v4 as uuidv4 } from 'uuid';
   imports: [SharedModule, ReminderItemComponent, AddReminderModalComponent]
 })
 export class ReminderDetailsPage implements OnInit {
-  @ViewChild("map") mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
+  // ADD IT BACK WHEN GOOGLE MAPS IS SUPPORTED FOR arm64 ARCHITECTURE
+  // @ViewChild("map") mapRef: ElementRef<HTMLElement>;
+  // newMap: GoogleMap;
   location: Location = {} as Location;
   isLoadingData: boolean = false;
   isAddRemInputOpen: boolean = false; // boolean to to store if user wants to create new reminder to not
@@ -29,11 +26,7 @@ export class ReminderDetailsPage implements OnInit {
   newReminderTitle: string = "";
   constructor(
     private locationService: LocationService,
-    private modalController: ModalController,
     private actRoute: ActivatedRoute,
-    private alertController: AlertController,
-    private router: Router,
-    private toastService: ToastService
   ) { }
 
   async ngOnInit() {
@@ -41,7 +34,8 @@ export class ReminderDetailsPage implements OnInit {
       const id = params.get('id');
       await this.loadLocationDetails(id);
       const {coords:{latitude, longitude}} = this.location;
-      await this.renderGoogleMap(latitude, longitude);
+      // ADD IT BACK WHEN GOOGLE MAPS IS SUPPORTED FOR arm64 ARCHITECTURE
+      // await this.renderGoogleMap(latitude, longitude); 
     });
   }
 
@@ -53,27 +47,28 @@ export class ReminderDetailsPage implements OnInit {
     });
   }
 
-  async renderGoogleMap(latitude: number, longitude: number){
-    this.newMap = await GoogleMap.create({
-      id: uuidv4(),
-      element: this.mapRef.nativeElement,
-      apiKey: "AIzaSyDI9zF17bjo0MdmjhG0JlJbQxn3CqgrYDI",
-      config: {
-        center: {
-          lat: latitude,
-          lng: longitude
-        },
-        zoom: 16
-      },
-    });
+  // ADD IT BACK WHEN GOOGLE MAPS IS SUPPORTED FOR arm64 ARCHITECTURE
+  // async renderGoogleMap(latitude: number, longitude: number){
+  //   this.newMap = await GoogleMap.create({
+  //     id: uuidv4(),
+  //     element: this.mapRef.nativeElement,
+  //     apiKey: "AIzaSyDI9zF17bjo0MdmjhG0JlJbQxn3CqgrYDI",
+  //     config: {
+  //       center: {
+  //         lat: latitude,
+  //         lng: longitude
+  //       },
+  //       zoom: 16
+  //     },
+  //   });
 
-    await this.newMap.addMarker({
-      coordinate: {
-        lat: latitude,
-        lng: longitude
-      }
-    })
-  }
+  //   await this.newMap.addMarker({
+  //     coordinate: {
+  //       lat: latitude,
+  //       lng: longitude
+  //     }
+  //   })
+  // }
 
   returnUnit = (value: number) => {
     this.location.radius = parseFloat(value.toFixed(1));

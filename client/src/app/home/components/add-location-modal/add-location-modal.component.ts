@@ -6,7 +6,6 @@ import { NewLocation } from '../../../_interfaces/Location.modal';
 import { ToastService } from '../../../_services/toast.service';
 import { GoogleService } from '../../../_services/google.service';
 import { LocationService } from '../../../_services/location.service';
-import { GoogleMap } from '@capacitor/google-maps';
 
 export enum SelectedUnit{
   km = "km",
