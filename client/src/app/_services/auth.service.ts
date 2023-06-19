@@ -7,6 +7,7 @@ import { Preferences } from '@capacitor/preferences';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
+import { UserConfigService } from './user-config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private userConfigService: UserConfigService,
     private toastService: ToastService,
   ) { }
 
@@ -80,6 +82,8 @@ export class AuthService {
     this.user = null;
 
     this.userSubject.next(this.user);
+
+    this.userConfigService.setEnableTrackingValue(false, "whatever"); // we just need to delete the key so don't care what the location status is
 
     this.router.navigateByUrl("/login");
 
