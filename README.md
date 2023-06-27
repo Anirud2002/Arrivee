@@ -1,7 +1,7 @@
 
 # Arrivee
 
-A mobile-app that lets you set location based reminders. [Download](https://testflight.apple.com/join/Jr8SZOcO)
+A mobile-app that lets you set location based reminders. [Test Beta Version](https://testflight.apple.com/join/Jr8SZOcO)
 
 
 ## Who is this app for?
