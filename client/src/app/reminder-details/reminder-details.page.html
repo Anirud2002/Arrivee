@@ -19,10 +19,9 @@
   </ion-header>
 
   <!-- Google MAP -->
-  <!-- ADD IT BACK WHEN GOOGLE MAPS IS SUPPORTED FOR arm64 ARCHITECTURE -->
-  <!-- <ion-card class="google-card">
+  <ion-card class="google-card">
     <capacitor-google-map #map></capacitor-google-map>
-  </ion-card> -->
+  </ion-card>
 
   <ion-range aria-label="Volume" class="ion-margin-horizontal ion-padding" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="location.radius">
     <div slot="label" class="mr-4 -ml-4">Radius:</div>
