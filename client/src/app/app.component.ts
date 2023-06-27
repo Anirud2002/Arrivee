@@ -24,7 +24,7 @@ export class AppComponent {
         clientId: '711358070411-ibpj1lvqushopekhog1pkga4t30fv242.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
         grantOfflineAccess: true,
-      })
+      });
     }
     this.userConfigService.applyThemeOnInit();
   }
