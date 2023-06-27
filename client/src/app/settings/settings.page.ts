@@ -5,9 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthService } from '../_services/auth.service';
 import { User } from '../_interfaces/Auth.modal';
 import { UserConfigService } from '../_services/user-config.service';
-import { LocationPermService } from '../_services/location-perm.service';
 import { OpenSettingsPopoverComponent } from './components/open-settings-popover/open-settings-popover.component';
-import { NotificationPermService } from '../_services/notification-perm.service';
 import { NotificationPopoverComponent } from './components/notification-popover/notification-popover.component';
 
 @Component({
