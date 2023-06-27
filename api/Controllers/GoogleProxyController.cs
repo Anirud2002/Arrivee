@@ -28,25 +28,14 @@ namespace api.Controllers
         public async Task<ActionResult> SearchPlace(string place)
         {
             await GetGoogleApiKey();
-            // initially get the place id
-            string? placeId = "";
+
+            // request to get all the places
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(
-                    $"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={place}&inputtype=textquery&key={GoogleApiKey}"
-                );
-            if (response.IsSuccessStatusCode)
-            {
-                PlaceIdResponse? placeResponse = JsonConvert.DeserializeObject<PlaceIdResponse>(await response.Content.ReadAsStringAsync());
-                placeId = placeResponse?.Candidates[0].Place_Id;
-            }
-
-            // api call to get the places
-
-            HttpResponseMessage placesResponse = await client.GetAsync(
-                    $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={GoogleApiKey}"
+                    $"https://maps.googleapis.com/maps/api/place/textsearch/json?query={place}&key={GoogleApiKey}"
                 );
 
-            var jsonResult = await placesResponse.Content.ReadAsStringAsync();
+            var jsonResult = await response.Content.ReadAsStringAsync();
             return new OkObjectResult(jsonResult);
         }
 
