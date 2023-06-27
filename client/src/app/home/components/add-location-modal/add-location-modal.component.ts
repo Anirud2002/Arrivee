@@ -6,6 +6,7 @@ import { NewLocation } from '../../../_interfaces/Location.modal';
 import { ToastService } from '../../../_services/toast.service';
 import { GoogleService } from '../../../_services/google.service';
 import { LocationService } from '../../../_services/location.service';
+import { PlaceResult, Result } from '../../../_interfaces/GooglePlace.modal';
 
 export enum SelectedUnit{
   km = "km",
@@ -26,7 +27,7 @@ export class AddLocationModalComponent implements OnInit {
   isInEditState: boolean = false;
   newLocation: NewLocation;
   newReminderTitle: string = "";
-  googlePlacesApiResponse: any;
+  googlePlacesApiResponse: PlaceResult;
   searchBarInput: string = "";
 
 
@@ -66,11 +67,11 @@ export class AddLocationModalComponent implements OnInit {
     this.googlePlacesApiResponse = await this.googleService.getPlaceResult(this.searchBarInput);
   }
 
-  async selectLocation(){
+  async selectLocation(place: Result){
     if(!this.searchBarInput){
       return;
     }
-    const {name, formatted_address, geometry:{location}} = this.googlePlacesApiResponse.result;
+    const {name, formatted_address, geometry:{location}} = place;
     this.newLocation.title = this.searchBarInput = name;
     this.newLocation.streetAddress = formatted_address;
     this.newLocation.coords = {

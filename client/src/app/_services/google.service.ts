@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ToastService } from './toast.service';
 import { catchError, lastValueFrom, of } from 'rxjs';
+import { PlaceResult } from '../_interfaces/GooglePlace.modal';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class GoogleService {
     private toastService: ToastService
   ) { }
 
-  async getPlaceResult(place: string): Promise<any>{
+  async getPlaceResult(place: string): Promise<PlaceResult>{
     const response = this.http.get<any>(`${environment.baseApiUrl}/googleproxy/search-place/${place}`)
     .pipe(
       catchError((_) => {
@@ -26,7 +27,7 @@ export class GoogleService {
 
     if(!result){
       this.toastService.createErrorToast("Couldn't load places!");
-      return;
+      return {} as PlaceResult;
     }
 
     return result;

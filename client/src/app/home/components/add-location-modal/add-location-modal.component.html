@@ -5,14 +5,18 @@
 <ion-content class="ion-padding">
   <ion-item lines="none" class="searchbar-item">
     <ion-icon name="location-sharp" slot="start"></ion-icon>
-    <ion-input label="" debounce="500" [(ngModel)]="searchBarInput" (ionInput)="searchPlace($event)" show-clear-button="focus" class="location-searchbar" placeholder="Search Address" [clearInput]="true"></ion-input>
+    <ion-input label="" debounce="750" [(ngModel)]="searchBarInput" (ionInput)="searchPlace($event)" show-clear-button="focus" class="location-searchbar" placeholder="Search Address" [clearInput]="true"></ion-input>
   </ion-item>
-  <ion-item *ngIf="googlePlacesApiResponse" class="ion-margin-top" lines="none" [detail]="false" button (click)="selectLocation()">
-    <ion-label>
-      <h3>{{googlePlacesApiResponse.result.name}}</h3>
-      <p>{{googlePlacesApiResponse.result.formatted_address}}</p>
-    </ion-label>
-  </ion-item>
+
+  <ion-list *ngIf="googlePlacesApiResponse" class="fixed mt-4 z-10">
+    <ion-item *ngFor="let location of googlePlacesApiResponse.results | slice:0:3"  class="ion-margin-top" lines="none" [detail]="false" button (click)="selectLocation(location)">
+      <ion-label>
+        <h3>{{location.name}}</h3>
+        <p>{{location.formatted_address}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
   <p class="ion-margin text-sm font-extrabold" *ngIf="newLocation.streetAddress">{{newLocation.streetAddress}}</p>
   
   <ion-range aria-label="Radius" class="ion-margin-horizontal" [step]="getStep()" labelPlacement="start" [pin]="true" [pinFormatter]="returnUnit" (ionInput)="updateRadius($event)" [max]="getMax()" [min]="getMin()" [value]="newLocation.radius">
