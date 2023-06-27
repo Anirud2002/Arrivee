@@ -95,8 +95,9 @@ export class HomePage implements OnInit {
   }
 
   handleEnableLocation(e){
-    this.userConfigService.setEnableTrackingValue(e.detail.checked, this.locationNotificationService.locationPermStatus);
+    this.userConfigService.setEnableTrackingValue(e.detail.checked, this.locationNotificationService.locationPermStatus, this.locationNotificationService.notificationPermStatus);
     this.checkAndRequestLocationPermission();
+    this.checkAndRequestNotificationPermission();
   }
 
   subscribeToLocationPermStatus(){

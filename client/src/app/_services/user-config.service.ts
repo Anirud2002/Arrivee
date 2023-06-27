@@ -25,8 +25,8 @@ export class UserConfigService {
     return JSON.parse(value);
   }
 
-  setEnableTrackingValue(value: boolean, locationPermStatus: string) {
-    if(value && locationPermStatus !== "granted"){
+  setEnableTrackingValue(value: boolean, locationPermStatus: string, notificationPermStatus: string) {
+    if(value && (locationPermStatus !== "granted" || notificationPermStatus !== "granted")){
       value = false;
     }
     this.enableTrackingToggle.next(value);

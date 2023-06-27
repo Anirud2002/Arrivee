@@ -83,7 +83,7 @@ export class AuthService {
 
     this.userSubject.next(this.user);
 
-    this.userConfigService.setEnableTrackingValue(false, "whatever"); // we just need to delete the key so don't care what the location status is
+    this.userConfigService.setEnableTrackingValue(false, "whatever", "whatever"); // we just need to delete the key so don't care what the location status is
 
     this.router.navigateByUrl("/login");
 
