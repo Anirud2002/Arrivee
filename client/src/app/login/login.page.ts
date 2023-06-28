@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { AuthService } from '../_services/auth.service';
-import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { GoogleAuthService } from '../_services/google-auth.service';
@@ -20,6 +19,8 @@ export class LoginPage implements OnInit {
   form: FormGroup;
   isPasswordHidden: boolean = true;
   errorOccurred: boolean = false;
+  isLoggingIn: boolean = false;
+  isGoogleSigningIn: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -83,24 +84,28 @@ export class LoginPage implements OnInit {
       }
     }
 
-    if(errorCounts > 0){
-      return;
+    if(errorCounts === 0){
+        // handle register user
+      this.isLoggingIn = true;
+      const retVal = await this.authService.login(this.form.value);
+      if(!retVal){
+        this.errorOccurred = true;
+        const passwordControl = this.form.controls['password'];
+        passwordControl.markAsUntouched();
+        passwordControl.patchValue("");
+      }else {
+        this.router.navigateByUrl("/home")
+      }
     }
 
-    // handle register user
-    const retVal = await this.authService.login(this.form.value);
-    if(!retVal){
-      this.errorOccurred = true;
-      const passwordControl = this.form.controls['password'];
-      passwordControl.markAsUntouched();
-      passwordControl.patchValue("");
-      return;
-    }
-    this.router.navigateByUrl("/home")
+    this.isLoggingIn = false;
   }
 
   async handleGoogleSignIn(){
-    await this.googleAuthService.signIn();
+    this.isGoogleSigningIn = true;
+    await this.googleAuthService.signIn()
+    .then(() => this.isGoogleSigningIn = false)
+    .catch(() => this.isGoogleSigningIn = false)
   }
 
 }

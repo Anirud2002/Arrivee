@@ -13,12 +13,16 @@
 
     </ion-card-content>
     </ion-card>
-    <ion-button expand="block" (click)="handleRegister()" class="login-btn w-72 mx-auto my-6">Create account</ion-button>
+    <ion-button expand="block" (click)="handleRegister()" class="login-btn w-72 mx-auto my-6">
+      <ion-text *ngIf="!isRegistering">Create account</ion-text>
+      <ion-spinner name="crescent" *ngIf="isRegistering"></ion-spinner>
+    </ion-button>
 
     <div class="w-full">
       <ion-button expand="block" class="google-btn w-72 mx-auto my-6" (click)="handleGoogleSignIn()">
-        <img src="../../assets/google-logo.png" class="w-8" alt="google-logo">
-        <ion-text class="ml-4 font-extrabold" color="white">Sign in with Google</ion-text>
+        <img src="../../assets/google-logo.png" class="w-8" alt="google-logo" *ngIf="!isGoogleSigningIn">
+        <ion-text class="ml-4 font-extrabold" color="white" *ngIf="!isGoogleSigningIn">Sign in with Google</ion-text>
+        <ion-spinner name="crescent" color="white" *ngIf="isGoogleSigningIn"></ion-spinner>
       </ion-button>
     </div>
   </div>

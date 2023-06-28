@@ -38,12 +38,16 @@
   
       </ion-card-content>
     </ion-card>
-    <ion-button expand="block" class="login-btn w-72 mx-auto my-6" (click)="handleLogin()">Login</ion-button>
+    <ion-button expand="block" class="login-btn w-72 mx-auto my-6" (click)="handleLogin()">
+      <ion-text *ngIf="!isLoggingIn">Login</ion-text>
+      <ion-spinner *ngIf="isLoggingIn" name="crescent"></ion-spinner>
+    </ion-button>
 
     <div class="w-full">
       <ion-button expand="block" class="google-btn w-72 mx-auto my-6" (click)="handleGoogleSignIn()">
-        <img src="../../assets/google-logo.png" class="w-8" alt="google-logo">
-        <ion-text class="ml-4 font-extrabold" color="white">Sign in with Google</ion-text>
+        <img src="../../assets/google-logo.png" class="w-8" alt="google-logo" *ngIf="!isGoogleSigningIn">
+        <ion-text class="ml-4 font-extrabold" color="white" *ngIf="!isGoogleSigningIn">Sign in with Google</ion-text>
+        <ion-spinner *ngIf="isGoogleSigningIn" name="crescent" color="white"></ion-spinner>
       </ion-button>
     </div>
   </div>

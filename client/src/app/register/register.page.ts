@@ -22,6 +22,9 @@ export class RegisterPage implements OnInit {
   formPart: number = 1;
   registerButtonEnable: boolean = false;
   usernameTaken: boolean = false;
+  isRegistering: boolean = false;
+  isGoogleSigningIn: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -97,6 +100,7 @@ export class RegisterPage implements OnInit {
 
     if(errorCount=== 0){
       // handle register user
+      this.isRegistering = true;
       let registerDTO = new FormGroup({
         firstname: this.form.get('firstname'),
         lastname: this.form.get('lastname'),
@@ -110,14 +114,19 @@ export class RegisterPage implements OnInit {
       if(!retVal){
         this.formPart = 1;
         this.usernameTaken = true;
-        return;
+      }else {
+        this.router.navigateByUrl("/home")
       }
-      this.router.navigateByUrl("/home")
+
+      this.isRegistering = false;
     }
   }
 
   async handleGoogleSignIn(){
-    await this.googleAuthService.signIn();
+    this.isGoogleSigningIn = true;
+    await this.googleAuthService.signIn()
+    .then(() => this.isGoogleSigningIn = false)
+    .catch(() => this.isGoogleSigningIn = false)
   }
 
 }
