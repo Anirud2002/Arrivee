@@ -27,11 +27,10 @@ jobs:
         with:
           node-version: "14"
 
-      - name: Navigate to client folder
-        run: cd client
-
       - name: Install dependencies
+        working-directory: ./client
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        working-directory: ./client
+        run: npm run test
