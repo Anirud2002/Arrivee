@@ -165,7 +165,7 @@ export class LocationNotificationService {
     for (const location of this.locations) {
       let distanceFromUser = this.getDistance(userCoord.latitude, userCoord.longitude, location.coords.latitude, location.coords.longitude, location.radiusUnit);
       
-      if (distanceFromUser <= location.radius && this.canNotificationBePushed(location.notificationTimestamp)) {
+      if (distanceFromUser <= location.radius && this.canNotificationBePushed(location)) {
         if(!this.isUpdatingTimestamp){
           this.isUpdatingTimestamp = true;
           await this.locationService.updateLocationTimestamp(location.locationID)
@@ -185,16 +185,16 @@ export class LocationNotificationService {
   }
 
   // checks if notification can be pushed depending upon the last notification timestamp
-  canNotificationBePushed(lastTimestamp: number): boolean{
+  canNotificationBePushed(location: Location): boolean{
     let retVal: boolean;
     let currentUnixTimestamp = Date.now();
-    if((currentUnixTimestamp - lastTimestamp) < (2 * 60 * 60 * 1000)){ // if 2 hours has not elapsed since the last notification, return false
+    if((currentUnixTimestamp - location.notificationTimestamp) < (2 * 60 * 60 * 1000)){ // if 2 hours has not elapsed since the last notification, return false
       retVal = false;
     }else {
       retVal = true;
     }
 
-    return retVal;
+    return retVal && location.reminders.length > 0;
   }
 
   // gets distance between users coords and location coords in correct unit
