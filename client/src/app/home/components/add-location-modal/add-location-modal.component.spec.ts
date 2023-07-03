@@ -9,8 +9,7 @@ describe('AddLocationModalComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddLocationModalComponent ],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot(), AddLocationModalComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddLocationModalComponent);
