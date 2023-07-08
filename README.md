@@ -1,12 +1,11 @@
-
 # Arrivee
 
 A mobile-app that lets you set location based reminders. [Test Beta Version](https://testflight.apple.com/join/Jr8SZOcO)
 
-
 ## Who is this app for?
 
 This app is for people who forget to do task(s) when they arrive or depart from some location. It will send notification to user's device when they enter or leave a certain location they have set.
+
 ## Tech Stack
 
 **Client:** Angular, Ionic, Capacitor, TailwindCSS
@@ -15,7 +14,6 @@ This app is for people who forget to do task(s) when they arrive or depart from 
 
 **Database:** DynamoDB
 
-
 ## How to run on your machine? (Locally)
 
 Clone the repo
@@ -23,6 +21,7 @@ Clone the repo
 ```bash
   git clone https://github.com/Anirud2002/Arrivee.git
 ```
+
 Install client dependencies and run locally
 
 ```bash
@@ -44,13 +43,15 @@ Install backend dependencies and run locally
 Run Client and Backend simultaneously to make the app work how it's supposed to!
 
 Please make sure to update api/appsettings.json to add your own api keys and SMTP host and password.
+
 ## Acknowledgements
 
- - Special thanks to **Ang Chhimi Sherpa** for helping on the UI/UX aspect of this app [(Her Portfolio)](https://www.chhimi.me/)
+- Special thanks to **Ang Chhimi Sherpa** for helping on the UI/UX aspect of this app [(Her Portfolio)](https://www.chhimi.me/)
 
+## How to Contribute?
 
+Please make sure to clone the repo and brach the project into a feature branch. Finally, after pushing up your changes, make sure to pull a PR.
 
 ## Demo
 
 <img src="https://github.com/Anirud2002/Arrivee/raw/main/demo.gif" alt="" style="width: 100%; display: inline-block;" data-target="animated-image.originalImage">
-
