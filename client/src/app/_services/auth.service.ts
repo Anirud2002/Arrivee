@@ -161,5 +161,29 @@ export class AuthService {
 
     this.toastService.createSuccessToast("Updated!")
   }
+
+  async deleteUser() {
+    if(!this.user){
+      this.user = await this.getUser();
+    }
+    let apiCall = this.http.post<Promise<any>>(`${environment.baseApiUrl}/user/delete`,  {
+      username: this.user.username
+    })
+    .pipe(
+      catchError((_) => {
+        return of(null);
+      })
+    );
+
+    let response = await lastValueFrom(apiCall);
+
+    if(!response){
+      this.toastService.createErrorToast("Couldn't delete user!");
+      return;
+    }
+
+    this.toastService.createSuccessToast("User deleted! Sad to see you go :(");
+    this.router.navigateByUrl("login");
+  }
   
 }

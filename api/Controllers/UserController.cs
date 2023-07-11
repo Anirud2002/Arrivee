@@ -12,6 +12,7 @@ using api.Extensions;
 using api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static api.Controllers.UserController;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -102,6 +103,29 @@ namespace api.Controllers
             {
                 operationSuccess = true,
                 token = newToken
+            });
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult> DeleteProfile([FromBody] DeleteProfileDTO deleteProfileDTO)
+        {
+            ArgumentNullException.ThrowIfNull(deleteProfileDTO.Username);
+
+            var user = await _dbContext.LoadAsync<AppUser>(deleteProfileDTO.Username);
+
+            if (user == null)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    operationSuccess = false
+                });
+            }
+
+            await _dbContext.DeleteAsync<AppUser>(user);
+
+            return new OkObjectResult(new
+            {
+                operationSuccess = true
             });
         }
 

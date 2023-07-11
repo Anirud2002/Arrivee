@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { AuthService } from '../_services/auth.service';
 import { User } from '../_interfaces/Auth.modal';
 import { SharedModule } from '../shared/shared.module';
@@ -23,6 +23,7 @@ export class ProfilePage implements OnInit {
   usernameTaken: boolean = false;
   constructor(
     private authService: AuthService,
+    private alertController: AlertController,
     private formBuilder: FormBuilder
   ) { }
 
@@ -121,6 +122,28 @@ export class ProfilePage implements OnInit {
       this.getUser();
       this.profileForm.markAsPristine();
     });
+  }
+
+  async deleteProfile(){
+    const alert = await this.alertController.create({
+      header: "Are you sure?",
+      message: "This action cannot be undone!",
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+        },
+        {
+          text: 'Yes',
+          role: 'confirm',
+          handler: () => {
+            this.authService.deleteUser();
+          },
+        },
+      ]
+    });
+
+    await alert.present();
   }
 
 }
