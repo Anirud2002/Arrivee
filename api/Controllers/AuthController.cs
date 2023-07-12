@@ -34,8 +34,6 @@ namespace api.Controllers
         public async Task<ActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
             ArgumentNullException.ThrowIfNull(registerDTO.Username);
-            ArgumentNullException.ThrowIfNull(registerDTO.Firstname);
-            ArgumentNullException.ThrowIfNull(registerDTO.Lastname);
             ArgumentNullException.ThrowIfNull(registerDTO.Email);
             ArgumentNullException.ThrowIfNull(registerDTO.Password);
 
