@@ -1,7 +1,7 @@
 <div [formGroup]="form">
   <!-- PASSWORD -->
   <ion-item>
-    <ion-input label="Password" labelPlacement="floating" formControlName="password" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('password')"></ion-input>
+    <ion-input label="Password*" labelPlacement="floating" formControlName="password" [type]="isPasswordHidden ? 'password' : 'text'" (ionBlur)="markAsTouched('password')"></ion-input>
     <ion-icon *ngIf="!isPasswordInputEmpty" [name]="isPasswordHidden ? 'eye' : 'eye-off'" (click)="togglePasswordVisibility()" slot="end" size="small"></ion-icon>
   </ion-item>
   <ion-text color="danger" size="small" *ngIf="hasErrors('password', 'required')" class="ion-padding-horizontal">
@@ -9,7 +9,7 @@
   </ion-text>
 
   <ion-item>
-    <ion-input label="Confirm password" labelPlacement="floating" formControlName="confirmPassword" type="password"></ion-input>
+    <ion-input label="Confirm password*" labelPlacement="floating" formControlName="confirmPassword" type="password"></ion-input>
   </ion-item>
   <ion-text color="danger" size="small" *ngIf="!isPasswordSame()" class="ion-padding-horizontal">
     <small>Password doesn't match!</small>

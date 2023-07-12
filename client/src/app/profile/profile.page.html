@@ -22,16 +22,10 @@
     <ion-item lines="none">
       <ion-input label="First name" labelPlacement="stacked" type="text" formControlName="firstname" (ionBlur)="markAsTouched('firstname')"></ion-input>
     </ion-item>
-    <ion-text color="danger" *ngIf="hasError('firstname')">
-      <small>First name is required*</small>
-    </ion-text>
 
     <ion-item lines="none">
       <ion-input label="Last name" labelPlacement="stacked" type="text" formControlName="lastname" (ionBlur)="markAsTouched('lastname')"></ion-input>
     </ion-item>
-    <ion-text color="danger" *ngIf="hasError('lastname')">
-      <small>Last name is required*</small>
-    </ion-text>
 
     <ion-item lines="none">
       <ion-input label="Username" labelPlacement="stacked" type="text" debounce="1000" (ionInput)="checkUsername($event)" formControlName="username" (ionBlur)="markAsTouched('username')"></ion-input>

@@ -41,8 +41,8 @@ export class RegisterPage implements OnInit {
   initForm(){
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      firstname: [''],
+      lastname: [''],
       email: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
@@ -73,7 +73,7 @@ export class RegisterPage implements OnInit {
 
   async handleRegister(){
     let errorCount = 0;
-    const firstFormControlNames = ['username', 'firstname', 'lastname', 'email']
+    const firstFormControlNames = ['username', 'email']
     for(let i = 0; i < firstFormControlNames.length; i++){
       this.markAsTouched(firstFormControlNames[i]);
       if(this.form.controls[firstFormControlNames[i]].errors != null){

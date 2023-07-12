@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { AuthService } from '../_services/auth.service';
 import { User } from '../_interfaces/Auth.modal';
@@ -47,8 +47,8 @@ export class ProfilePage implements OnInit {
 
   initProfileForm(): void{
     this.profileForm = this.formBuilder.group({
-      firstname: [this.user.firstname, Validators.required],
-      lastname: [this.user.lastname, Validators.required],
+      firstname: [this.user.firstname],
+      lastname: [this.user.lastname],
       username: [this.user.username, Validators.required],
       oldPassword: [""],
       newPassword: [""],
