@@ -8,6 +8,7 @@ import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './app/_interceptors/token.interceptor';
+import { SignInWithApple } from '@awesome-cordova-plugins/sign-in-with-apple';
 
 if (environment.production) {
   enableProdMode();

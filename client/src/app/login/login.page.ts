@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { GoogleAuthService } from '../_services/google-auth.service';
 import { IonRouterOutlet } from '@ionic/angular';
+import { AppleAuthService } from '../_services/apple-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,10 +22,12 @@ export class LoginPage implements OnInit {
   errorOccurred: boolean = false;
   isLoggingIn: boolean = false;
   isGoogleSigningIn: boolean = false;
+  isAppleSigningIn: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private googleAuthService: GoogleAuthService,
+    private appleAuthService: AppleAuthService,
     private router: Router,
     private outlet: IonRouterOutlet
   ) { }
@@ -106,6 +109,13 @@ export class LoginPage implements OnInit {
     await this.googleAuthService.signIn()
     .then(() => this.isGoogleSigningIn = false)
     .catch(() => this.isGoogleSigningIn = false)
+  }
+
+  async handleAppleSignIn(){
+    this.isAppleSigningIn = true;
+    this.appleAuthService.signIn()
+    .then(() => this.isAppleSigningIn = false)
+    .catch(() => this.isAppleSigningIn = false);
   }
 
 }
