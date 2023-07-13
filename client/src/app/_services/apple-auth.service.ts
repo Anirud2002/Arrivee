@@ -25,12 +25,15 @@ export class AppleAuthService {
     })
     .then((res: AppleSignInResponse) => {
       // https://developer.apple.com/documentation/signinwithapplerestapi/verifying_a_user
-      alert('Send token to apple for verification: ' + res.identityToken);
-      console.log(res);
+      // alert('Send token to apple for verification: ' + res.identityToken);
+      alert(JSON.stringify(res));
+      console.log(JSON.stringify(res));
     })
     .catch((error: AppleSignInErrorResponse) => {
       alert(error.code + ' ' + error.localizedDescription);
       console.error(error);
     });
+
+    console.log("Last")
   }
 }
