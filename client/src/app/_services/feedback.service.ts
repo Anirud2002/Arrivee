@@ -50,6 +50,7 @@ export class FeedbackService {
   }
 }
 
+// feedback dto
 export interface FeedbackDTO {
   firstname: string,
   lastname: string,
