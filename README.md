@@ -50,7 +50,7 @@ Please make sure to update api/appsettings.json to add your own api keys and SMT
 
 ## How to Contribute?
 
-Please make sure to clone the repo and brach the project into a feature branch. Finally, after pushing up your changes, make sure to pull a PR.
+Please make sure to clone the repo and make a feature branch. Finally, after pushing up your changes, make sure to pull a PR.
 
 ## Demo
 
