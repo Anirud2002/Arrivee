@@ -138,7 +138,7 @@ export class LocationNotificationService {
         longitude: location.longitude
       };
       this.checkUserAndLocationsCoords(this.userCoords);
-    });
+    }).then(backgroundWatchID => this.backgroundWatchID = backgroundWatchID);
   }
 
   // stops watching for user's location
@@ -148,7 +148,9 @@ export class LocationNotificationService {
       LocalNotifications.removeAllListeners();
     }
 
+    console.log("first")
     if(this.backgroundWatchID) {
+      console.log("second")
       BackgroundGeolocation.removeWatcher({
         id: this.backgroundWatchID
       });
