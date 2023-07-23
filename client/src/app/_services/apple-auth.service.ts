@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest } from '@awesome-cordova-plugins/sign-in-with-apple/ngx';
 import { Device } from '@capacitor/device';
 @Injectable({
   providedIn: 'root'
 })
 export class AppleAuthService {
-
+  jwtHelperService = new JwtHelperService();
   constructor(
     // private signInWithApple: SignInWithApple
   ) { }
