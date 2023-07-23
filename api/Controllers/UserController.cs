@@ -126,15 +126,7 @@ namespace api.Controllers
 
             if(user.IsGoogleUser)
             {
-                var conditions = new List<ScanCondition>();
-                conditions.Add(new ScanCondition("Username",ScanOperator.Equal, new[] {user.Email}));
-
-                var config = new DynamoDBOperationConfig()
-                {
-                    QueryFilter = conditions
-                };
-
-                await _dbContext.DeleteAsync<GoogleUser>(user.Email, config);
+                await _dbContext.DeleteAsync<GoogleUser>(user.Email);
             }
 
             return new OkObjectResult(new
