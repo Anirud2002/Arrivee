@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using api.DTOs;
 using api.Entities;
 using api.Extensions;
@@ -122,6 +123,19 @@ namespace api.Controllers
             }
 
             await _dbContext.DeleteAsync<AppUser>(user);
+
+            if(user.IsGoogleUser)
+            {
+                var conditions = new List<ScanCondition>();
+                conditions.Add(new ScanCondition("Username",ScanOperator.Equal, new[] {user.Email}));
+
+                var config = new DynamoDBOperationConfig()
+                {
+                    QueryFilter = conditions
+                };
+
+                await _dbContext.DeleteAsync<GoogleUser>(user.Email, config);
+            }
 
             return new OkObjectResult(new
             {
