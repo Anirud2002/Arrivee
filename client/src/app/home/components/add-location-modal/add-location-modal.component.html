@@ -8,9 +8,9 @@
     <ion-input label="" debounce="750" [(ngModel)]="searchBarInput" (ionInput)="searchPlace($event)" show-clear-button="focus" class="location-searchbar" placeholder="Search Address" [clearInput]="true"></ion-input>
   </ion-item>
 
-  <ion-list *ngIf="googlePlacesApiResponse" class="fixed mt-4 z-10">
-    <ion-item *ngFor="let location of googlePlacesApiResponse.results | slice:0:3"  class="ion-margin-top" lines="none" [detail]="false" button (click)="selectLocation(location)">
-      <ion-label>
+  <ion-list *ngIf="googlePlacesApiResponse" class="fixed mt-4 z-10 rounded-md w-11/12">
+    <ion-item *ngFor="let location of googlePlacesApiResponse.results | slice:0:3; let last = last"  class="ion-margin-top" [lines]="last && 'none'" [detail]="false" button (click)="selectLocation(location)">
+      <ion-label class="ion-text-wrap">
         <h3>{{location.name}}</h3>
         <p>{{location.formatted_address}}</p>
       </ion-label>
