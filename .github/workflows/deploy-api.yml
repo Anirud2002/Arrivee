@@ -32,15 +32,15 @@ jobs:
         run: dotnet build --no-restore LocationReminder.sln
       - name: zip
         uses: montudor/action-zip@v0.1.0
-        working-directory: api
         with:
           args: zip -qq -r ./bundle.zip ./
+        working-directory: api
       - name: default deploy
         uses: appleboy/lambda-action@master
-        working-directory: api
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-west-2
           function_name: api
           zip_file: bundle.zip
+        working-directory: api
