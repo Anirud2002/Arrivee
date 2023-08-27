@@ -29,12 +29,10 @@ jobs:
       - name: Restore dependencies
         run: |
           cd ../
-          ls
           dotnet restore LocationReminder.sln
       - name: Build
         run: |
           cd ../
-          ls
           dotnet build --no-restore LocationReminder.sln
       - name: zip
         uses: montudor/action-zip@v0.1.0
