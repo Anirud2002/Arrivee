@@ -34,7 +34,6 @@ jobs:
         uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./bundle.zip ./
-        working-directory: api
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
@@ -43,4 +42,3 @@ jobs:
           aws_region: us-west-2
           function_name: api
           zip_file: bundle.zip
-        working-directory: api
