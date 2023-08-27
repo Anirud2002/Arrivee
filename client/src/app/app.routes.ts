@@ -18,11 +18,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'notifications',
-    loadComponent: () => import('./notifications/notifications.page').then( m => m.NotificationsPage),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'settings',
     loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage),
     canActivate: [AuthGuard]
