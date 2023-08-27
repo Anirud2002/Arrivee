@@ -46,5 +46,5 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-west-2
-          function_name: api
+          function_name: location-rem-func
           zip_file: bundle.zip
