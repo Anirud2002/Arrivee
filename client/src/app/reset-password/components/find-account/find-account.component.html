@@ -1,7 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="true">
-  <div class="w-full top-20 ion-padding-horizontal" slot="fixed">
     <form [formGroup]="form" *ngIf="form">
-      <ion-card class="ion-no-padding ion-no-margin">
+      <ion-card class="ion-no-padding">
         <ion-card-header>
           <ion-card-title>Find Your Account</ion-card-title> 
         </ion-card-header>
@@ -27,5 +33,4 @@
         </ion-button>
       </ion-card>
     </form>
-  </div>
 </ion-content>
